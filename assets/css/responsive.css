@@ -228,13 +228,26 @@ html.responsive, .responsive body{overflow-y: hidden;}
 	}
 	.detils_list ul li{ margin: 0; }
 	.detils_list{ font-size: 14px; line-height: 18px; }
+
+	.login_sec ul li{float: none; display: inline-block; margin-bottom: 10px; position: static;}
+	.login_sec ul{padding-left: 0; position: relative;}
+	.dropdown-menu{
+		min-width: 270px;
+		left: 50%;
+		transform: translate(-50%,0);
+	}
 }
 /*480px*/
 @media only screen and (max-width: 599px) {
 	.header_main .logo{float: none; margin: 0 auto; display: block;}
 	.header_main .login_sec{float: none; text-align: center;}
-	.login_sec ul li{float: none; display: inline-block;}
-	.login_sec ul{padding-left: 0;}
+	.login_sec ul li{float: none; display: inline-block; margin-bottom: 10px; position: static;}
+	.login_sec ul{padding-left: 0; position: relative;}
+	.dropdown-menu{
+		min-width: 270px;
+		left: 50%;
+		transform: translate(-50%,0);
+	}
 	.slider_text{width: auto; line-height: 30px;}
 	.slider_text span{font-size: 30px;}
 	.why_we .ww_sec{padding: 0;}
@@ -249,10 +262,28 @@ html.responsive, .responsive body{overflow-y: hidden;}
 	.f_top .logo_social .keep_touch, .f_top .logo_social .f_logo{width: auto; float: none; text-align: center;}
 	.copyright{padding: 10px 0;}
 	.copyright p, .copyright a{font-size: 15px;}
+
+	body{
+		font-size: 14px;
+		line-height: 20px;
+	}
+	.f_top ul{
+		font-size: 12px;
+	}
+	.f_top .quick_link, .f_top .devices, .f_cntct{
+		margin-top: 20px;
+	}
+	.copyright p, .copyright a{
+		font-size: 11px;
+		line-height: 17px;
+	}
+
+
+
 }
 /*320px*/
 @media only screen and (max-width: 479px) {
-	[type="submit"], [type="reset"], [type="button"], button, .btn{height: 30px; line-height: 24px; padding: 0 13px; font-size: 14px;}
+	[type="submit"], [type="reset"], [type="button"], button, .btn{height: 30px; line-height: 24px; padding: 0 13px 0 25px; font-size: 14px;}
 	.login_sec ul li:last-of-type{padding-left: 2px;}
 	.header_main .logo{width: 210px;}
 	.slider_text span, .slider_text p{display: none;}
