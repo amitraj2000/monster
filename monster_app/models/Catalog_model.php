@@ -59,5 +59,17 @@ class Catalog_model extends CI_Model {
 			$query = $this->db->get();
 			return $query->result();
         }
+		public function get_product_related_details($product_id)
+        { 
+			$this->db->select('*');
+			$this->db->from(PRODUCT_MASTER);
+			$this->db->join(CATEGORY_MASTER, CATEGORY_MASTER.'.category_id = '.PRODUCT_MASTER.'.category_id');
+			$this->db->join(MODEL_MASTER, MODEL_MASTER.'.model_id = '.PRODUCT_MASTER.'.model_id');
+			$this->db->where(PRODUCT_MASTER.'.status!=','3');
+			$this->db->where('product_id',$product_id);
+			$query = $this->db->get();
+			return $query->row();
+			
+        }
 }
 ?>

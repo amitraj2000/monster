@@ -54,6 +54,8 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['register'] = 'login/register';
 $route['logout'] = 'login/process_logout';
+$route['login/google_user_authentication'] = 'login/google_user_authentication';
 $route['my-account'] = 'account/index';
+$route['(:any)/(:any)/(:any)'] = 'product/index/$1/$2/$3';
 
 

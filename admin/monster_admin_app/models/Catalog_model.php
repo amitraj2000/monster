@@ -211,17 +211,10 @@ class Catalog_model extends CI_Model {
         }
 		
 		public function update_product($product_id,$data)
-        {               
-			
+        { 
 			$this->db->where('product_id', $product_id);
-			$this->db->update(PRODUCT_MASTER, $data);
-			
+			$this->db->update(PRODUCT_MASTER, $data);			
         }
-		
-		
-		
-		
-
 
 }
 ?>

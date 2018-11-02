@@ -167,6 +167,11 @@ $(document).on('click','a.load-product',function(){
 		});
 });
 
+$(document).on('click','a.load-product-details',function(){
+	var href=$(this).attr('data-href');
+	window.location=href
+});
+
 })
 /*Google login*/
   var googleUser = {};
@@ -193,8 +198,9 @@ $(document).on('click','a.load-product',function(){
         function(googleUser) {
          // document.getElementById('name').innerText = "Signed in: " +
               var profile = googleUser.getBasicProfile();
+
 			$.ajax({
-				url: "login/google_user_authentication", 
+				url: monsterObj.base_url+"login/google_user_authentication", 
 				method:'POST',
 				data:{'first_name':profile.getGivenName(),'last_name':profile.getFamilyName(),'email':profile.getEmail()},
 				success: function(result){
@@ -209,7 +215,7 @@ function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
   
   $.ajax({
-		url: "login/google_user_authentication", 
+		url: monsterObj.base_url+"login/google_user_authentication", 
 		method:'POST',
 		data:{'first_name':profile.getGivenName(),'last_name':profile.getFamilyName(),'email':profile.getEmail()},
 		success: function(result){
