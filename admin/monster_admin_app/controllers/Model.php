@@ -108,9 +108,20 @@ class Model extends CI_Controller {
 						$this->image_lib->resize();
 						
 						$model_id=random_string('alnum',16);
+						
+						$slug_config = array(
+							'field' => 'model_slug',
+							'title' => 'model_name',
+							'table' => MODEL_MASTER,
+							'id' => 'model_id',
+						);
+						$this->load->library('slug',$slug_config);
+						$slug=$this->slug->create_uri(array('model_name' => $name));
+						
 						$data = array(
 							'model_id' => $model_id,
 							'model_name' => $name,
+							'model_slug' => $slug,
 							'model_image' => $upload_data['file_name'],
 							'category_id' => $category_id,
 							'heading_text' => $heading_text,
@@ -247,8 +258,17 @@ class Model extends CI_Controller {
 					  }
 				  }
 			
+				$slug_config = array(
+					'field' => 'model_slug',
+					'title' => 'model_name',
+					'table' => MODEL_MASTER,
+					'id' => 'model_id',
+				);
+				$this->load->library('slug',$slug_config);
+				$slug=$this->slug->create_uri(array('model_name' => $name));
 				$data = array(
 					'model_name' => $name,
+					'model_slug' => $slug,
 					'category_id' => $category_id,
 					'heading_text' => $heading_text,
 					'status' => !empty($disable)?'2':'1',

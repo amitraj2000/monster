@@ -114,9 +114,20 @@ class Product extends CI_Controller {
 						$this->image_lib->resize();
 						
 						$product_id=random_string('alnum',16);
+						
+						$slug_config = array(
+							'field' => 'product_slug',
+							'title' => 'product_name',
+							'table' => PRODUCT_MASTER,
+							'id' => 'product_id',
+						);
+						$this->load->library('slug',$slug_config);
+						$slug=$this->slug->create_uri(array('product_name' => $name));
+						
 						$data = array(
 							'product_id' => $product_id,
 							'product_name' => $name,
+							'product_slug' => $slug,
 							'product_image' => $upload_data['file_name'],
 							'category_id' => $category_id,
 							'model_id' => $model_id,
@@ -242,11 +253,20 @@ class Product extends CI_Controller {
 							$this->session->set_flashdata('form_data', $form_data);
 					  }
 				  }
-			
+				
+				$slug_config = array(
+					'field' => 'product_slug',
+					'title' => 'product_name',
+					'table' => PRODUCT_MASTER,
+					'id' => 'product_id',
+				);
+				$this->load->library('slug',$slug_config);
+				$slug=$this->slug->create_uri(array('product_name' => $name));
 				$data = array(
 					'product_name' => $name,
 					'category_id' => $category_id,
 					'model_id' => $model_id,
+					'product_slug'=>$slug,
 					'status' => !empty($disable)?'2':'1',
 				);	
 				

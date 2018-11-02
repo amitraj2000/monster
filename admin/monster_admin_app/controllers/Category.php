@@ -101,9 +101,19 @@ class Category extends CI_Controller {
 						$this->image_lib->resize();
 						
 						$category_id=random_string('alnum',16);
+						
+						$slug_config = array(
+							'field' => 'category_slug',
+							'title' => 'category_name',
+							'table' => CATEGORY_MASTER,
+							'id' => 'category_id',
+						);
+						$this->load->library('slug',$slug_config);
+						$slug=$this->slug->create_uri(array('category_name' => $name));
 						$data = array(
 							'category_id' => $category_id,
 							'category_name' => $name,
+							'category_slug' => $slug,
 							'category_image' => $upload_data['file_name'],
 							'heading_text'=>$heading_text,
 							'status' => !empty($disable)?'2':'1',
@@ -209,9 +219,19 @@ class Category extends CI_Controller {
 							$this->session->set_flashdata('form_data', $form_data);
 					  }
 				  }
-			
+				
+				
+				$slug_config = array(
+					'field' => 'category_slug',
+					'title' => 'category_name',
+					'table' => CATEGORY_MASTER,
+					'id' => 'category_id',
+				);
+				$this->load->library('slug',$slug_config);
+				$slug=$this->slug->create_uri(array('category_name' => $name));
 				$data = array(
 					'category_name' => $name,
+					'category_slug' => $slug,
 					'heading_text' => $heading_text,
 					'status' => !empty($disable)?'2':'1',
 				);	
