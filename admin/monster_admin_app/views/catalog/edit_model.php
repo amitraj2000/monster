@@ -94,7 +94,7 @@
                                             
                                         </div>
 										<input type="hidden" name="model_id" value="<?php echo $model['model_id'];?>">
-                                        <button type="submit" name="submit" value="submit" class="btn btn-default">Save</button>
+                                        <button type="submit" name="submit" value="submit" class="btn btn-primary">Save</button>
                                         
                                     </form>
                                 </div>

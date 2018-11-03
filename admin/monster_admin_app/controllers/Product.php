@@ -65,11 +65,41 @@ class Product extends CI_Controller {
 			$category_id=$this->input->post('category_id');
 			$model_id=$this->input->post('model_id');
 			$disable=$this->input->post('disable');
+			$flawless_disable=$this->input->post('flawless_disable');
+			$flawless_heading=$this->input->post('flawless_heading');
+			$flawless_price=$this->input->post('flawless_price');
+			$flawless_description=$this->input->post('flawless_description');
+			
+			$good_disable=$this->input->post('good_disable');
+			$good_heading=$this->input->post('good_heading');
+			$good_price=$this->input->post('good_price');
+			$good_description=$this->input->post('good_description');
+			
+			$broken_disable=$this->input->post('broken_disable');
+			$broken_heading=$this->input->post('broken_heading');
+			$broken_price=$this->input->post('broken_price');
+			$broken_description=$this->input->post('broken_description');
+			
+			$enable_icloud=$this->input->post('enable_icloud');
 			
 			 $form_data = array(
 					'name'  => $name,
 					'category_id'  => $category_id,
 					'model_id'  => $model_id,
+					'flawless_disable'=>$flawless_disable,
+					'flawless_heading'=>$flawless_heading,
+					'flawless_price'=>$flawless_price,
+					'flawless_description'=>$flawless_description,					
+					'good_disable'=>$good_disable,
+					'good_heading'=>$good_heading,
+					'good_price'=>$good_price,
+					'good_description'=>$good_description,
+					'broken_disable'=>$broken_disable,
+					'broken_heading'=>$broken_heading,
+					'broken_price'=>$broken_price,
+					'broken_description'=>$broken_description,
+					'enable_icloud'=>$enable_icloud,
+					'status'  => $disable?'2':'1',
 			);		
 			if(!empty($category_id))
 			{
@@ -89,7 +119,16 @@ class Product extends CI_Controller {
 			}
 			else if(empty($model_id)){
 				$this->session->set_flashdata('error_msg', 'Please select model');
-			}			
+			}
+			else if(empty($flawless_disable) && empty($flawless_price)){
+				$this->session->set_flashdata('error_msg', 'Please enter flawless condition price');
+			}
+			else if(empty($good_disable) && empty($good_price)){
+				$this->session->set_flashdata('error_msg', 'Please enter good condition price');
+			}
+			else if(empty($broken_disable) && empty($broken_price)){
+				$this->session->set_flashdata('error_msg', 'Please enter broken condition price');
+			}
 			else{	
 				  $config['upload_path']   = UPLOADS_PRODUCT;
 				  $config['allowed_types'] = 'gif|jpg|jpeg|png';
@@ -131,6 +170,19 @@ class Product extends CI_Controller {
 							'product_image' => $upload_data['file_name'],
 							'category_id' => $category_id,
 							'model_id' => $model_id,
+							'flawless_disable_purchase'=>!empty($flawless_disable)?'1':'0',
+							'flawless_heading'=>$flawless_heading,
+							'flawless_price'=>$flawless_price,
+							'flawless_description'=>$flawless_description,					
+							'good_disable_purchase'=>!empty($good_disable)?'1':'0',
+							'good_heading'=>$good_heading,
+							'good_price'=>$good_price,
+							'good_description'=>$good_description,
+							'broken_disable_purchase'=>!empty($broken_disable)?'1':'0',
+							'broken_heading'=>$broken_heading,
+							'broken_price'=>$broken_price,
+							'broken_description'=>$broken_description,
+							'enable_icloud'=>!empty($enable_icloud)?'1':'0',
 							'status' => !empty($disable)?'2':'1',
 						);
 						$this->catalog_model->add_product($data);
@@ -188,6 +240,19 @@ class Product extends CI_Controller {
 				'category_id'  => $product->category_id,
 				'model_id'  => $product->model_id,
 				'models'=>$this->catalog_model->get_models_by_category_id($product->category_id),
+				'flawless_disable'=>$product->flawless_disable_purchase,
+				'flawless_heading'=>$product->flawless_heading,
+				'flawless_price'=>$product->flawless_price,
+				'flawless_description'=>$product->flawless_description,					
+				'good_disable'=>$product->good_disable_purchase,
+				'good_heading'=>$product->good_heading,
+				'good_price'=>$product->good_price,
+				'good_description'=>$product->good_description,
+				'broken_disable'=>$product->broken_disable_purchase,
+				'broken_heading'=>$product->broken_heading,
+				'broken_price'=>$product->broken_price,
+				'broken_description'=>$product->broken_description,
+				'enable_icloud'=>$product->enable_icloud,
 				'status'  => $product->status,
 			);
 		}
@@ -200,13 +265,41 @@ class Product extends CI_Controller {
 			$category_id=$this->input->post('category_id');
 			$model_id=$this->input->post('model_id');
 			$disable=$this->input->post('disable');
+			$flawless_disable=$this->input->post('flawless_disable');
+			$flawless_heading=$this->input->post('flawless_heading');
+			$flawless_price=$this->input->post('flawless_price');
+			$flawless_description=$this->input->post('flawless_description');
 			
+			$good_disable=$this->input->post('good_disable');
+			$good_heading=$this->input->post('good_heading');
+			$good_price=$this->input->post('good_price');
+			$good_description=$this->input->post('good_description');
+			
+			$broken_disable=$this->input->post('broken_disable');
+			$broken_heading=$this->input->post('broken_heading');
+			$broken_price=$this->input->post('broken_price');
+			$broken_description=$this->input->post('broken_description');
+			
+			$enable_icloud=$this->input->post('enable_icloud');
 			 $form_data = array(
 					'product_id'  => $product_id,
 					'name'  => $name,
 					'image'=>!empty($product->product_image)?$product->product_image:'',
 					'category_id'=>$category_id,
 					'model_id'=>$model_id,
+					'flawless_disable'=>$flawless_disable,
+					'flawless_heading'=>$flawless_heading,
+					'flawless_price'=>$flawless_price,
+					'flawless_description'=>$flawless_description,					
+					'good_disable'=>$good_disable,
+					'good_heading'=>$good_heading,
+					'good_price'=>$good_price,
+					'good_description'=>$good_description,
+					'broken_disable'=>$broken_disable,
+					'broken_heading'=>$broken_heading,
+					'broken_price'=>$broken_price,
+					'broken_description'=>$broken_description,
+					'enable_icloud'=>$enable_icloud,
 					'status'  => $disable?'2':'1',
 			);		
 			if(!empty($category_id))
@@ -226,7 +319,16 @@ class Product extends CI_Controller {
 			}
 			else if(empty($model_id)){
 				$this->session->set_flashdata('error_msg', 'Please select model');
-			}			
+			}
+			else if(empty($flawless_disable) && empty($flawless_price)){
+				$this->session->set_flashdata('error_msg', 'Please enter flawless condition price');
+			}
+			else if(empty($good_disable) && empty($good_price)){
+				$this->session->set_flashdata('error_msg', 'Please enter good condition price');
+			}
+			else if(empty($broken_disable) && empty($broken_price)){
+				$this->session->set_flashdata('error_msg', 'Please enter broken condition price');
+			}
 			else{
 				 if(!empty($image['name'])){
 					  $config['upload_path']   = UPLOADS_PRODUCT;
@@ -267,6 +369,19 @@ class Product extends CI_Controller {
 					'category_id' => $category_id,
 					'model_id' => $model_id,
 					'product_slug'=>$slug,
+					'flawless_disable_purchase'=>!empty($flawless_disable)?'1':'0',
+					'flawless_heading'=>$flawless_heading,
+					'flawless_price'=>$flawless_price,
+					'flawless_description'=>$flawless_description,					
+					'good_disable_purchase'=>!empty($good_disable)?'1':'0',
+					'good_heading'=>$good_heading,
+					'good_price'=>$good_price,
+					'good_description'=>$good_description,
+					'broken_disable_purchase'=>!empty($broken_disable)?'1':'0',
+					'broken_heading'=>$broken_heading,
+					'broken_price'=>$broken_price,
+					'broken_description'=>$broken_description,
+					'enable_icloud'=>!empty($enable_icloud)?'1':'0',
 					'status' => !empty($disable)?'2':'1',
 				);	
 				

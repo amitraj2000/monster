@@ -64,7 +64,7 @@
                                             
                                         </div>
 										<input type="hidden" name="category_id" value="<?php echo $category['category_id'];?>">
-                                        <button type="submit" name="submit" value="submit" class="btn btn-default">Save</button>
+                                        <button type="submit" name="submit" value="submit" class="btn btn-primary">Save</button>
                                         
                                     </form>
                                 </div>

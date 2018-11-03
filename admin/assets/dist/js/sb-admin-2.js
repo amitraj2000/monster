@@ -88,4 +88,9 @@ $(document).ready(function(){
 		  }
 		})
 	});
+	
+	$('.editor').each(function(){
+		$(this).richText();
+	}); 
+	
 });

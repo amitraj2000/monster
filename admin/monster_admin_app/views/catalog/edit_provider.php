@@ -61,7 +61,7 @@
                                             
                                         </div>
 										<input type="hidden" name="provider_id" value="<?php echo $provider['provider_id'];?>">
-                                        <button type="submit" name="submit" value="submit" class="btn btn-default">Save</button>
+                                        <button type="submit" name="submit" value="submit" class="btn btn-primary">Save</button>
                                         
                                     </form>
                                 </div>

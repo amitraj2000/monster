@@ -66,7 +66,7 @@
 											<p class="help-block">If you don't want to change the password,leave this field blank.</p>                                            
                                         </div>    
 										<input type="hidden" name="user_id" value="<?php echo $user['user_id'];?>">
-                                        <button type="submit" name="submit" value="submit" class="btn btn-default">Save</button>
+                                        <button type="submit" name="submit" value="submit" class="btn btn-primary">Save</button>
                                         
                                     </form>
                                 </div>
