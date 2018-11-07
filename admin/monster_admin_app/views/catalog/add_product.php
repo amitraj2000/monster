@@ -1,7 +1,18 @@
  <div id="page-wrapper">
-            <div class="row">
+           <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Add New Product</h1>
+					<div class="page-header">
+						<div class="row">
+							<div class="col-lg-6">
+								<h1>Add New Product</h1>
+							</div>
+							<div class="col-lg-6 text-right">
+								<a href="<?php echo site_url('products');?>"><h1 class="btn btn-primary btn-lg"><i class="fa fa-bars" aria-hidden="true"></i> All Products</h1></a>
+																
+							</div>
+							
+						</div>
+					</div>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

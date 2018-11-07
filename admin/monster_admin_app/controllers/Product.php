@@ -363,7 +363,7 @@ class Product extends CI_Controller {
 					'id' => 'product_id',
 				);
 				$this->load->library('slug',$slug_config);
-				$slug=$this->slug->create_uri(array('product_name' => $name));
+				$slug=$this->slug->create_uri(array('product_name' => $name),$product_id);
 				$data = array(
 					'product_name' => $name,
 					'category_id' => $category_id,

@@ -228,7 +228,7 @@ class Category extends CI_Controller {
 					'id' => 'category_id',
 				);
 				$this->load->library('slug',$slug_config);
-				$slug=$this->slug->create_uri(array('category_name' => $name));
+				$slug=$this->slug->create_uri(array('category_name' => $name),$category_id);
 				$data = array(
 					'category_name' => $name,
 					'category_slug' => $slug,

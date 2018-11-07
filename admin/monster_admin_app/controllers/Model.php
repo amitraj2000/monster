@@ -265,7 +265,7 @@ class Model extends CI_Controller {
 					'id' => 'model_id',
 				);
 				$this->load->library('slug',$slug_config);
-				$slug=$this->slug->create_uri(array('model_name' => $name));
+				$slug=$this->slug->create_uri(array('model_name' => $name),$model_id);
 				$data = array(
 					'model_name' => $name,
 					'model_slug' => $slug,

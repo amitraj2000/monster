@@ -172,6 +172,15 @@ $(document).on('click','a.load-product-details',function(){
 	window.location=href
 });
 
+$(document).on('click','.icloud-activation',function(){
+	$(this).addClass('active');
+	$(this).closest('.resp-tab-content').find('form').find('button').attr('disabled',false).removeClass('disabled');
+});
+$(document).on('click','.icloud-deactivation',function(){
+	$(this).siblings('.icloud-activation').removeClass('active');
+	$(this).closest('.resp-tab-content').find('form').find('button').attr('disabled',true).addClass('disabled');
+});
+
 })
 /*Google login*/
   var googleUser = {};
