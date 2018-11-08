@@ -74,6 +74,7 @@
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/lib/bootstrap.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/lib/plugins.js"></script>
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/easy-responsive-tabs.js"></script>
+	<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url();?>assets/js/custom.js"></script>
 </body>
 

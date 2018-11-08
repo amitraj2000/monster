@@ -9,57 +9,7 @@
 							<a href="#" class="btn btn_b">get a free quote</a>
 						</div>
 					</div>
-				</div>
-		<!-- <div class="banner_slider owl-carousel owl-theme">
-			<div class="item">
-				<div class="banner_img">
-					<img src="images/banner.jpg" alt="">
-					<div class="container">
-						<div class="slider_text">
-							<span>Get Paid for Your Device</span>
-							<p>See how much your device is worth</p>
-							<a href="#" class="btn btn_b">get a free quote</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="item">
-				<div class="banner_img">
-					<img src="images/banner1.jpg" alt="">
-					<div class="container">
-						<div class="slider_text">
-							<span>Get Paid for Your Device</span>
-							<p>See how much your device is worth</p>
-							<a href="#" class="btn btn_b">get a free quote</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="item">
-				<div class="banner_img">
-					<img src="images/banner.jpg" alt="">
-					<div class="container">
-						<div class="slider_text">
-							<span>Get Paid for Your Device</span>
-							<p>See how much your device is worth</p>
-							<a href="#" class="btn btn_b">get a free quote</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="item">
-				<div class="banner_img">
-					<img src="images/banner1.jpg" alt="">
-					<div class="container">
-						<div class="slider_text">
-							<span>Get Paid for Your Device</span>
-							<p>See how much your device is worth</p>
-							<a href="#" class="btn btn_b">get a free quote</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> -->
+				</div>		
 	</div>
 	<main class="sitemain">
 		<div class="main_contrainer">
@@ -125,6 +75,15 @@
 					<h2 class="heading">What are you selling?</h2>
 					<div class="products">
 						<?php if(!empty($categories)){?>
+						<!-- hidden form that will submitted on product selection-->
+						<form id="product_selection_form" action="" method="post">
+							<input type="hidden" name="category_id" id="category_id">
+							<input type="hidden" name="model_id" id="model_id">
+							<input type="hidden" name="provider_id" id="provider_id">
+							<input type="hidden" name="product_id" id="product_id">
+						</form>						
+						<!-- hidden form that will submitted on product selection-->
+						
 						<ul class="clearfix">
 							<?php foreach($categories as $category){?>
 							<?php 

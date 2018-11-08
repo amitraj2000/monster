@@ -13,7 +13,7 @@
 	<div class="main_contrainer">
 		<div class="details_holder">
 			<div class="row">
-				<div class="container">
+				<div class="container" id="details_section">
 					<div class="col-md-4 col-sm-4 col-xs-12">
 						<div class="details_left">
 								<?php if(!empty($product->product_image) && file_exists(UPLOADS_PRODUCT.$product->product_image)){
@@ -58,8 +58,14 @@
 										
 										<?php if(empty($product->flawless_disable_purchase)){ ?>
 										<!--<a class="next" href="javascript:void(0);">next</a>-->
-										<form>
-										<button class="<?php echo !empty($product->enable_icloud)?'disabled':''; ?>" <?php echo !empty($product->enable_icloud)?'disabled="true"':''; ?>>Next</button>
+										<form class="add_to_cart">
+											<input type="hidden" name="category_id"  value="<?php echo $category->category_id;?>">
+											<input type="hidden" name="model_id"  value="<?php echo $model->model_id;?>">
+											<input type="hidden" name="provider_id"  value="<?php echo $provider_id;?>">
+											<input type="hidden" name="product_id"  value="<?php echo $product->product_id;?>">
+											<input type="hidden" name="condition" value="flawless" >
+											<input type="hidden" name="need_provider"  value="<?php echo $need_provider;?>">											
+											<button class="next <?php echo !empty($product->enable_icloud)?'disabled':''; ?>" <?php echo !empty($product->enable_icloud)?'disabled="true"':''; ?> type="submit">Next</button>
 										</form>
 										<?php } else{?>
 										We're Sorry! We stopped purchasing this device in the specified condition.
@@ -95,8 +101,14 @@
 										
 										<?php if(empty($product->good_disable_purchase)){ ?>
 										<!--<a class="next" href="javascript:void(0);">next</a>-->
-										<form>
-										<button type="submit" class="<?php echo !empty($product->enable_icloud)?'disabled':''; ?>" <?php echo !empty($product->enable_icloud)?'disabled="true"':''; ?>>Next</button>
+										<form class="add_to_cart">
+											<input type="hidden" name="category_id"  value="<?php echo $category->category_id;?>">
+											<input type="hidden" name="model_id"  value="<?php echo $model->model_id;?>">
+											<input type="hidden" name="provider_id"  value="<?php echo $provider_id;?>">
+											<input type="hidden" name="product_id"  value="<?php echo $product->product_id;?>">
+											<input type="hidden" name="condition" value="good" >
+											<input type="hidden" name="need_provider"  value="<?php echo $need_provider;?>">											
+											<button class="next <?php echo !empty($product->enable_icloud)?'disabled':''; ?>" <?php echo !empty($product->enable_icloud)?'disabled="true"':''; ?> type="submit">Next</button>
 										</form>
 										<?php } else{?>
 										We're Sorry! We stopped purchasing this device in the specified condition.
@@ -128,8 +140,14 @@
 										<?php } ?>
 										<?php if(empty($product->broken_disable_purchase)){ ?>
 										<!--<a class="next" href="javascript:void(0);">next</a>-->
-										<form>
-										<button type="submit" class="<?php echo !empty($product->enable_icloud)?'disabled':''; ?>" <?php echo !empty($product->enable_icloud)?'disabled="true"':''; ?>>Next</button>
+										<form class="add_to_cart">
+											<input type="hidden" name="category_id"  value="<?php echo $category->category_id;?>">
+											<input type="hidden" name="model_id"  value="<?php echo $model->model_id;?>">
+											<input type="hidden" name="provider_id"  value="<?php echo $provider_id;?>">
+											<input type="hidden" name="product_id"  value="<?php echo $product->product_id;?>">
+											<input type="hidden" name="condition" value="broken" >
+											<input type="hidden" name="need_provider"  value="<?php echo $need_provider;?>">											
+											<button class="next <?php echo !empty($product->enable_icloud)?'disabled':''; ?>" <?php echo !empty($product->enable_icloud)?'disabled="true"':''; ?> type="submit">Next</button>
 										</form>
 										<?php } else{?>
 										We're Sorry! We stopped purchasing this device in the specified condition.
@@ -142,7 +160,33 @@
 							</div>
 						</div>
 					</div>
+				</div><!--end container-->
+				<?php if(!empty($need_provider) && empty($provider_id)){?>
+				<div class="container why_sell" id="provider_section" style="display:none;">
+					<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
+					provider section
+					</div>
 				</div>
+				<?php } ?>
+				<?php 
+				$is_logged_in=is_logged_in();
+				if(empty($is_logged_in)){?>
+				<div class="container" id="login_section" style="display:none;">
+					<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
+						
+					</div>
+				</div>
+				<div class="container" id="registration_section" style="display:none;">
+					<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
+					registration section
+					</div>
+				</div>
+				<?php } ?>
+				<div class="container" id="after_login_section" style="display:none;">
+					<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
+					after login section
+					</div>
+				</div>				
 			</div>
 			
 			

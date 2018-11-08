@@ -37,7 +37,7 @@
 					  </div>
 					  <div class="col-sm-12">
 						<button type="submit" class="btn btn-default" name="submit" value="submit">Submit</button>
-						<div id="google_btn_1" class="btn btn-default">Signup with google<div>
+						<div id="google_btn_1" class="btn btn-default">Signup with google</div>
 					  </div>
 					</form>
 				

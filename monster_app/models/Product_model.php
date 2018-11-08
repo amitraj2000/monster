@@ -20,6 +20,16 @@ class Product_model extends CI_Model {
 			$query = $this->db->get();
 			return $query->row();
         }
+		public function get_product_by_id($product_id)
+        {                
+			$this->db->select('*');
+			$this->db->from(PRODUCT_MASTER);
+			$this->db->where(PRODUCT_MASTER.'.status','1');
+			$this->db->where(PRODUCT_MASTER.'.product_id',$product_id);
+			
+			$query = $this->db->get();
+			return $query->row();
+        }
 		
 }
 ?>

@@ -21,6 +21,15 @@ class Catalog_model extends CI_Model {
 			$query = $this->db->get();
 			return $query->row();
         }
+		public function get_category_by_slug($category_slug)
+        {                
+			$this->db->select('*');
+			$this->db->from(CATEGORY_MASTER);
+			$this->db->where('status','1');
+			$this->db->where('category_slug',$category_slug);
+			$query = $this->db->get();
+			return $query->row();
+        }
 		public function get_models_by_category_id($category_id){
 			$this->db->select('*');
 			$this->db->from(MODEL_MASTER);
@@ -36,6 +45,15 @@ class Catalog_model extends CI_Model {
 			$this->db->from(MODEL_MASTER);
 			$this->db->where('status','1');
 			$this->db->where('model_id',$model_id);
+			$query = $this->db->get();
+			return $query->row();
+        }
+		public function get_model_by_slug($model_slug)
+        {                
+			$this->db->select('*');
+			$this->db->from(MODEL_MASTER);
+			$this->db->where('status','1');
+			$this->db->where('model_slug',$model_slug);
 			$query = $this->db->get();
 			return $query->row();
         }

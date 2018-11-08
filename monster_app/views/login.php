@@ -19,7 +19,7 @@
 						<label><input type="checkbox"> Remember me</label>
 					  </div>
 					  <button type="submit" name="submit" value="login" class="btn btn-default">Submit</button>
-					  <div id="google_btn_2" class="btn btn-default">Signin with google<div>
+					  <div id="google_btn_2" class="btn btn-default">Signin with google</div>
 					</form>
 				</div>
 			</div>

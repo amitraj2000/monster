@@ -63,11 +63,17 @@ class Category extends CI_Controller {
 			$name=$this->input->post('name');
 			$image=$_FILES['image'];
 			$heading_text=$this->input->post('heading_text');
+			$flawless_description=$this->input->post('flawless_description');
+			$good_description=$this->input->post('good_description');
+			$broken_description=$this->input->post('broken_description');
 			$disable=$this->input->post('disable');
 			
 			 $form_data = array(
 					'name'  => $name,
-					'heading_text'=>$heading_text
+					'heading_text'=>$heading_text,
+					'flawless_description'=>$flawless_description,
+					'good_description'=>$good_description,
+					'broken_description'=>$broken_description,
 			);		
 			$this->session->set_flashdata('form_data', $form_data);
 			
@@ -116,6 +122,9 @@ class Category extends CI_Controller {
 							'category_slug' => $slug,
 							'category_image' => $upload_data['file_name'],
 							'heading_text'=>$heading_text,
+							'flawless_description'=>$flawless_description,
+							'good_description'=>$good_description,
+							'broken_description'=>$broken_description,
 							'status' => !empty($disable)?'2':'1',
 						);
 						$this->catalog_model->add_category($data);
@@ -167,6 +176,9 @@ class Category extends CI_Controller {
 				'name'  => $category->category_name,
 				'image'  => $category->category_image,
 				'heading_text'  => $category->heading_text,
+				'flawless_description'  => $category->flawless_description,
+				'good_description'  => $category->good_description,
+				'broken_description'  => $category->broken_description,
 				'status'  => $category->status,
 			);
 		}
@@ -177,6 +189,9 @@ class Category extends CI_Controller {
 			$name=$this->input->post('name');
 			$image=$_FILES['image'];
 			$heading_text=$this->input->post('heading_text');
+			$flawless_description=$this->input->post('flawless_description');
+			$good_description=$this->input->post('good_description');
+			$broken_description=$this->input->post('broken_description');
 			$disable=$this->input->post('disable');
 			
 			 $form_data = array(
@@ -184,6 +199,9 @@ class Category extends CI_Controller {
 					'name'  => $name,
 					'image'=>!empty($category->category_image)?$category->category_image:'',
 					'heading_text'  => $heading_text,
+					'flawless_description'  => $flawless_description,
+					'good_description'  => $good_description,
+					'broken_description'  => $broken_description,
 					'status'  => $disable?'2':'1',
 			);		
 			
@@ -233,6 +251,9 @@ class Category extends CI_Controller {
 					'category_name' => $name,
 					'category_slug' => $slug,
 					'heading_text' => $heading_text,
+					'flawless_description'  => $flawless_description,
+					'good_description'  => $good_description,
+					'broken_description'  => $broken_description,
 					'status' => !empty($disable)?'2':'1',
 				);	
 				

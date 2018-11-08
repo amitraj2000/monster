@@ -57,5 +57,8 @@ $route['logout'] = 'login/process_logout';
 $route['login/google_user_authentication'] = 'login/google_user_authentication';
 $route['my-account'] = 'account/index';
 $route['(:any)/(:any)/(:any)'] = 'product/index/$1/$2/$3';
+$route['product/ajax_load_providers'] = 'product/ajax_load_providers';
+$route['product/ajax_load_login'] = 'product/ajax_load_login';
+$route['product/ajax_load_registration'] = 'product/ajax_load_registration';
 
 

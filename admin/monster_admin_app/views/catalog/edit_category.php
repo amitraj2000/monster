@@ -68,6 +68,18 @@
                                             <input class="form-control" name="heading_text" value="<?php echo !empty($category['heading_text'])?$category['heading_text']:'';?>">                                            
                                         </div>
 										<div class="form-group">
+											<label>Flawless Description</label>
+											<textarea class="form-control editor" name="flawless_description"><?php echo !empty($category['flawless_description'])?$category['flawless_description']:'';?></textarea>
+										</div>
+										<div class="form-group">
+											<label>Good Description</label>
+											<textarea class="form-control editor" name="good_description"><?php echo !empty($category['good_description'])?$category['good_description']:'';?></textarea>
+										</div>
+										<div class="form-group">
+											<label>Broken Description</label>
+											<textarea class="form-control editor" name="broken_description"><?php echo !empty($category['broken_description'])?$category['broken_description']:'';?></textarea>
+										</div>
+										<div class="form-group">
                                             <label>Keep it disabled</label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="disable" value="on" <?php echo !empty($category['status']) && $category['status']=='2'?'checked="checked"':'';?>>&nbsp;

@@ -19,7 +19,7 @@
 	<!--Google login-->
 	
 	<script type="text/javascript">
-		var monsterObj={'base_url':'<?php echo base_url();?>'}
+		var monsterObj={'base_url':'<?php echo base_url();?>','is_logged_in':<?php $is_logged_in=is_logged_in();echo !empty($is_logged_in)?'true':'false';?>}
 	</script>
 </head>
 

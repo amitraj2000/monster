@@ -68,17 +68,17 @@ class Product extends CI_Controller {
 			$flawless_disable=$this->input->post('flawless_disable');
 			$flawless_heading=$this->input->post('flawless_heading');
 			$flawless_price=$this->input->post('flawless_price');
-			$flawless_description=$this->input->post('flawless_description');
+			
 			
 			$good_disable=$this->input->post('good_disable');
 			$good_heading=$this->input->post('good_heading');
 			$good_price=$this->input->post('good_price');
-			$good_description=$this->input->post('good_description');
+			
 			
 			$broken_disable=$this->input->post('broken_disable');
 			$broken_heading=$this->input->post('broken_heading');
 			$broken_price=$this->input->post('broken_price');
-			$broken_description=$this->input->post('broken_description');
+			
 			
 			$enable_icloud=$this->input->post('enable_icloud');
 			
@@ -88,16 +88,13 @@ class Product extends CI_Controller {
 					'model_id'  => $model_id,
 					'flawless_disable'=>$flawless_disable,
 					'flawless_heading'=>$flawless_heading,
-					'flawless_price'=>$flawless_price,
-					'flawless_description'=>$flawless_description,					
+					'flawless_price'=>$flawless_price,					
 					'good_disable'=>$good_disable,
 					'good_heading'=>$good_heading,
 					'good_price'=>$good_price,
-					'good_description'=>$good_description,
 					'broken_disable'=>$broken_disable,
 					'broken_heading'=>$broken_heading,
 					'broken_price'=>$broken_price,
-					'broken_description'=>$broken_description,
 					'enable_icloud'=>$enable_icloud,
 					'status'  => $disable?'2':'1',
 			);		
@@ -172,16 +169,13 @@ class Product extends CI_Controller {
 							'model_id' => $model_id,
 							'flawless_disable_purchase'=>!empty($flawless_disable)?'1':'0',
 							'flawless_heading'=>$flawless_heading,
-							'flawless_price'=>$flawless_price,
-							'flawless_description'=>$flawless_description,					
+							'flawless_price'=>$flawless_price,			
 							'good_disable_purchase'=>!empty($good_disable)?'1':'0',
 							'good_heading'=>$good_heading,
 							'good_price'=>$good_price,
-							'good_description'=>$good_description,
 							'broken_disable_purchase'=>!empty($broken_disable)?'1':'0',
 							'broken_heading'=>$broken_heading,
 							'broken_price'=>$broken_price,
-							'broken_description'=>$broken_description,
 							'enable_icloud'=>!empty($enable_icloud)?'1':'0',
 							'status' => !empty($disable)?'2':'1',
 						);
@@ -242,16 +236,13 @@ class Product extends CI_Controller {
 				'models'=>$this->catalog_model->get_models_by_category_id($product->category_id),
 				'flawless_disable'=>$product->flawless_disable_purchase,
 				'flawless_heading'=>$product->flawless_heading,
-				'flawless_price'=>$product->flawless_price,
-				'flawless_description'=>$product->flawless_description,					
+				'flawless_price'=>$product->flawless_price,					
 				'good_disable'=>$product->good_disable_purchase,
 				'good_heading'=>$product->good_heading,
 				'good_price'=>$product->good_price,
-				'good_description'=>$product->good_description,
 				'broken_disable'=>$product->broken_disable_purchase,
 				'broken_heading'=>$product->broken_heading,
 				'broken_price'=>$product->broken_price,
-				'broken_description'=>$product->broken_description,
 				'enable_icloud'=>$product->enable_icloud,
 				'status'  => $product->status,
 			);
@@ -268,17 +259,14 @@ class Product extends CI_Controller {
 			$flawless_disable=$this->input->post('flawless_disable');
 			$flawless_heading=$this->input->post('flawless_heading');
 			$flawless_price=$this->input->post('flawless_price');
-			$flawless_description=$this->input->post('flawless_description');
 			
 			$good_disable=$this->input->post('good_disable');
 			$good_heading=$this->input->post('good_heading');
 			$good_price=$this->input->post('good_price');
-			$good_description=$this->input->post('good_description');
 			
 			$broken_disable=$this->input->post('broken_disable');
 			$broken_heading=$this->input->post('broken_heading');
 			$broken_price=$this->input->post('broken_price');
-			$broken_description=$this->input->post('broken_description');
 			
 			$enable_icloud=$this->input->post('enable_icloud');
 			 $form_data = array(
@@ -289,16 +277,13 @@ class Product extends CI_Controller {
 					'model_id'=>$model_id,
 					'flawless_disable'=>$flawless_disable,
 					'flawless_heading'=>$flawless_heading,
-					'flawless_price'=>$flawless_price,
-					'flawless_description'=>$flawless_description,					
+					'flawless_price'=>$flawless_price,					
 					'good_disable'=>$good_disable,
 					'good_heading'=>$good_heading,
 					'good_price'=>$good_price,
-					'good_description'=>$good_description,
 					'broken_disable'=>$broken_disable,
 					'broken_heading'=>$broken_heading,
 					'broken_price'=>$broken_price,
-					'broken_description'=>$broken_description,
 					'enable_icloud'=>$enable_icloud,
 					'status'  => $disable?'2':'1',
 			);		
@@ -371,16 +356,13 @@ class Product extends CI_Controller {
 					'product_slug'=>$slug,
 					'flawless_disable_purchase'=>!empty($flawless_disable)?'1':'0',
 					'flawless_heading'=>$flawless_heading,
-					'flawless_price'=>$flawless_price,
-					'flawless_description'=>$flawless_description,					
+					'flawless_price'=>$flawless_price,					
 					'good_disable_purchase'=>!empty($good_disable)?'1':'0',
 					'good_heading'=>$good_heading,
 					'good_price'=>$good_price,
-					'good_description'=>$good_description,
 					'broken_disable_purchase'=>!empty($broken_disable)?'1':'0',
 					'broken_heading'=>$broken_heading,
 					'broken_price'=>$broken_price,
-					'broken_description'=>$broken_description,
 					'enable_icloud'=>!empty($enable_icloud)?'1':'0',
 					'status' => !empty($disable)?'2':'1',
 				);	

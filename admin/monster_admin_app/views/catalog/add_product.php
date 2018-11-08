@@ -116,10 +116,6 @@
 														<input class="form-control" name="flawless_price" value="<?php echo !empty($product['flawless_price'])?$product['flawless_price']:'';?>">
 														<span class="input-group-addon">.00</span>
 													</div>
-													<div class="form-group">
-														<label>Description</label>
-														<textarea class="form-control editor" name="flawless_description"><?php echo !empty($product['flawless_description'])?$product['flawless_description']:'';?></textarea>
-													</div>
 												</p>
 											</div>
 											<div class="tab-pane fade" id="good">
@@ -139,10 +135,6 @@
 														<input class="form-control" name="good_price" value="<?php echo !empty($product['good_price'])?$product['good_price']:'';?>">
 														<span class="input-group-addon">.00</span>
 													</div>
-													<div class="form-group">
-														<label>Description</label>
-														<textarea class="form-control editor" name="good_description"><?php echo !empty($product['good_description'])?$product['good_description']:'';?></textarea>
-													</div>
 												</p>
 											</div>
 											<div class="tab-pane fade" id="broken">
@@ -161,10 +153,6 @@
 														<span class="input-group-addon">Price($)</span>
 														<input class="form-control" name="broken_price" value="<?php echo !empty($product['broken_price'])?$product['broken_price']:'';?>">
 														<span class="input-group-addon">.00</span>
-													</div>
-													<div class="form-group">
-														<label>Description</label>
-														<textarea class="form-control editor" name="broken_description"><?php echo !empty($product['broken_description'])?$product['broken_description']:'';?></textarea>
 													</div>
 												</p>
 											</div>
