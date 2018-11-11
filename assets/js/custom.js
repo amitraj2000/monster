@@ -273,6 +273,22 @@ $(document).on('click','.add_to_cart_back',function(){
 	
 });
 
+$(document).on('click','.delete_cart_item',function(){
+	var rowid=$(this).attr('data-rowid');
+	$.ajax({
+	  method: "POST",
+	  url: monsterObj.base_url+"product/delete_cart_item",
+	  data: { 'rowid':rowid},
+	  success:function(response){
+		  $('#cart-list').find('li.cart-item[data-rowid="'+rowid+'"]').remove();		
+		  if(response!='')
+		  $('#cart').html(response);
+		
+	  }
+	});
+	return false;
+});
+
 })
 /*Google login*/
   var googleUser = {};

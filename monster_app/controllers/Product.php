@@ -131,5 +131,14 @@ class Product extends CI_Controller {
 		die;
 	}
 	
+	public function delete_cart_item(){
+		$rowid=$this->input->post('rowid');
+		$this->cart->remove($rowid);
+		$items=$this->cart->total_items();
+		if(empty($items))
+			echo 'No items in cart';
+		die;
+	}
+	
 	
 }

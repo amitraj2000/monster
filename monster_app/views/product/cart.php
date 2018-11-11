@@ -2,7 +2,8 @@
 $total_price=0;
 if(!empty($items)){
 	?>
-	<ul>
+	<div id="cart">
+	<ul id="cart-list">
 	<?php
 	foreach($items as $item){
 		$cart_product=$this->product_model->get_product_by_id($item['id']);
@@ -14,7 +15,7 @@ if(!empty($items)){
 			$img_src=str_replace(FCPATH.'/',base_url(),UPLOADS_PRODUCT_THUMB).$cart_product->product_image;
 		}
 		?>
-		<li>
+		<li class="cart-item" data-rowid="<?php echo $item['rowid']; ?>">
 		<img src="<?php echo $img_src;?>">
 		<?php echo $cart_product->product_name;?><br/>
 		Condition:<?php echo ucwords($item['options']['condition']);?></br>
@@ -34,7 +35,7 @@ if(!empty($items)){
 	echo 'No items found';
 }
 ?>
-
+</div>
 <div>
 	<a href="javascript:void(0);" class="btn btn-default add_to_cart_back" data-section="">Back</a>
 </div>
