@@ -83,21 +83,6 @@
                                             <input class="form-control" name="heading_text" value="<?php echo !empty($model['heading_text'])?$model['heading_text']:'';?>">                                            
                                         </div>
 										<div class="form-group">
-                                            <label>Providers</label>
-                                            <select multiple class="form-control" name="providers[]">
-                                                <?php 
-												if(!empty($providers))
-												{
-													foreach($providers as $provider){
-														?>
-														<option value="<?php echo $provider->provider_id;?>" <?php echo !empty($model['providers']) && in_array($provider->provider_id,$model['providers'])?'selected="selected"':'';?>><?php echo $provider->provider_name;?></option>
-														<?php
-													}
-												}
-												?>
-                                            </select>
-                                        </div>
-										<div class="form-group">
                                             <label>Keep it disabled</label>
                                             <label class="checkbox-inline">
                                                 <input type="checkbox" name="disable" value="on" <?php echo !empty($model['status']) && $model['status']=='2'?'checked="checked"':'';?>>&nbsp;

@@ -64,14 +64,12 @@ class Model extends CI_Controller {
 			$image=$_FILES['image'];
 			$category_id=$this->input->post('category_id');
 			$heading_text=$this->input->post('heading_text');
-			$providers=$this->input->post('providers');
 			$disable=$this->input->post('disable');
 			
 			 $form_data = array(
 					'name'  => $name,
 					'category_id'  => $category_id,
-					'heading_text'=>$heading_text,
-					'providers'=>$providers
+					'heading_text'=>$heading_text
 			);		
 			$this->session->set_flashdata('form_data', $form_data);
 			
@@ -128,16 +126,7 @@ class Model extends CI_Controller {
 							'status' => !empty($disable)?'2':'1',
 						);
 						$this->catalog_model->add_model($data);
-						
-						//insert into provider map table
-						if(!empty($providers)){
-							foreach($providers as $provider){
-								$map_id=random_string('alnum',16);
-								$this->db->insert(PROVIDER_MODEL_MAP,array('map_id'=>$map_id,'model_id'=>$model_id,'provider_id'=>$provider));
-							}
-							
-						}
-						
+												
 						$this->session->set_flashdata('success_msg', 'Model added successfully');
 						$this->session->set_flashdata('form_data',false);
 						redirect('model/edit/'.$model_id);
@@ -157,9 +146,7 @@ class Model extends CI_Controller {
 		}
 		
 		$categories=$this->catalog_model->get_categories();
-		$args['categories']=$categories;
-		$providers=$this->catalog_model->get_providers();
-		$args['providers']=$providers;
+		$args['categories']=$categories;		
 		
 		$error_msg=$this->session->flashdata('error_msg');			
 		$args['error_msg']=$error_msg;
@@ -184,12 +171,7 @@ class Model extends CI_Controller {
 		}
 		
 		$model=$this->catalog_model->get_model_by_id($model_id);
-		$model_providers=$this->db->select('provider_id')->where('model_id',$model->model_id)->get(PROVIDER_MODEL_MAP)->result();
-		$model_providers_arr=array();
-		if(!empty($model_providers)){
-			foreach($model_providers as $m_provider)
-			$model_providers_arr[]=$m_provider->provider_id;
-		}
+		
 		if(!empty($model)){
 			$args['model']=array(
 				'model_id'=>$model->model_id,
@@ -197,7 +179,6 @@ class Model extends CI_Controller {
 				'image'  => $model->model_image,
 				'category_id'  => $model->category_id,
 				'heading_text'  => $model->heading_text,
-				'providers'  =>$model_providers_arr ,
 				'status'  => $model->status,
 			);
 		}
@@ -209,7 +190,6 @@ class Model extends CI_Controller {
 			$image=$_FILES['image'];
 			$category_id=$this->input->post('category_id');
 			$heading_text=$this->input->post('heading_text');
-			$providers=$this->input->post('providers');
 			$disable=$this->input->post('disable');
 			
 			 $form_data = array(
@@ -218,7 +198,6 @@ class Model extends CI_Controller {
 					'image'=>!empty($model->model_image)?$model->model_image:'',
 					'category_id'=>$category_id,
 					'heading_text'=>$heading_text,
-					'providers'=>$providers,
 					'status'  => $disable?'2':'1',
 			);		
 			$this->session->set_flashdata('form_data', $form_data);
@@ -280,15 +259,7 @@ class Model extends CI_Controller {
 					
 				
 				$this->catalog_model->update_model($model_id,$data);
-				//update into provider map table
-				$this->db->where('model_id', $model_id)->delete(PROVIDER_MODEL_MAP);
-				if(!empty($providers)){				
-					foreach($providers as $provider){
-						$map_id=random_string('alnum',16);
-						$this->db->insert(PROVIDER_MODEL_MAP,array('map_id'=>$map_id,'model_id'=>$model_id,'provider_id'=>$provider));
-					}					
-				}
-				
+								
 				$this->session->set_flashdata('success_msg', 'Model updated successfully');
 				
 			}
@@ -308,9 +279,7 @@ class Model extends CI_Controller {
 		
 		$categories=$this->catalog_model->get_categories();
 		$args['categories']=$categories;
-		$providers=$this->catalog_model->get_providers();
-		$args['providers']=$providers;
-				
+		
 		$this->load->view('common/header');
 		$this->load->view('common/menu');
 		$this->load->view('catalog/edit_model',$args);

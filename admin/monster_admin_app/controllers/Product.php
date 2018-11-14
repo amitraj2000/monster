@@ -79,6 +79,9 @@ class Product extends CI_Controller {
 			$broken_heading=$this->input->post('broken_heading');
 			$broken_price=$this->input->post('broken_price');
 			
+			$has_variation=$this->input->post('has_variation');
+			$variation=$this->input->post('variation');
+			$variation_provider_ids=array_column($variation,'provider_id');
 			
 			$enable_icloud=$this->input->post('enable_icloud');
 			
@@ -95,6 +98,8 @@ class Product extends CI_Controller {
 					'broken_disable'=>$broken_disable,
 					'broken_heading'=>$broken_heading,
 					'broken_price'=>$broken_price,
+					'has_variation'=>$has_variation,
+					'variation'=>$variation,
 					'enable_icloud'=>$enable_icloud,
 					'status'  => $disable?'2':'1',
 			);		
@@ -126,6 +131,12 @@ class Product extends CI_Controller {
 			else if(empty($broken_disable) && empty($broken_price)){
 				$this->session->set_flashdata('error_msg', 'Please enter broken condition price');
 			}
+			else if(!empty($has_variation) && empty($variation_provider_ids)){
+				$this->session->set_flashdata('error_msg', 'Please choose providers and it\'s variation price');
+			}	
+			else if(!empty($has_variation) && $this->validate_variation_price($variation_provider_ids,$variation)==false){
+				$this->session->set_flashdata('error_msg', 'Please enter variation price properly');
+			}
 			else{	
 				  $config['upload_path']   = UPLOADS_PRODUCT;
 				  $config['allowed_types'] = 'gif|jpg|jpeg|png';
@@ -135,6 +146,7 @@ class Product extends CI_Controller {
 						$this->session->set_flashdata('error_msg', $this->upload->display_errors('',''));
 				  }
 				  else{
+						
 						
 						$upload_data= $this->upload->data();						
 
@@ -176,11 +188,20 @@ class Product extends CI_Controller {
 							'broken_disable_purchase'=>!empty($broken_disable)?'1':'0',
 							'broken_heading'=>$broken_heading,
 							'broken_price'=>$broken_price,
+							'has_variation'=>!empty($has_variation)?'1':'0',
 							'enable_icloud'=>!empty($enable_icloud)?'1':'0',
 							'status' => !empty($disable)?'2':'1',
 						);
 						$this->catalog_model->add_product($data);
-						
+						//update into provider map table
+						foreach($variation as $var)
+						{					
+							if(!empty($var['provider_id']) && !empty($var['flawless']) && !empty($var['good']) && !empty($var['broken'])){
+														
+								$map_id=random_string('alnum',16);
+								$this->db->insert(PRODUCT_PROVIDER_MAP,array('map_id'=>$map_id,'product_id'=>$product_id,'provider_id'=>$var['provider_id'],'flawless_price'=>$var['flawless'],'good_price'=>$var['good'],'broken_price'=>$var['broken']));
+							}
+						}
 						$this->session->set_flashdata('success_msg', 'Product added successfully');
 						$this->session->set_flashdata('form_data',false);
 						redirect('product/edit/'.$product_id);
@@ -201,6 +222,9 @@ class Product extends CI_Controller {
 		
 		$categories=$this->catalog_model->get_categories();
 		$args['categories']=$categories;
+		
+		$providers=$this->catalog_model->get_providers();
+		$args['providers']=$providers;
 		
 		
 		$error_msg=$this->session->flashdata('error_msg');			
@@ -227,6 +251,21 @@ class Product extends CI_Controller {
 		
 		$product=$this->catalog_model->get_product_by_id($product_id);
 		if(!empty($product)){
+			$variation=$this->catalog_model->get_product_variation_by_product_id($product_id);
+			$variation_arr=array();
+			if(!empty($variation))
+			{				
+				foreach($variation as $var)
+				{
+					$variation_arr[$var->provider_id]=array(
+						'provider_id'=>$var->provider_id,
+						'flawless'=>$var->flawless_price,
+						'good'=>$var->good_price,
+						'broken'=>$var->broken_price,
+					);
+				}
+			
+			}
 			$args['product']=array(
 				'product_id'=>$product->product_id,
 				'name'  => $product->product_name,
@@ -243,6 +282,8 @@ class Product extends CI_Controller {
 				'broken_disable'=>$product->broken_disable_purchase,
 				'broken_heading'=>$product->broken_heading,
 				'broken_price'=>$product->broken_price,
+				'has_variation'=>$product->has_variation,
+				'variation'=>$variation_arr,
 				'enable_icloud'=>$product->enable_icloud,
 				'status'  => $product->status,
 			);
@@ -258,7 +299,7 @@ class Product extends CI_Controller {
 			$disable=$this->input->post('disable');
 			$flawless_disable=$this->input->post('flawless_disable');
 			$flawless_heading=$this->input->post('flawless_heading');
-			$flawless_price=$this->input->post('flawless_price');
+			$flawless_price=$this->input->post('flawless_price');			
 			
 			$good_disable=$this->input->post('good_disable');
 			$good_heading=$this->input->post('good_heading');
@@ -268,7 +309,12 @@ class Product extends CI_Controller {
 			$broken_heading=$this->input->post('broken_heading');
 			$broken_price=$this->input->post('broken_price');
 			
+			$has_variation=$this->input->post('has_variation');
+			$variation=$this->input->post('variation');
+			$variation_provider_ids=array_column($variation,'provider_id');
+			
 			$enable_icloud=$this->input->post('enable_icloud');
+			
 			 $form_data = array(
 					'product_id'  => $product_id,
 					'name'  => $name,
@@ -284,6 +330,8 @@ class Product extends CI_Controller {
 					'broken_disable'=>$broken_disable,
 					'broken_heading'=>$broken_heading,
 					'broken_price'=>$broken_price,
+					'has_variation'=>$has_variation,
+					'variation'=>$variation,
 					'enable_icloud'=>$enable_icloud,
 					'status'  => $disable?'2':'1',
 			);		
@@ -313,6 +361,12 @@ class Product extends CI_Controller {
 			}
 			else if(empty($broken_disable) && empty($broken_price)){
 				$this->session->set_flashdata('error_msg', 'Please enter broken condition price');
+			}
+			else if(!empty($has_variation) && empty($variation_provider_ids)){
+				$this->session->set_flashdata('error_msg', 'Please choose providers and it\'s variation price');
+			}	
+			else if(!empty($has_variation) && $this->validate_variation_price($variation_provider_ids,$variation)==false){
+				$this->session->set_flashdata('error_msg', 'Please enter variation price properly');
 			}
 			else{
 				 if(!empty($image['name'])){
@@ -363,6 +417,7 @@ class Product extends CI_Controller {
 					'broken_disable_purchase'=>!empty($broken_disable)?'1':'0',
 					'broken_heading'=>$broken_heading,
 					'broken_price'=>$broken_price,
+					'has_variation'=>!empty($has_variation)?'1':'0',
 					'enable_icloud'=>!empty($enable_icloud)?'1':'0',
 					'status' => !empty($disable)?'2':'1',
 				);	
@@ -373,7 +428,17 @@ class Product extends CI_Controller {
 					
 				
 				$this->catalog_model->update_product($product_id,$data);
-								
+				//update into provider map table
+				$this->db->where('product_id', $product_id)->delete(PRODUCT_PROVIDER_MAP);
+				foreach($variation as $var)
+				{					
+					if(!empty($var['provider_id']) && !empty($var['flawless']) && !empty($var['good']) && !empty($var['broken'])){
+												
+						$map_id=random_string('alnum',16);
+						$this->db->insert(PRODUCT_PROVIDER_MAP,array('map_id'=>$map_id,'product_id'=>$product_id,'provider_id'=>$var['provider_id'],'flawless_price'=>$var['flawless'],'good_price'=>$var['good'],'broken_price'=>$var['broken']));
+					}
+				}
+							
 				$this->session->set_flashdata('success_msg', 'Product updated successfully');
 				
 			}
@@ -394,6 +459,9 @@ class Product extends CI_Controller {
 		$categories=$this->catalog_model->get_categories();
 		$args['categories']=$categories;
 		
+		$providers=$this->catalog_model->get_providers();
+		$args['providers']=$providers;
+		
 				
 		$this->load->view('common/header');
 		$this->load->view('common/menu');
@@ -401,6 +469,19 @@ class Product extends CI_Controller {
 		$this->load->view('common/footer');
 	}
 	
-	
+	public function validate_variation_price($variation_provider_ids,$variation)
+	{
+		$has_error=true;
+		if(!empty($variation_provider_ids)){
+			foreach($variation_provider_ids as $provider_id){
+				if(!empty($variation[$provider_id]) && (empty($variation[$provider_id]['flawless']) || empty($variation[$provider_id]['good']) || empty($variation[$provider_id]['broken']))){
+					$has_error=false;
+					break;					
+				}
+			}
+		}
+		
+		return $has_error;
+	}
 	
 }

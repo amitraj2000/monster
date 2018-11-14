@@ -8,7 +8,7 @@ class Product extends CI_Controller {
 		/*populate post value from home page*/
 		$category_id=$this->input->post('category_id');
 		$model_id=$this->input->post('model_id');
-		$provider_id=$this->input->post('model_id');
+		$provider_id=$this->input->post('provider_id');
 		/*populate post value from home page*/
 		
 		$this->load->model('product_model');
@@ -37,30 +37,36 @@ class Product extends CI_Controller {
 		if(!empty($provider_id))
 			$args['provider_id']=$provider_id;
 		else
-			$args['provider_id']=0;
+			$args['provider_id']='';
 		
-		$providers=$this->catalog_model->get_providers_by_model_id($args['model']->model_id);
-		$args['need_provider']=count($providers);
 		
+		$args['need_provider']=false;
+		if(!empty($product->has_variation) && !empty($provider_id)){
+			$variations=$this->product_model->get_product_variation_by_id($product->product_id,$provider_id);
+			$args['variations']=$variations;
+		}
+		else if(!empty($product->has_variation) && empty($provider_id)){
+			$providers=$this->product_model->get_products_associated_provider_id($product->product_id);
+			$args['providers']=$providers;
+			$args['need_provider']=true;
+		}
+		
+		//$providers=$this->catalog_model->get_providers_by_model_id($args['model']->model_id);
 		
 		$this->load->view('common/header');
 		$this->load->view('product/product',$args);
 		$this->load->view('common/footer'); 
 	}
-	
-	public function ajax_load_providers(){
-		$data=$this->input->post('data');
-		parse_str($data, $params);
-		$model_id=$params['model_id'];
-		$model=$this->catalog_model->get_model_by_id($model_id);
-		
-		$providers=$this->catalog_model->get_providers_by_model_id($model_id);
-		
-		$args['params']=$params;
-		$args['providers']=$providers;
-		$args['model_id']=$model_id;
-		
-		echo $this->load->view('product/product_provider',$args,TRUE);
+	public function ajax_load_variation_price(){
+		$this->load->model('product_model');
+		$product_id=$this->input->post('product_id');
+		$provider_id=$this->input->post('provider_id');
+		$variations=$this->product_model->get_product_variation_by_id($product_id,$provider_id);
+		$output=array();
+		$output['flawless_price']=$variations->flawless_price;
+		$output['good_price']=$variations->good_price;
+		$output['broken_price']=$variations->broken_price;
+		echo json_encode($output);
 		die;
 	}
 	public function ajax_load_login(){
@@ -78,19 +84,30 @@ class Product extends CI_Controller {
 		
 		$this->load->model('product_model');
 		$product=$this->product_model->get_product_by_id($params['product_id']);
-		
+		if(!empty($product->has_variation)){
+		$variations=$this->product_model->get_product_variation_by_id($params['product_id'],$params['provider_id']);
+		}
 		
 		$this->load->library('cart');
 		
 		$price=0;
 		switch($params['condition']){
 			case 'flawless':
+				if(!empty($product->has_variation) && !empty($variations->flawless_price))
+				$price=$variations->flawless_price;
+				else
 				$price=$product->flawless_price;
 				break;
 			case 'good':
+				if(!empty($product->has_variation) && !empty($variations->good_price))
+				$price=$variations->good_price;
+				else
 				$price=$product->good_price;
 				break;
 			case 'broken':
+				if(!empty($product->has_variation) && !empty($variations->broken_price))
+				$price=$variations->broken_price;
+				else
 				$price=$product->broken_price;				
 				break;			
 		}		
@@ -139,6 +156,7 @@ class Product extends CI_Controller {
 			echo 'No items in cart';
 		die;
 	}
+	
 	
 	
 }

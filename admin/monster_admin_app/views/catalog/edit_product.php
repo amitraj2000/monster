@@ -32,7 +32,7 @@
 									</div>
 								 </div>
 								<?php }else{ ?>
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
 									<?php if(!empty($error_msg)){?>
 										<div class="alert alert-danger">
 											<?php echo $error_msg; ?>
@@ -48,10 +48,11 @@
 									<!-- Nav tabs -->
 									<ul class="nav nav-tabs">
 										<li class="active"><a href="#basic" data-toggle="tab">Basic</a>
-										</li>
+										</li>										
 										<li><a href="#flawless" data-toggle="tab">Flawless</a>
 										<li><a href="#good" data-toggle="tab">Good</a>
 										<li><a href="#broken" data-toggle="tab">Broken</a>
+										<li><a href="#provider" data-toggle="tab">Provider</a>
 										<li><a href="#advanced" data-toggle="tab">Advanced</a>
 										</li>										
 									</ul>
@@ -115,7 +116,7 @@
 														
 													</div>
 												</p>
-											</div>
+											</div>											
 											<div class="tab-pane fade" id="flawless">
 												<p>
 													<div class="form-group">
@@ -129,10 +130,11 @@
 														<input class="form-control" name="flawless_heading" value="<?php echo !empty($product['flawless_heading'])?$product['flawless_heading']:'';?>">                                            
 													</div>
 													<div class="form-group input-group">
-														<span class="input-group-addon">Price($)</span>
-														<input class="form-control" name="flawless_price" value="<?php echo !empty($product['flawless_price'])?$product['flawless_price']:'';?>">
+														<span class="input-group-addon">Default Price($)</span>
+														<input class="form-control numberinput" name="flawless_price" value="<?php echo !empty($product['flawless_price'])?$product['flawless_price']:'';?>">
 														<span class="input-group-addon">.00</span>
-													</div>													
+													</div>
+													
 												</p>
 											</div>
 											<div class="tab-pane fade" id="good">
@@ -148,10 +150,10 @@
 														<input class="form-control" name="good_heading" value="<?php echo !empty($product['good_heading'])?$product['good_heading']:'';?>">                                            
 													</div>
 													<div class="form-group input-group">
-														<span class="input-group-addon">Price($)</span>
-														<input class="form-control" name="good_price" value="<?php echo !empty($product['good_price'])?$product['good_price']:'';?>">
+														<span class="input-group-addon">Default Price($)</span>
+														<input class="form-control numberinput" name="good_price" value="<?php echo !empty($product['good_price'])?$product['good_price']:'';?>">
 														<span class="input-group-addon">.00</span>
-													</div>
+													</div>													
 												</p>
 											</div>
 											<div class="tab-pane fade" id="broken">
@@ -167,10 +169,43 @@
 														<input class="form-control" name="broken_heading" value="<?php echo !empty($product['broken_heading'])?$product['broken_heading']:'';?>">                                            
 													</div>
 													<div class="form-group input-group">
-														<span class="input-group-addon">Price($)</span>
-														<input class="form-control" name="broken_price" value="<?php echo !empty($product['broken_price'])?$product['broken_price']:'';?>">
+														<span class="input-group-addon">Default Price($)</span>
+														<input class="form-control numberinput" name="broken_price" value="<?php echo !empty($product['broken_price'])?$product['broken_price']:'';?>">
 														<span class="input-group-addon">.00</span>
 													</div>													
+												</p>
+											</div>
+											<div class="tab-pane fade" id="provider">
+												<p>
+													<?php 
+													$provider_count=count($providers);
+													if(!empty($provider_count)){?>
+													<div class="form-group">
+														<label>Has price variation associated with provider ?</label>
+														<label class="checkbox-inline">
+															<input type="checkbox" class="has-variation" data-class="provider-variation-group" name="has_variation" value="on" <?php echo !empty($product['has_variation'])?'checked="checked"':'';?>>&nbsp;
+														</label>														
+													</div>
+													
+													<div class="provider-variation-group" style="<?php echo empty($product['has_variation'])?'display:none':'';?>">
+													<?php													
+													foreach($providers as $provider){
+														?>
+														<div class="form-group">	
+															<label class="col-md-3"><input type="checkbox" name="variation[<?php echo $provider->provider_id;?>][provider_id]" value="<?php echo $provider->provider_id;?>" <?php echo !empty($product['variation'][$provider->provider_id]['provider_id'])?'checked="checked"':'';?>>
+															<?php echo $provider->provider_name;?>
+															</label>
+															 <label class="col-md-3"><input class="form-control numberinput" placeholder="Flawless Price" name="variation[<?php echo $provider->provider_id;?>][flawless]" size="10" value="<?php echo !empty($product['variation'][$provider->provider_id]['flawless'])?$product['variation'][$provider->provider_id]['flawless']:'';?>"></label>
+															 <label class="col-md-3"><input class="form-control numberinput" placeholder="Good Price" name="variation[<?php echo $provider->provider_id;?>][good]" size="10" value="<?php echo !empty($product['variation'][$provider->provider_id]['good'])?$product['variation'][$provider->provider_id]['good']:'';?>"></label>
+															 <label class="col-md-3"><input class="form-control numberinput" placeholder="Broken Price" name="variation[<?php echo $provider->provider_id;?>][broken]" size="10" value="<?php echo !empty($product['variation'][$provider->provider_id]['broken'])?$product['variation'][$provider->provider_id]['broken']:'';?>"></label>
+														</div>
+														<?php														
+													}
+													?>
+													</div>
+													<?php
+													}
+													?>
 												</p>
 											</div>
 											<div class="tab-pane fade" id="advanced">

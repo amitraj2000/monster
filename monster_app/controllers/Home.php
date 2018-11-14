@@ -42,6 +42,7 @@ class Home extends CI_Controller {
 		$args['providers']=$providers;
 		
 		//load products directly
+		//It means,all products under this model have no provider variation
 		if(empty($providers))
 		{
 			$this->load_products_by_model($model_id);
@@ -62,6 +63,21 @@ class Home extends CI_Controller {
 		$model=$this->catalog_model->get_model_by_id($model_id);
 		
 		$products=$this->catalog_model->get_products_by_model_id($model_id);
+		
+		$args['products']=$products;
+		
+		if(!empty($products))
+		{
+			echo $this->load->view('home/home_products',$args,TRUE);
+		}
+		
+		die;
+	}
+	public function load_products_by_model_provider(){
+		$model_id=$this->input->post('model_id');
+		$provider_id=$this->input->post('provider_id');
+						
+		$products=$this->catalog_model->get_products_by_model_provider_id($model_id,$provider_id);
 		
 		$args['products']=$products;
 		

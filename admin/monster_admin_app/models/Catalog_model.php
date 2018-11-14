@@ -215,6 +215,14 @@ class Catalog_model extends CI_Model {
 			$this->db->where('product_id', $product_id);
 			$this->db->update(PRODUCT_MASTER, $data);			
         }
+		
+		public function get_product_variation_by_product_id($product_id){
+			$this->db->select('*');
+			$this->db->from(PRODUCT_PROVIDER_MAP);
+			$this->db->where('product_id',$product_id);
+			$query = $this->db->get();
+			return $query->result();
+		}
 
 }
 ?>

@@ -27,6 +27,20 @@
 					<div class="col-md-8 col-sm-8 col-xs-12">
 						<div class="details_right">
 							<h3><?php echo $product->model_name.'&nbsp;'.$product->product_name;?> </h3>
+							<?php if(!empty($need_provider) && empty($provider_id)){?>
+								<div>
+								<select class="load-variation-price" data-product_id="<?php echo $product->product_id;?>">
+									<option value="">Select Provider</option>
+									<?php
+									foreach($providers as $provider){
+										?>
+										<option value="<?php echo $provider->provider_id;?>"><?php echo $provider->provider_name;?></option>
+										<?php
+									}
+									?>
+								</select>
+								</div>
+							<?php } ?>
 							<div id="horizontalTab" class="tab_sec">
 								<ul class="resp-tabs-list">
 									<li>Flawless</li>
@@ -34,13 +48,14 @@
 									<li>Broken</li>
 								</ul>
 								<div class="resp-tabs-container">
+									<!--start flawless-->	
 									<div>
 										<?php if(!empty($product->flawless_heading)){?>
 										<?php echo $product->flawless_heading;?>
 										<hr/><br/>
 										<?php } ?>
-										<?php if(empty($product->flawless_disable_purchase)){ ?>
-										<span class="price">$<?php echo $product->flawless_price;?></span>
+										<?php if(empty($product->flawless_disable_purchase)){ ?>										
+										<span class="price flawless_price">$<?php echo !empty($product->has_variation)&& !empty($variations)?$variations->flawless_price:$product->flawless_price;?></span>
 										<?php }else{?>
 											<span class="price">$0</span>
 											<?php
@@ -77,13 +92,17 @@
 											<?php echo $product->flawless_description;?>
 										</div>
 									</div>
+									
+									<!--end flawless-->
+									
+									<!--start good-->	
 									<div>
 										<?php if(!empty($product->good_heading)){?>
 										<?php echo $product->good_heading;?>
 										<hr/><br/>
 										<?php } ?>
 										<?php if(empty($product->good_disable_purchase)){ ?>
-										<span class="price">$<?php echo $product->good_price;?></span>
+										<span class="price good_price">$<?php echo !empty($product->has_variation)&& !empty($variations)?$variations->good_price:$product->good_price;?></span>
 										<?php }else{?>
 											<span class="price">$0</span>
 											<?php
@@ -117,13 +136,16 @@
 											<?php echo $product->good_description;?>
 										</div>
 									</div>
+									<!--end good-->
+									
+									<!--start broken-->
 									<div>
 										<?php if(!empty($product->broken_heading)){?>
 										<?php echo $product->broken_heading;?>
 										<hr/><br/>
 										<?php } ?>
 										<?php if(empty($product->broken_disable_purchase)){ ?>
-										<span class="price">$<?php echo $product->broken_price;?></span>
+										<span class="price broken_price">$<?php echo !empty($product->has_variation)&& !empty($variations)?$variations->broken_price:$product->broken_price;?></span>
 										<?php }else{?>
 											<span class="price">$0</span>
 											<?php
@@ -156,6 +178,7 @@
 											<?php echo $product->broken_description;?>
 										</div>
 									</div>
+									<!--end broken-->
 								</div>
 							</div>
 						</div>

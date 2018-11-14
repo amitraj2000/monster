@@ -90,8 +90,8 @@ defined('USER_MASTER')      OR define('USER_MASTER', 'user_master');
 defined('CATEGORY_MASTER')      OR define('CATEGORY_MASTER', 'category_master'); 
 defined('PROVIDER_MASTER')      OR define('PROVIDER_MASTER', 'provider_master');
 defined('MODEL_MASTER')      OR define('MODEL_MASTER', 'model_master');
-defined('PROVIDER_MODEL_MAP')      OR define('PROVIDER_MODEL_MAP', 'provider_model_map');
 defined('PRODUCT_MASTER')      OR define('PRODUCT_MASTER', 'product_master');
+defined('PRODUCT_PROVIDER_MAP')      OR define('PRODUCT_PROVIDER_MAP', 'product_provider_map');
 
 
 //Uploads folder path

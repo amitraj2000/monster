@@ -60,11 +60,15 @@ class Catalog_model extends CI_Model {
 		
 		public function get_providers_by_model_id($model_id)
         {                
-			$this->db->select('*');
+			$this->db->select(PROVIDER_MASTER.'.*');
 			$this->db->from(PROVIDER_MASTER);
-			$this->db->join(PROVIDER_MODEL_MAP, PROVIDER_MASTER.'.provider_id = '.PROVIDER_MODEL_MAP.'.provider_id');
-			$this->db->where('status','1');
-			$this->db->where(PROVIDER_MODEL_MAP.'.model_id',$model_id);
+			$this->db->join(PRODUCT_PROVIDER_MAP, PROVIDER_MASTER.'.provider_id = '.PRODUCT_PROVIDER_MAP.'.provider_id');
+			$this->db->join(PRODUCT_MASTER, PRODUCT_MASTER.'.product_id = '.PRODUCT_PROVIDER_MAP.'.product_id');
+			$this->db->where(PROVIDER_MASTER.'.status','1');
+			$this->db->where(PRODUCT_MASTER.'.status','1');
+			$this->db->where(PRODUCT_MASTER.'.has_variation','1');
+			$this->db->where(PRODUCT_MASTER.'.model_id',$model_id);
+			$this->db->group_by(PROVIDER_MASTER.'.provider_id'); 
 			$query = $this->db->get();
 			return $query->result();
         }
@@ -89,5 +93,21 @@ class Catalog_model extends CI_Model {
 			return $query->row();
 			
         }
+		
+		public function get_products_by_model_provider_id($model_id,$provider_id)
+        { 
+			
+			$this->db->select(PRODUCT_MASTER.'.*');
+			$this->db->from(PRODUCT_MASTER);
+			$this->db->join(PRODUCT_PROVIDER_MAP, PRODUCT_MASTER.'.product_id = '.PRODUCT_PROVIDER_MAP.'.product_id');
+			$this->db->where(PRODUCT_MASTER.'.status','1');
+			$this->db->where(PRODUCT_MASTER.'.model_id',$model_id);
+			$this->db->where(PRODUCT_PROVIDER_MAP.'.provider_id',$provider_id);
+			$query = $this->db->get();
+			return $query->result();
+			
+        }
+		
+		
 }
 ?>
