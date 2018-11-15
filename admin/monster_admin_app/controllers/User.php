@@ -12,6 +12,8 @@ class User extends CI_Controller {
 		if(!is_logged_in()){
 			redirect('/login');
 		}		
+		$args['title']='All users';	
+		$args['active_menu']='users';
 		
 		$limit=10;
 		$total_users=$this->user_model->get_total_users();
@@ -44,10 +46,10 @@ class User extends CI_Controller {
 		$args['pagination']= $this->pagination->create_links();
 		$args['pagination_text']="Showing ".($start_index+1)." to ".($start_index+$limit)." of ".$total_users." entries";
 		
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('user/users',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	public function delete_user($user_id)
@@ -64,6 +66,8 @@ class User extends CI_Controller {
 		if(!is_logged_in()){
 			redirect('/login');
 		}
+		$args['title']='Edit user';	
+		$args['active_menu']='users';
 		
 		$user=$this->user_model->get_user_by_id($user_id);
 		if(!empty($user)){
@@ -144,10 +148,10 @@ class User extends CI_Controller {
 		$args['success_msg']=$success_msg;
 		
 				
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('user/edit_user',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	public function add_user()
@@ -157,6 +161,8 @@ class User extends CI_Controller {
 		if(!is_logged_in()){
 			redirect('/login');
 		}
+		$args['title']='Add user';	
+		$args['active_menu']='users';
 		
 		//Process form submit
 		if($this->input->post('submit')){
@@ -227,10 +233,10 @@ class User extends CI_Controller {
 		$args['error_msg']=$error_msg;
 		
 		
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('user/add_user',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 }

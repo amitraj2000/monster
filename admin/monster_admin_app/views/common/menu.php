@@ -237,28 +237,28 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="<?php echo site_url('/dashboard'); ?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="<?php echo site_url('/dashboard'); ?>" class="<?php echo $active_menu=='dashboard'?'active':'';?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
 						<li>
                             <a href="#"><i class="fa fa-cart-plus"></i> Catalogs<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?php echo site_url('categories'); ?>">Categories</a>
+                            <ul class="nav nav-second-level <?php echo $active_menu=='categories' || $active_menu=='providers' || $active_menu=='models' || $active_menu=='products'?'collapse in':'';?>">
+                                <li >
+                                    <a href="<?php echo site_url('categories'); ?>" class="<?php echo $active_menu=='categories'?'active':'';?>">Categories</a>
                                 </li>																
 								<li>
-                                    <a href="<?php echo site_url('providers'); ?>">Providers</a>
+                                    <a href="<?php echo site_url('providers'); ?>" class="<?php echo $active_menu=='providers'?'active':'';?>">Providers</a>
                                 </li>
 								<li>
-                                    <a href="<?php echo site_url('models'); ?>">Models</a>
+                                    <a href="<?php echo site_url('models'); ?>" class="<?php echo $active_menu=='models'?'active':'';?>">Models</a>
                                 </li>
 								<li>
-                                    <a href="<?php echo site_url('products'); ?>">Products</a>
+                                    <a href="<?php echo site_url('products'); ?>" class="<?php echo $active_menu=='products'?'active':'';?>">Products</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
 						<li>
-                            <a href="<?php echo site_url('users'); ?>"><i class="fa fa-users"></i> Users</a>
+                            <a href="<?php echo site_url('users'); ?>" class="<?php echo $active_menu=='users'?'active':'';?>"><i class="fa fa-users"></i> Users</a>
                             
                             <!-- /.nav-second-level -->
                         </li>

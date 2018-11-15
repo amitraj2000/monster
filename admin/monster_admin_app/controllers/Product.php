@@ -11,7 +11,9 @@ class Product extends CI_Controller {
 		
 		if(!is_logged_in()){
 			redirect('/login');
-		}		
+		}
+		$args['title']='All products';			
+		$args['active_menu']='products';
 		
 		$limit=10;
 		$total_products=$this->catalog_model->get_total_products();
@@ -44,10 +46,10 @@ class Product extends CI_Controller {
 		$args['pagination']= $this->pagination->create_links();
 		$args['pagination_text']="Showing ".($start_index+1)." to ".($start_index+$limit)." of ".$total_products." entries"; 
 				
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('catalog/products',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	public function add_product()
@@ -57,6 +59,8 @@ class Product extends CI_Controller {
 		if(!is_logged_in()){
 			redirect('/login');
 		}
+		$args['title']='Add product';	
+		$args['active_menu']='products';
 		
 		//Process form submit
 		if($this->input->post('submit')){
@@ -230,10 +234,10 @@ class Product extends CI_Controller {
 		$error_msg=$this->session->flashdata('error_msg');			
 		$args['error_msg']=$error_msg;
 		
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('catalog/add_product',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	public function delete_product($product_id){
@@ -248,6 +252,8 @@ class Product extends CI_Controller {
 		if(!is_logged_in()){
 			redirect('/login');
 		}
+		$args['title']='Edit product';	
+		$args['active_menu']='products';
 		
 		$product=$this->catalog_model->get_product_by_id($product_id);
 		if(!empty($product)){
@@ -463,10 +469,10 @@ class Product extends CI_Controller {
 		$args['providers']=$providers;
 		
 				
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('catalog/edit_product',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	public function validate_variation_price($variation_provider_ids,$variation)

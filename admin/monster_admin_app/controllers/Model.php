@@ -11,7 +11,9 @@ class Model extends CI_Controller {
 		
 		if(!is_logged_in()){
 			redirect('/login');
-		}		
+		}	
+		$args['title']='All models';
+		$args['active_menu']='models';
 		
 		$limit=10;
 		$total_models=$this->catalog_model->get_total_models();
@@ -44,10 +46,10 @@ class Model extends CI_Controller {
 		$args['pagination']= $this->pagination->create_links();
 		$args['pagination_text']="Showing ".($start_index+1)." to ".($start_index+$limit)." of ".$total_models." entries"; 
 				
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('catalog/models',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	public function add_model()
@@ -57,6 +59,8 @@ class Model extends CI_Controller {
 		if(!is_logged_in()){
 			redirect('/login');
 		}
+		$args['title']='Add model';
+		$args['active_menu']='models';
 		
 		//Process form submit
 		if($this->input->post('submit')){
@@ -151,10 +155,10 @@ class Model extends CI_Controller {
 		$error_msg=$this->session->flashdata('error_msg');			
 		$args['error_msg']=$error_msg;
 		
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('catalog/add_model',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	public function delete_model($model_id){
@@ -169,6 +173,8 @@ class Model extends CI_Controller {
 		if(!is_logged_in()){
 			redirect('/login');
 		}
+		$args['title']='Edit model';
+		$args['active_menu']='models';
 		
 		$model=$this->catalog_model->get_model_by_id($model_id);
 		
@@ -280,10 +286,10 @@ class Model extends CI_Controller {
 		$categories=$this->catalog_model->get_categories();
 		$args['categories']=$categories;
 		
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('catalog/edit_model',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	

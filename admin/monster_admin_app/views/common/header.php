@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Monster Admin</title>
+    <title><?php echo !empty($title)?$title:'Monster Admin';?></title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo base_url();?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">

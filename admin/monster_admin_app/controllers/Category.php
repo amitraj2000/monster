@@ -12,6 +12,8 @@ class Category extends CI_Controller {
 		if(!is_logged_in()){
 			redirect('/login');
 		}		
+		$args['title']='All categories';
+		$args['active_menu']='categories';
 		
 		$limit=10;
 		$total_categories=$this->catalog_model->get_total_categories();
@@ -43,11 +45,11 @@ class Category extends CI_Controller {
 		
 		$args['pagination']= $this->pagination->create_links();
 		$args['pagination_text']="Showing ".($start_index+1)." to ".($start_index+$limit)." of ".$total_categories." entries"; 
-				
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('catalog/categories',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	public function add_category()
@@ -57,6 +59,8 @@ class Category extends CI_Controller {
 		if(!is_logged_in()){
 			redirect('/login');
 		}
+		$args['title']='Add category';
+		$args['active_menu']='categories';
 		
 		//Process form submit
 		if($this->input->post('submit')){
@@ -150,10 +154,10 @@ class Category extends CI_Controller {
 		$error_msg=$this->session->flashdata('error_msg');			
 		$args['error_msg']=$error_msg;
 		
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('catalog/add_category',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	public function delete_category($category_id){
@@ -168,6 +172,8 @@ class Category extends CI_Controller {
 		if(!is_logged_in()){
 			redirect('/login');
 		}
+		$args['title']='Edit category';
+		$args['active_menu']='categories';
 		
 		$category=$this->catalog_model->get_category_by_id($category_id);
 		if(!empty($category)){
@@ -282,10 +288,10 @@ class Category extends CI_Controller {
 		$args['success_msg']=$success_msg;
 		
 				
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('catalog/edit_category',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	

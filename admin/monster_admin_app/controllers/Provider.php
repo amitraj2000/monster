@@ -11,7 +11,9 @@ class Provider extends CI_Controller {
 		
 		if(!is_logged_in()){
 			redirect('/login');
-		}		
+		}	
+		$args['title']='All providers';		
+		$args['active_menu']='providers';
 		
 		$limit=10;
 		$total_providers=$this->catalog_model->get_total_providers();
@@ -44,10 +46,10 @@ class Provider extends CI_Controller {
 		$args['pagination']= $this->pagination->create_links();
 		$args['pagination_text']="Showing ".($start_index+1)." to ".($start_index+$limit)." of ".$total_providers." entries"; 
 				
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('catalog/providers',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	public function add_provider()
@@ -57,6 +59,8 @@ class Provider extends CI_Controller {
 		if(!is_logged_in()){
 			redirect('/login');
 		}
+		$args['title']='Add provider';
+		$args['active_menu']='providers';
 		
 		//Process form submit
 		if($this->input->post('submit')){
@@ -128,10 +132,10 @@ class Provider extends CI_Controller {
 		$error_msg=$this->session->flashdata('error_msg');			
 		$args['error_msg']=$error_msg;
 		
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('catalog/add_provider',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	public function delete_provider($provider_id){
@@ -146,6 +150,8 @@ class Provider extends CI_Controller {
 		if(!is_logged_in()){
 			redirect('/login');
 		}
+		$args['title']='Edit provider';
+		$args['active_menu']='providers';
 		
 		$provider=$this->catalog_model->get_provider_by_id($provider_id);
 		if(!empty($provider)){
@@ -234,10 +240,10 @@ class Provider extends CI_Controller {
 		$args['success_msg']=$success_msg;
 		
 				
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('catalog/edit_provider',$args);
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 	

@@ -9,11 +9,13 @@ class Dashboard extends CI_Controller {
 		if(!is_logged_in()){
 			redirect('/login');
 		}
+		$args['title']='Dashboard';
+		$args['active_menu']='dashboard';
 		
-		$this->load->view('common/header');
-		$this->load->view('common/menu');
+		$this->load->view('common/header',$args);
+		$this->load->view('common/menu',$args);
 		$this->load->view('dashboard');
-		$this->load->view('common/footer');
+		$this->load->view('common/footer',$args);
 	}
 	
 }
