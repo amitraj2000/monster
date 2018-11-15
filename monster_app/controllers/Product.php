@@ -22,6 +22,7 @@ class Product extends CI_Controller {
 		if(empty($product))
 			show_404();
 		
+		add_footer_js(array('easy-responsive-tabs.js','jquery-ui.min.js','product.js'));
 		$args['product']=$product;
 		
 		if(!empty($category_id))

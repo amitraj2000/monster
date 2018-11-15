@@ -522,3 +522,11 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+
+/*Add js and css files*/
+$config['header_css']= array('plugins.css','easy-responsive-tabs.css','style.css','responsive.css');
+$config['header_js']  = array();
+
+$config['footer_css']= array();
+$config['footer_js']  = array('lib/jquery-3.3.1.min.js','lib/bootstrap.min.js','lib/plugins.js','custom.js');

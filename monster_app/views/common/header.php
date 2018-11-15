@@ -10,10 +10,7 @@
 	<!--[if IE 8]> <html class="ie8"> <![endif]-->
 	<!--[if IE 9]> <html class="ie9"> <![endif]-->
 	<link rel="shortcut icon" href="<?php echo base_url();?>/assets/images/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>/assets/css/plugins.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>/assets/css/easy-responsive-tabs.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>/assets/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>/assets/css/responsive.css" />
+	<?php echo put_headers();?>	
 	<!--Google login-->
 	<script src="https://apis.google.com/js/api:client.js" type="text/javascript"></script>
 	<!--Google login-->

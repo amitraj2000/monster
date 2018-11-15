@@ -9,6 +9,7 @@ class Home extends CI_Controller {
 		
 		$categories=$this->catalog_model->get_categories();
 		$args['categories']=$categories;
+		add_footer_js(array('home.js'));
 		
 		$this->load->view('common/header');
 		$this->load->view('home/home',$args);
