@@ -51,6 +51,36 @@ class Login extends CI_Controller {
 		$this->load->view('common/footer');
 	}
 	
+	public function ajax_login(){
+		parse_str($this->input->post('data'),$param);
+		
+		$output=array('error'=>true,'msg'=>'');
+		if(empty($param['email'])){
+			$output['msg']='Please enter email';
+		}
+		elseif(!empty($param['email']) && !filter_var($param['email'], FILTER_VALIDATE_EMAIL)){
+			$output['msg']='Please enter valid email';
+		}
+		elseif(empty($param['password'])){
+			$output['msg']='Please enter valid email';
+		}
+		else{
+						
+			$user=$this->user_model->validate_login($param['email'],$param['password']);
+			
+			if(empty($user)){
+				$output['msg']='You are not allowed to login';
+			}
+			else{
+				$this->set_auth($user->user_id);					
+				$output['msg']='';
+				$output['error']=false;
+			}
+		}
+		echo json_encode($output);
+		die;
+	}
+	
 	public function register()
 	{
 		$args=array();
@@ -127,6 +157,60 @@ class Login extends CI_Controller {
 		$this->load->view('common/header');
 		$this->load->view('register',$args);
 		$this->load->view('common/footer');
+	}
+	
+	public function ajax_register()
+	{
+		parse_str($this->input->post('data'),$param);
+		
+		$output=array('error'=>true,'msg'=>'');
+		
+		if(empty($param['first_name'])){
+			$output['msg']= 'Please enter your first name';
+		}
+		else if(empty($param['last_name'])){
+			$output['msg']= 'Please enter your last name';
+		}
+		else if(empty($param['email'])){
+			$output['msg']='Please enter your email';
+		}
+		else if(!valid_email($param['email'])){
+			$output['msg']='Please enter valid email';
+		}
+		else if(is_email_exists($param['email'])){
+			$output['msg']='Email already exists';
+		}
+		else if(empty($param['password'])){
+			$output['msg']='Please enter your password';
+		}			
+		else if(empty($param['confirm_password'])){
+			$output['msg']='Please confirm your password';
+		}
+		else if($param['password']!==$param['confirm_password']){
+			$output['msg']='Password does not match';
+		}
+		else{
+			
+			$user_id=random_string('alnum',16);
+			$data = array(
+					'user_id' => $user_id,
+					'first_name' => $param['first_name'],
+					'last_name' => $param['last_name'],
+					'email' => $param['email'],
+					'password' => md5($param['password']),
+					'role' => '3',//User role
+					'status'=>'1'
+			);
+			
+			$this->insert_user($data);
+			$this->set_auth($user_id);
+			
+			$output['msg']='';
+			$output['error']=false;
+			
+		}
+		echo json_encode($output);
+		die;
 	}
 	
 	public function google_user_authentication(){

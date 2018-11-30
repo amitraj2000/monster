@@ -1,5 +1,6 @@
 <div>
-		<form action="<?php echo site_url('register');?>" method="post">
+		<div class="ajax-register-msg"></div>
+		<form action="<?php echo site_url('register');?>" method="post" class="ajax-register">
 		   <div class="col-sm-6">
 			  <div class="form-group">
 				<label for="first_name">First Name:</label>

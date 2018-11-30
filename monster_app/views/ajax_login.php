@@ -1,4 +1,5 @@
 <div>
+		<div class="ajax-login-msg"></div>
 		<form action="<?php echo site_url('/login');?>" method="post" class="ajax-login">
 		  <div class="form-group">
 			<label for="email">Email address:</label>
