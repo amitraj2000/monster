@@ -22,7 +22,8 @@ class Product extends CI_Controller {
 		if(empty($product))
 			show_404();
 		
-		add_footer_js(array('easy-responsive-tabs.js','jquery-ui.min.js','product.js'));
+		add_footer_js(array(21=>'easy-responsive-tabs.js',22=>'jquery-ui.min.js',23=>'product.js'));
+		$args['header_title']=$product->model_name.'&nbsp;'.$product->product_name;
 		$args['product']=$product;
 		
 		if(!empty($category_id))
@@ -54,7 +55,7 @@ class Product extends CI_Controller {
 		
 		//$providers=$this->catalog_model->get_providers_by_model_id($args['model']->model_id);
 		
-		$this->load->view('common/header');
+		$this->load->view('common/header',$args);
 		$this->load->view('product/product',$args);
 		$this->load->view('common/footer'); 
 	}
@@ -113,7 +114,7 @@ class Product extends CI_Controller {
 				break;			
 		}		
 		
-		$insert_new = TRUE;
+		/* $insert_new = TRUE;
 		$bag = $this->cart->contents();
 		foreach ($bag as $item) {			
 			// check product id in session, if exist update the quantity
@@ -130,9 +131,9 @@ class Product extends CI_Controller {
 				break;
 			}
 
-		}
+		} */
 		// if $insert_new value is true, insert the item as new item in the cart
-		if ($insert_new) {
+		//if ($insert_new) {
 			$cart_data =  array(
 					'id'=>$product->product_id,
 					'qty'     => 1,
@@ -141,8 +142,25 @@ class Product extends CI_Controller {
 					'options' =>array('condition'=>$params['condition'],'provider_id'=>$params['provider_id'])//add category,model if necessary
 				);
 			$this->cart->insert($cart_data);
+			
+			//insert to order table if logged in
+			if(is_logged_in()){
+								
+				$order_id=random_string('alnum',16);
+				$args=array(
+					'order_id'=>$order_id,
+					'product_id'=>$product->product_id,
+					'product_condition'=>$params['condition'],
+					'provider_id'=>$params['provider_id'],
+					'price'=>$price,
+					'user_id'=>get_current_user_id(),
+					'date'=>date('Y-m-d H:i:s'),
+					'status'=>'1'
+				);
+				$this->order_model->insert_order($args);
+			}
 
-		}
+		//}
 		$items=$this->cart->contents();
 		$args['items']=$items;
 		echo $this->load->view('product/cart',$args,TRUE);

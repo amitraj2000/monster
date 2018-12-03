@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Monster</title>
+	<title><?php echo !empty($header_title)?$header_title:'Monster';?></title>
 	<!--[if IE 7]> <html class="ie7"> <![endif]-->
 	<!--[if IE 8]> <html class="ie8"> <![endif]-->
 	<!--[if IE 9]> <html class="ie9"> <![endif]-->
@@ -76,8 +76,8 @@
 							<a href="#" class="btn" data-toggle="dropdown"  aria-expanded="true" id="account-dropdown">my account</a>
 							<div class="dropdown-menu" role="menu" aria-labelledby="account-dropdown">
 								<ul>
-									<li><a href="">Update Account</a></li>
-									<li><a href="">Your Trades</a></li>
+									<li><a href="<?php echo base_url('account-summary/edit/');?>">Update Account</a></li>
+									<li><a href="<?php echo base_url('account-summary/summary/');?>">Your Trades</a></li>
 									<li><a href="<?php echo site_url('/logout');?>">Logout</a></li>
 								</ul>
 							</div>

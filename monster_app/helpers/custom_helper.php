@@ -13,6 +13,19 @@ if ( ! function_exists('is_logged_in'))
 			return false;
     }   
 }
+if ( ! function_exists('get_current_user_id'))
+{
+    function get_current_user_id()
+    {
+		$CI =&get_instance();
+		$logged_in=$CI->session->userdata('logged_in');
+		$user_id=$CI->session->userdata('user_id');
+        if(!empty($logged_in) && !empty($user_id))
+			return $user_id;
+		else
+			return false;
+    }   
+}
 if ( ! function_exists('is_email_exists'))
 {
     function is_email_exists($email)
@@ -70,8 +83,8 @@ if(!function_exists('add_header_css')){
 			if(!is_array($file) && count($file) <= 0){
 				return;
 			}
-			foreach($file AS $item){   
-				$header_css[] = $item;
+			foreach($file AS $key=>$item){   
+				$header_css[$key] = $item;
 			}
 			$ci->config->set_item('header_css',$header_css);
 		}else{
@@ -99,8 +112,8 @@ if(!function_exists('add_header_js')){
             if(!is_array($file) && count($file) <= 0){
                 return;
             }
-            foreach($file AS $item){
-                $header_js[] = $item;
+            foreach($file AS $key=>$item){
+                $header_js[$key] = $item;
             }
             $ci->config->set_item('header_js',$header_js);
         }else{
@@ -119,7 +132,8 @@ if(!function_exists('put_headers')){
         $ci = &get_instance();
         $header_css = $ci->config->item('header_css');
         $header_js  = $ci->config->item('header_js');
-
+		ksort($header_css);
+		ksort($header_js);
 		if(!empty($header_css)){
 			foreach($header_css AS $item){
 				$str .= '<link rel="stylesheet" href="'.base_url().'assets/css/'.$item.'" type="text/css" />'."\n";
@@ -141,7 +155,7 @@ if(!function_exists('add_footer_css')){
 		$str = '';
 		$ci = &get_instance();
 		$footer_css = $ci->config->item('footer_css');
-
+		
 		/* if(empty($file)){
 			return;
 		} */
@@ -150,8 +164,8 @@ if(!function_exists('add_footer_css')){
 			if(!is_array($file) && count($file) <= 0){
 				return;
 			}
-			foreach($file AS $item){   
-				$footer_css[] = $item;
+			foreach($file AS $key=>$item){   
+				$footer_css[$key] = $item;
 			}
 			$ci->config->set_item('footer_css',$footer_css);
 		}else{
@@ -170,7 +184,7 @@ if(!function_exists('add_footer_js')){
 		$str = '';
         $ci = &get_instance();
         $footer_js  = $ci->config->item('footer_js');
-
+		
        /*  if(empty($file)){
             return;
         } */
@@ -179,8 +193,8 @@ if(!function_exists('add_footer_js')){
             if(!is_array($file) && count($file) <= 0){
                 return;
             }
-            foreach($file AS $item){
-                $footer_js[] = $item;
+            foreach($file AS $key=>$item){
+                $footer_js[$key] = $item;
             }
             $ci->config->set_item('footer_js',$footer_js);
         }else{
@@ -199,7 +213,8 @@ if(!function_exists('put_footers')){
         $ci = &get_instance();
         $footer_css = $ci->config->item('footer_css');
         $footer_js  = $ci->config->item('footer_js');
-
+		ksort($footer_css);
+		ksort($footer_js);
 		if(!empty($footer_css)){
 			foreach($footer_css AS $item){
 				$str .= '<link rel="stylesheet" href="'.base_url().'assets/css/'.$item.'" type="text/css" />'."\n";

@@ -525,8 +525,8 @@ $config['proxy_ips'] = '';
 
 
 /*Add js and css files*/
-$config['header_css']= array('plugins.css','easy-responsive-tabs.css','style.css','responsive.css');
+$config['header_css']= array(5=>'plugins.css',10=>'easy-responsive-tabs.css',15=>'style.css',20=>'responsive.css');
 $config['header_js']  = array();
 
 $config['footer_css']= array();
-$config['footer_js']  = array('lib/jquery-3.3.1.min.js','lib/bootstrap.min.js','lib/plugins.js','custom.js');
+$config['footer_js']  = array(5=>'lib/jquery-3.3.1.min.js',10=>'lib/bootstrap.min.js',15=>'lib/plugins.js',20=>'custom.js');

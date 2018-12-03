@@ -210,4 +210,5 @@ $(document).on('submit','.ajax-register',function(){
 	});
 	return false;
 });
+
 });

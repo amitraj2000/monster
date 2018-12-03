@@ -60,5 +60,9 @@ $route['(:any)/(:any)/(:any)'] = 'product/index/$1/$2/$3';
 $route['product/ajax_load_providers'] = 'product/ajax_load_providers';
 $route['product/ajax_load_login'] = 'product/ajax_load_login';
 $route['product/ajax_load_registration'] = 'product/ajax_load_registration';
-
-
+$route['account-summary/edit'] = 'account/index';
+$route['account-summary/summary'] = 'account/order_history';
+$route['account-summary/ajax-summary/(:any)/(:any)'] = 'account/ajax_order_history/$1/$2';
+$route['account-summary/address'] = 'account/address';
+$route['order-details/(:any)'] = 'order/order_details/$1';
+$route['payment-carrier'] = 'order/paymant_carrier';

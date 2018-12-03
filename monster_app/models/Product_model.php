@@ -22,8 +22,10 @@ class Product_model extends CI_Model {
         }
 		public function get_product_by_id($product_id)
         {                
-			$this->db->select('*');
+			$this->db->select('*,'.PRODUCT_MASTER.'.status AS product_status,'.MODEL_MASTER.'.status AS model_status,'.CATEGORY_MASTER.'.status AS category_status');
 			$this->db->from(PRODUCT_MASTER);
+			$this->db->join(MODEL_MASTER, MODEL_MASTER.'.model_id = '.PRODUCT_MASTER.'.model_id');
+			$this->db->join(CATEGORY_MASTER, CATEGORY_MASTER.'.category_id = '.PRODUCT_MASTER.'.category_id');
 			$this->db->where(PRODUCT_MASTER.'.status','1');
 			$this->db->where(PRODUCT_MASTER.'.product_id',$product_id);
 			
