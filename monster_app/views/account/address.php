@@ -1,3 +1,6 @@
+<div class="my-acount-bg">
+<div class="container">
+
 <div class="row">
 	<div class="col-md-3">
 		<ul>
@@ -181,4 +184,6 @@
 	</div>
 
   </form>
+</div>
+</div>
 </div>

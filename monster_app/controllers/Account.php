@@ -120,7 +120,7 @@ class Account extends CI_Controller {
 		//open orders
 		$start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 1;
 		$start_index=($start_index-1)*$limit;
-		$data=array('status'=>array(1,2,3),'limit'=>$limit,'start_index'=>$start_index); 
+		$data=array('status'=>'1','limit'=>$limit,'start_index'=>$start_index); 
 		$total_open_orders=$this->order_model->get_total_orders($data);
 		
 		$open_orders=$this->order_model->get_orders($data);
@@ -143,7 +143,7 @@ class Account extends CI_Controller {
 		//completed orders
 		$start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 1;
 		$start_index=($start_index-1)*$limit;
-		$data=array('status'=>array(4),'limit'=>$limit,'start_index'=>$start_index); 
+		$data=array('status'=>array(2),'limit'=>$limit,'start_index'=>$start_index); 
 		$total_completed_orders=$this->order_model->get_total_orders($data);
 		$completed_orders=$this->order_model->get_orders($data);
 				
@@ -177,7 +177,7 @@ class Account extends CI_Controller {
 		$start_index=($start_index-1)*$limit;
 		$data=array('limit'=>$limit,'start_index'=>$start_index);
 		if($order_status=='open'){
-			$data['status']=array(1,2,3); 
+			$data['status']=array(1); 
 			$total_orders=$this->order_model->get_total_orders($data);
 			$orders=$this->order_model->get_orders($data);
 			$base_url=base_url() . 'account-summary/ajax-summary/open/';
@@ -186,7 +186,7 @@ class Account extends CI_Controller {
 			$output['container_id']='open_order_con';
 		}
 		if($order_status=='completed'){
-			$data['status']=array(4); 
+			$data['status']=array(2); 
 			$total_orders=$this->order_model->get_total_orders($data);
 			$orders=$this->order_model->get_orders($data);
 			$base_url=base_url() . 'account-summary/ajax-summary/completed/';
@@ -207,9 +207,16 @@ class Account extends CI_Controller {
 		if(!empty($orders)){
 			ob_start();
 			?>
-			
+			<tr>
+				<th>&nbsp;</th>
+				<th>Created</th>
+				<th>Box ID</th>
+				<th>Status</th>
+				<th>Complete Order</th>
+				<th>View Details</th>
+			</tr>
 			<?php
-			foreach($orders as $order)
+			foreach($orders as $item)
 			{
 				$status='Pending';
 				switch($order->status){
@@ -227,14 +234,38 @@ class Account extends CI_Controller {
 					break;						
 					
 				}
+				if(!empty($item->has_variation)){
+				$variations=$this->product_model->get_product_variation_by_id($item->product_id,$item->provider_id);
+				}
+				$price=0;
+				switch($item->product_condition){
+					case 'flawless':
+						if(!empty($item->has_variation) && !empty($variations->flawless_price))
+						$price=$variations->flawless_price;
+						else
+						$price=$item->flawless_price;
+						break;
+					case 'good':
+						if(!empty($item->has_variation) && !empty($variations->good_price))
+						$price=$variations->good_price;
+						else
+						$price=$item->good_price;
+						break;
+					case 'broken':
+						if(!empty($item->has_variation) && !empty($variations->broken_price))
+						$price=$variations->broken_price;
+						else
+						$price=$item->broken_price;				
+						break;			
+				} 
 				?>
 				<tr>
-					<td>Your box item worth $<?php echo $order->price;?></td>
-					<td><?php echo date('d/m/Y',strtotime($order->date));?></td>
-					<td><?php echo $order->order_id;?></td>
+					<td>Your box item worth $<?php echo $price;?></td>
+					<td><?php echo date('d/m/Y',strtotime($item->date));?></td>
+					<td><?php echo $item->box_id;?></td>
 					<td><?php echo $status;?></td>
-					<td><a href="<?php echo base_url();?>payment-carrier/<?php echo $order->order_id;?>">Click Here</a></td>
-					<td><a href="<?php echo base_url();?>order-details/<?php echo $order->order_id;?>">View Details</a></td>
+					<td><a href="<?php echo base_url();?>payment-carrier/">Click Here</a></td>
+					<td><a href="<?php echo base_url();?>order-details/<?php echo $item->order_id;?>/">View Details</a></td>
 				</tr>
 				
 				<?php

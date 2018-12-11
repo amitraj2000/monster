@@ -1,13 +1,21 @@
+<div class="my-acount-bg">
+<div class="container">
 <div class="row">
-	<div class="col-md-3">
-		<ul>
-			<li class="active"><a href="<?php echo base_url('account-summary/summary/');?>">Your Trades</a></li>
-			<li><a href="<?php echo base_url('account-summary/edit/');?>">Password & Email</a></li>
-			<li><a href="<?php echo base_url('account-summary/address/');?>">Stored Address</a></li>
-		</ul>
+
+	<div class="col-md-12"> 
+    <div class="acount-link-bg">
+    	<ul class="nav nav-pills nav-justified">
+          <li role="presentation" class="active"><a href="<?php echo base_url('account-summary/summary/');?>">Dapibus ac facilisis in</a></li>
+          <li role="presentation"><a href="<?php echo base_url('account-summary/edit/');?>">Password & Email</a></li>
+          <li role="presentation"><a href="<?php echo base_url('account-summary/address/');?>">Stored Address</a></li>  
+        </ul>
+   	</div>        		
 	</div>
-	<div class="col-md-9">
-	Welcome Back <?php echo !empty($user)?$user->first_name.'&nbsp;'.$user->last_name:'';?>
+    
+	<div class="col-md-12">
+    
+    <div class="table-bg">
+	<h1><span>Welcome Back <?php echo !empty($user)?$user->first_name.'&nbsp;'.$user->last_name:'';?></span></h1>
 		 <div id="summary_tab">          
         <ul class="resp-tabs-list">
             <li> Open </li>
@@ -18,16 +26,18 @@
             <div>
 				<?php if(!empty($open_orders)){?>
 					<table id="open_order_con">
-					<th>&nbsp;</th>
-					<th>Created</th>
-					<th>Box ID</th>
-					<th>Status</th>
-					<th>Complete Order</th>
-					<th>View Details</th>
-					<?php foreach($open_orders as $open_order){
+					<tr>
+						<th>&nbsp;</th>
+						<th>Created</th>
+						<th>Box ID</th>
+						<th>Status</th>
+						<th>Complete Order</th>
+						<th>View Details</th>
+					</tr>
+					<?php foreach($open_orders as $item){
 						
 						$status='Pending';
-						switch($open_order->status){
+						switch($item->status){
 							case '1':
 							$status='Pending';
 							break;
@@ -42,14 +52,38 @@
 							break;						
 							
 						}
+						if(!empty($item->has_variation)){
+						$variations=$this->product_model->get_product_variation_by_id($item->product_id,$item->provider_id);
+						}
+						$price=0;
+						switch($item->product_condition){
+							case 'flawless':
+								if(!empty($item->has_variation) && !empty($variations->flawless_price))
+								$price=$variations->flawless_price;
+								else
+								$price=$item->flawless_price;
+								break;
+							case 'good':
+								if(!empty($item->has_variation) && !empty($variations->good_price))
+								$price=$variations->good_price;
+								else
+								$price=$item->good_price;
+								break;
+							case 'broken':
+								if(!empty($item->has_variation) && !empty($variations->broken_price))
+								$price=$variations->broken_price;
+								else
+								$price=$item->broken_price;				
+								break;			
+						} 
 						?>
 						<tr>
-							<td>Your box item worth $<?php echo $open_order->price;?></td>
-							<td><?php echo date('d/m/Y',strtotime($open_order->date));?></td>
-							<td><?php echo $open_order->order_id;?></td>
+							<td>Your box item worth $<?php echo $price;?></td>
+							<td><?php echo date('d/m/Y',strtotime($item->date));?></td>
+							<td><?php echo $item->box_id;?></td>
 							<td><?php echo $status;?></td>
 							<td><a href="<?php echo base_url();?>payment-carrier/">Click Here</a></td>
-							<td><a href="<?php echo base_url();?>order-details/<?php echo $open_order->order_id;?>">View Details</a></td>
+							<td><a href="<?php echo base_url();?>order-details/<?php echo $item->order_id;?>">View Details</a></td>
 						</tr>
 					<?php } ?>
 					
@@ -64,9 +98,50 @@
             <div> 
 				<?php if(!empty($completed_orders)){?>
 				<table id="completed_order_con">
-				<?php foreach($completed_orders as $completed_order){?>
+				<?php foreach($completed_orders as $item){
+				$status='Pending';
+						switch($item->status){
+							case '1':
+							$status='Pending';
+							break;
+							case '2':
+							$status='Processing';
+							break;
+							case '3':
+							$status='On the way';
+							break;
+							case '4':
+							$status='Completed';
+							break;						
+							
+						}
+						if(!empty($item->has_variation)){
+						$variations=$this->product_model->get_product_variation_by_id($item->product_id,$item->provider_id);
+						}
+						$price=0;
+						switch($item->product_condition){
+							case 'flawless':
+								if(!empty($item->has_variation) && !empty($variations->flawless_price))
+								$price=$variations->flawless_price;
+								else
+								$price=$item->flawless_price;
+								break;
+							case 'good':
+								if(!empty($item->has_variation) && !empty($variations->good_price))
+								$price=$variations->good_price;
+								else
+								$price=$item->good_price;
+								break;
+							case 'broken':
+								if(!empty($item->has_variation) && !empty($variations->broken_price))
+								$price=$variations->broken_price;
+								else
+								$price=$item->broken_price;				
+								break;			
+						} 
+				?>
 					<tr>
-						<td>Your box item worth $<?php echo $completed_order->price;?></td>
+						<td>Your box item worth $<?php echo $price;?></td>
 					</tr>
 				<?php } ?>				
 				</table>
@@ -80,4 +155,7 @@
         </div>
     </div>   
 	</div>
+    </div>
+</div>
+</div>
 </div>

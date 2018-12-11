@@ -11,6 +11,7 @@ class Order extends CI_Controller {
 		$this->load->model('product_model');
 		$args['header_title']='Order Details';
 		
+		
 		$order=$this->order_model->get_order_by_id($order_id);
 		
 		if(empty($order))
@@ -20,8 +21,9 @@ class Order extends CI_Controller {
 		
 		$args['order']=$order;
 		
-		$product=$this->product_model->get_product_by_id($order->product_id);
-		$args['product']=$product;
+		//$product=$this->product_model->get_product_by_id($order->product_id);
+
+		$args['order']=$order;
 		
 		$this->load->view('common/header',$args);
 		$this->load->view('order/details',$args);		
@@ -34,8 +36,8 @@ class Order extends CI_Controller {
 		$args=array();
 		$args['header_title']='Payment Carrier';
 		$this->load->model('product_model');
-		$this->load->library('cart');
-		$items=$this->cart->contents();
+		add_footer_js(array(25=>'cart.js'));
+		$items=$this->order_model->get_orders(array('status'=>'1'));
 		$args['items']=$items;
 		
 		$this->load->view('common/header',$args);

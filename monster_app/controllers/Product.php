@@ -22,7 +22,7 @@ class Product extends CI_Controller {
 		if(empty($product))
 			show_404();
 		
-		add_footer_js(array(21=>'easy-responsive-tabs.js',22=>'jquery-ui.min.js',23=>'product.js'));
+		add_footer_js(array(21=>'easy-responsive-tabs.js',22=>'jquery-ui.min.js',23=>'product.js',25=>'cart.js'));
 		$args['header_title']=$product->model_name.'&nbsp;'.$product->product_name;
 		$args['product']=$product;
 		
@@ -90,7 +90,7 @@ class Product extends CI_Controller {
 		$variations=$this->product_model->get_product_variation_by_id($params['product_id'],$params['provider_id']);
 		}
 		
-		$this->load->library('cart');
+		
 		
 		$price=0;
 		switch($params['condition']){
@@ -134,26 +134,30 @@ class Product extends CI_Controller {
 		} */
 		// if $insert_new value is true, insert the item as new item in the cart
 		//if ($insert_new) {
-			$cart_data =  array(
+			/* $cart_data =  array(
 					'id'=>$product->product_id,
 					'qty'     => 1,
 					'price'   => $price,
 					'name'    => $product->product_name,
 					'options' =>array('condition'=>$params['condition'],'provider_id'=>$params['provider_id'])//add category,model if necessary
 				);
-			$this->cart->insert($cart_data);
+			$this->cart->insert($cart_data); */
 			
 			//insert to order table if logged in
 			if(is_logged_in()){
-								
+				$box_id=$this->order_model->get_current_user_pending_order_box_id();	
+				if(empty($box_id))//Not empty cart,add to cart by this box id
+					$box_id='MS'.random_string('nozero',10);
+					
 				$order_id=random_string('alnum',16);
+				
 				$args=array(
 					'order_id'=>$order_id,
 					'product_id'=>$product->product_id,
 					'product_condition'=>$params['condition'],
 					'provider_id'=>$params['provider_id'],
-					'price'=>$price,
 					'user_id'=>get_current_user_id(),
+					'box_id'=>$box_id,
 					'date'=>date('Y-m-d H:i:s'),
 					'status'=>'1'
 				);
@@ -161,7 +165,7 @@ class Product extends CI_Controller {
 			}
 
 		//}
-		$items=$this->cart->contents();
+		$items=$this->order_model->get_orders(array('status'=>'1'));//show only pending orders as cart items
 		$args['items']=$items;
 		echo $this->load->view('product/cart',$args,TRUE);
 		die;
@@ -169,8 +173,8 @@ class Product extends CI_Controller {
 	
 	public function delete_cart_item(){
 		$rowid=$this->input->post('rowid');
-		$this->cart->remove($rowid);
-		$items=$this->cart->total_items();
+		$this->order_model->delete_order_item($rowid);//delete only pending order item i.e. status=1
+		$items=$this->order_model->get_total_orders(array('status'=>'1'));
 		if(empty($items))
 			echo 'No items in cart';
 		die;

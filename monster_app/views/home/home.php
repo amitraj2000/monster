@@ -6,7 +6,7 @@
 						<div class="slider_text">
 							<span>Get Paid for Your Device</span>
 							<p>See how much your device is worth</p>
-							<a href="#" class="btn btn_b">get a free quote</a>
+							<a href="#" class="btn btn_b scroll-product">get a free quote</a>
 						</div>
 					</div>
 				</div>		
@@ -67,12 +67,12 @@
 			<div class="way_to_recycle">
 				<div class="container">
 					<h1 class="heading">A Better Way To Sell/Recycle Your Used Mobile Device.</h1>
-					<a href="#" class="btn btn_b">Let's Get Started</a>
+					<a href="#" class="btn btn_b scroll-product">Let's Get Started</a>
 				</div>
 			</div>
 			<div class="why_sell">
 				<div class="container">
-					<h2 class="heading">What are you selling?</h2>
+					<h2 class="heading" id="scroll-product-con">What are you selling?</h2>
 					<div class="products">
 						<?php if(!empty($categories)){?>
 						<!-- hidden form that will submitted on product selection-->

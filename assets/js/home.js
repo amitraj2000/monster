@@ -1,4 +1,10 @@
 jQuery(document).ready(function(){
+	$(document).on('click','.scroll-product',function(){
+		$('html, body').animate({
+          scrollTop: $('#scroll-product-con').offset().top
+        }, 3000);
+		return false;
+	});
 	$(document).on('click','a.load-model',function(){
 	var category_id=$(this).attr('data-category_id');
 	$('#display_provider,#display_product').html('');

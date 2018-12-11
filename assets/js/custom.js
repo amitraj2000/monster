@@ -98,38 +98,7 @@ $(document).ready(function(){
         scrollbarPosition: "inside"
     });*/
 
-	$(document).on('click','input[name="payment_method"]',function(){
-		var val = $("input[name='payment_method']:checked").val();
-		$('.payment_method_fields .col-md-9').hide();
-		if(val=='apple')
-		{
-			$('#apple_field').show();
-			$('html, body').animate({
-				scrollTop: $('#apple_field').offset().top
-			}, 'slow');
-		}
-		else if(val=='paypal')
-		{
-			$('#paypal_field').show();
-			$('html, body').animate({
-				scrollTop: $('#paypal_field').offset().top
-			}, 'slow');
-		}
-		else if(val=='cheque')
-		{
-			$('#cheque_field').show();
-			$('html, body').animate({
-				scrollTop: $('#cheque_field').offset().top
-			}, 'slow');
-		}
-		else if(val=='interac_email')
-		{
-			$('#interac_field').show();
-			$('html, body').animate({
-				scrollTop: $('#interac_field').offset().top
-			}, 'slow');
-		}
-	});
+	
 });
 /*Google login*/
   var googleUser = {};

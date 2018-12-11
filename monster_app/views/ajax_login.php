@@ -1,28 +1,34 @@
-<div>
-		<div class="ajax-login-msg"></div>
-		<form action="<?php echo site_url('/login');?>" method="post" class="ajax-login">
-		  <div class="form-group">
-			<label for="email">Email address:</label>
-			<input type="email" name="email" class="form-control" id="email" placeholder="Enter Your Email Address" value="<?php echo !empty($form_data['email'])?$form_data['email']:'';?>">
-		  </div>
-		  <div class="form-group">
-			<label for="pwd">Password:</label>
-			<input type="password" name="password" class="form-control" id="pwd" placeholder="Enter Your Password">
-		  </div>
-		  <div class="checkbox">
-			<label><input type="checkbox"> Remember me</label>
-		  </div>
-		  <button type="submit" name="submit" value="login" class="btn btn-default">Submit</button>
-		  <div id="google_btn_5" class="btn btn-default">Signin with google</div>
-		</form>
+		<div class="ajax-login-bg">
+            <h2>SIGN IN WITH MONSTER</h2>
+            <div class="ajax-login-msg"></div>
+            <form action="<?php echo site_url('/login');?>" method="post" class="ajax-login">
+              <div class="form-group">
+                <label for="email">Email address:</label>
+                <input type="email" name="email" class="form-control" id="email" placeholder="Enter Your Email Address" value="<?php echo !empty($form_data['email'])?$form_data['email']:'';?>">
+              </div>
+              <div class="form-group">
+                <label for="pwd">Password:</label>
+                <input type="password" name="password" class="form-control" id="pwd" placeholder="Enter Your Password">
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox"> Remember me</label>
+              </div>
+              <button type="submit" name="submit" value="login" class="btn btn-default">Submit</button>
+              <div class="orr"><span>SIGN IN</span></div>
+              <div id="google_btn_5" class="btn btn-default ajx-google">Signin with google</div>
+            </form>
+            
+            <div class="orr"><span>SIGN UP</span></div>
+            
+            <div class="ajax-login-button-bg">
+            <a href="javascript:void(0);" class="btn btn-default add_to_cart_signup" >Signup With Monster</a>
+            <div id="google_btn_6" class="btn btn-default ajx-google">Signup with google</div>
+            </div>
+            
 		</div>
-		<div>
-		<a href="javascript:void(0);" class="btn btn-default add_to_cart_signup" >Signup With Monster</a>
-		<div id="google_btn_6" class="btn btn-default">Signup with google</div>
-		</div>
-		<p>
-		<a href="javascript:void(0);" class="btn btn-default add_to_cart_back" data-section="">Back</a>
-		</p>
+        
+		
+		<div class="ajax-login-back-bg"><a href="javascript:void(0);" class="btn btn-default add_to_cart_back" data-section="">Back</a></div>
 		<script type="text/javascript">
 			//Google login ajax
 			var googleUser2 = {};
@@ -60,7 +66,7 @@
 								  success:function(response){
 									 $('#after_login_section').find('.ajax_content').html(response);
 									 $('#login_section').hide('slide', {direction: 'left'}, 1000);
-									 setTimeout(function(){$('#after_login_section').show('slide', {direction: 'right'}, 500);setTimeout(function(){$('html, body').animate({scrollTop:$("#after_login_section").offset().top-90},500);},500);},500);
+									 setTimeout(function(){$('#after_login_section').show('slide', {direction: 'right'}, 500);setTimeout(function(){$('html, body').animate({scrollTop:$("#after_login_section").offset().top-900},500);},500);},500);
 									 if($('#provider_section').length)
 									 $('#after_login_section').find('.ajax_content').find('.add_to_cart_back').attr('data-section','provider_section');
 									 else
@@ -89,7 +95,7 @@
 								  success:function(response){
 									 $('#after_login_section').find('.ajax_content').html(response);
 									 $('#login_section').hide('slide', {direction: 'left'}, 1000);
-									 setTimeout(function(){$('#after_login_section').show('slide', {direction: 'right'}, 500);setTimeout(function(){$('html, body').animate({scrollTop:$("#after_login_section").offset().top-90},500);},500);},500);
+									 setTimeout(function(){$('#after_login_section').show('slide', {direction: 'right'}, 500);setTimeout(function(){$('html, body').animate({scrollTop:$("#after_login_section").offset().top-900},500);},500);},500);
 									 if($('#provider_section').length)
 									 $('#after_login_section').find('.ajax_content').find('.add_to_cart_back').attr('data-section','provider_section');
 									 else

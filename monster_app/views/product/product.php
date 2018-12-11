@@ -50,6 +50,8 @@
 								<div class="resp-tabs-container">
 									<!--start flawless-->	
 									<div>
+                                    <div class="row">
+                                    <div class="col-md-5">
 										<?php if(!empty($product->flawless_heading)){?>
 										<?php echo $product->flawless_heading;?>
 										<hr/><br/>
@@ -64,9 +66,9 @@
 										
 										<?php if(!empty($product->enable_icloud)){?>
 											<div>
-												<div>iCloud Deactivated? <a href="javascript:void(0);" class="btn btn-primary icloud-activation">Yes</a><a href="javascript:void(0);" class="btn btn-primary icloud-deactivation" data-toggle="modal" data-target="#icloudModal">No</a></div>
-												<div><a href="javascript:void(0);" data-toggle="modal" data-target="#icloudModal" >Click here for instruction on how to turn it off</a></div>
-												<div>Click Yes to enable Next Button.</div>
+												<div class="icloud">iCloud Deactivated? <a href="javascript:void(0);" class="btn btn-primary icloud-activation">Yes</a><a href="javascript:void(0);" class="btn btn-primary icloud-deactivation" data-toggle="modal" data-target="#icloudModal">No</a></div>
+												<div  style="font-size:12px; margin-bottom:10px;"><a href="javascript:void(0);" data-toggle="modal" data-target="#icloudModal" >Click here for instruction on how to turn it off</a></div>
+												<div style="padding:0 0 15px 0">Click Yes to enable Next Button.</div>
 											</div>
 										
 										<?php } ?>
@@ -85,18 +87,22 @@
 										<?php } else{?>
 										We're Sorry! We stopped purchasing this device in the specified condition.
 										<?php } ?>
+										</div>
 										
-										
-										
+										<div class="col-md-7">
 										<div class="detils_list">
 											<?php echo $product->flawless_description;?>
 										</div>
+                                        </div>
+                                    </div>
 									</div>
 									
 									<!--end flawless-->
 									
 									<!--start good-->	
 									<div>
+                                    <div class="row">
+                                    <div class="col-md-5">
 										<?php if(!empty($product->good_heading)){?>
 										<?php echo $product->good_heading;?>
 										<hr/><br/>
@@ -111,9 +117,9 @@
 										
 										<?php if(!empty($product->enable_icloud)){?>
 											<div>
-												<div>iCloud Deactivated? <a href="javascript:void(0);" class="btn btn-primary icloud-activation">Yes</a><a href="javascript:void(0);" class="btn btn-primary icloud-deactivation" data-toggle="modal" data-target="#icloudModal">No</a></div>
-												<div><a href="javascript:void(0);" data-toggle="modal" data-target="#icloudModal" >Click here for instruction on how to turn it off</a></div>
-												<div>Click Yes to enable Next Button.</div>
+												<div class="icloud">iCloud Deactivated? <a href="javascript:void(0);" class="btn btn-primary icloud-activation">Yes</a><a href="javascript:void(0);" class="btn btn-primary icloud-deactivation" data-toggle="modal" data-target="#icloudModal">No</a></div>
+												<div  style="font-size:12px; margin-bottom:10px;"><a href="javascript:void(0);" data-toggle="modal" data-target="#icloudModal" >Click here for instruction on how to turn it off</a></div>
+												<div style="padding:0 0 15px 0">Click Yes to enable Next Button.</div>
 											</div>
 										
 										<?php } ?>
@@ -132,14 +138,20 @@
 										<?php } else{?>
 										We're Sorry! We stopped purchasing this device in the specified condition.
 										<?php } ?>
+                                        </div>
+                                        <div class="col-md-7">
 										<div class="detils_list">
 											<?php echo $product->good_description;?>
 										</div>
+                                        </div>
+                                    </div>
 									</div>
 									<!--end good-->
 									
 									<!--start broken-->
 									<div>
+                                    	<div class="row">
+                                    	<div class="col-md-5">
 										<?php if(!empty($product->broken_heading)){?>
 										<?php echo $product->broken_heading;?>
 										<hr/><br/>
@@ -154,9 +166,9 @@
 										
 										<?php if(!empty($product->enable_icloud)){?>
 											<div>
-												<div>iCloud Deactivated? <a href="javascript:void(0);" class="btn btn-primary icloud-activation">Yes</a><a href="javascript:void(0);" class="btn btn-primary icloud-deactivation" data-toggle="modal" data-target="#icloudModal">No</a></div>
-												<div><a href="javascript:void(0);" data-toggle="modal" data-target="#icloudModal" >Click here for instruction on how to turn it off</a></div>
-												<div>Click Yes to enable Next Button.</div>
+												<div class="icloud">iCloud Deactivated? <a href="javascript:void(0);" class="btn btn-primary icloud-activation">Yes</a><a href="javascript:void(0);" class="btn btn-primary icloud-deactivation" data-toggle="modal" data-target="#icloudModal">No</a></div>
+												<div  style="font-size:12px; margin-bottom:10px;"><a href="javascript:void(0);" data-toggle="modal" data-target="#icloudModal" >Click here for instruction on how to turn it off</a></div>
+												<div style="padding:0 0 15px 0">Click Yes to enable Next Button.</div>
 											</div>
 										
 										<?php } ?>
@@ -174,9 +186,14 @@
 										<?php } else{?>
 										We're Sorry! We stopped purchasing this device in the specified condition.
 										<?php } ?>
+                                        </div>
+                                        
+                                        <div class="col-md-7">
 										<div class="detils_list">
 											<?php echo $product->broken_description;?>
 										</div>
+                                        </div>
+                                    </div>
 									</div>
 									<!--end broken-->
 								</div>
