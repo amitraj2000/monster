@@ -226,7 +226,17 @@
 					<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
 					after login section
 					</div>
-				</div>				
+				</div>
+				<div id="checkout_step_2" style="display:none;">
+					<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
+						checkout step 2
+					</div>
+				</div>
+				<div id="checkout_step_3" style="display:none;">
+					<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
+						checkout step 2
+					</div>
+				</div>
 			</div>
 			
 			

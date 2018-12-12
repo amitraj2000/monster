@@ -3,7 +3,9 @@ $total_price=0;
 if(!empty($items)){
 	?>
 <div class="row">
+<div id="checkout_step_1">
 <!--LEFT SECTION Start------>
+<form class="checkout_step_1">
 <div class="col-md-9">
 <div class="row">
 	<!--<div class="col-md-6">
@@ -13,11 +15,13 @@ if(!empty($items)){
 			<div><b>Apple Gift Card: </b>Get paid quickly via electronic gift card.</div>
 		</div>
     </div>-->
+	
     <div class="col-md-6">
     	<div class="p-m-section">
 			<div><img src="<?php echo base_url();?>assets/images/paypal.jpg"></div>
 			<div>PayPal<input type="radio" name="payment_method" value="paypal"></div>
 			<div><b>PayPal: </b>No need to wait for the mail. Get your payment quickly through your Paypal account.</div>
+			
 		</div>
     </div>
     <div class="col-md-6">
@@ -49,20 +53,24 @@ if(!empty($items)){
     <div class="click-form-section">
 		<h4>Confirm your PayPal email address so we can ensure prompt payment.</h4>
 		<h5>Enter the email address associated with your PayPal </h5>		
-		<label><span>Account</span><input type="text"></label>		
-		<label><span>Confirm your PayPal email address</span><input type="text"></label>
+		<label><span>Account</span><input type="text" name="paypal_email" id="paypal_email"></label>		
+		<label><span>Confirm your PayPal email address</span><input type="text" name="confirm_paypal_email" id="confirm_paypal_email"></label>
+		<div id="paypal_email_error" style="display:none;"></div>
+		<input type="submit" value="Continue">
     </div>
 	</div>
 	<div class="col-md-12" id="cheque_field" style="display:none;">
     <div class="click-form-section">
 		<h4>Please provide the address you'd like your check sent to.</h4>
 		
-		<label><span>Payable to</span><input type="text"></label>		
-		<label><span>Address Line 1</span><input type="text"></label>		
-		<label><span>Address Line 2 (optional)</span><input type="text"></label>		
-		<label><span>City</span><input type="text"></label>		
-		<label><span>Province</span><select><option>Select</option></select></label>		
-		<label><span>Zip Code</span><input type="text"></label>
+		<label><span>Payable to</span><input type="text" name="payable_to" id="payable_to"></label>		
+		<label><span>Address Line 1</span><input type="text" name="address_1" id="address_1"></label>		
+		<label><span>Address Line 2 (optional)</span><input type="text" name="address_2" id="address_2"></label>		
+		<label><span>City</span><input type="text" name="city" id="city"></label>		
+		<label><span>Province</span><select name="province" id="province"><option>Select</option></select></label>		
+		<label><span>Zip Code</span><input type="text" name="zip_code" id="zip_code"></label>
+		<div id="cheque_error" style="display:none;"></div>
+		<input type="submit" value="Continue">
 	</div>
 	</div>
 	<div class="col-md-12" id="interac_field" style="display:none;">
@@ -75,17 +83,13 @@ if(!empty($items)){
 	</div>
 </div>
 
-<div class="col-md-12">
-<div class="click-pay-form-back-bg">
-<a href="javascript:void(0);" class="btn btn-default add_to_cart_back" data-section="">Back</a>
-</div>
-</div>
 
 </div>
 </div>
 <!--CLICK TO OPEN FORMS-->
 
-</div>   
+</div> 
+</form>  
 <!--LEFT SECTION END-->
 
 <!--Right SECTION-->
@@ -150,4 +154,15 @@ if(!empty($items)){
 </div>
 </div>
 <!--RIGHT SECTION END-->
+</div>
+<div id="checkout_step_2" style="display:none;">
+	<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
+		checkout step 2
+	</div>
+</div>
+<div id="checkout_step_3" style="display:none;">
+	<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
+		checkout step 2
+	</div>
+</div>
 </div>

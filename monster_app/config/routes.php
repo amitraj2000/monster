@@ -66,3 +66,4 @@ $route['account-summary/ajax-summary/(:any)/(:any)'] = 'account/ajax_order_histo
 $route['account-summary/address'] = 'account/address';
 $route['order-details/(:any)'] = 'order/order_details/$1';
 $route['payment-carrier'] = 'order/paymant_carrier';
+$route['thankyou'] = 'order/order_thanks';

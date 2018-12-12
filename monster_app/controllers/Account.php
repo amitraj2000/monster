@@ -218,22 +218,7 @@ class Account extends CI_Controller {
 			<?php
 			foreach($orders as $item)
 			{
-				$status='Pending';
-				switch($order->status){
-					case '1':
-					$status='Pending';
-					break;
-					case '2':
-					$status='Processing';
-					break;
-					case '3':
-					$status='On the way';
-					break;
-					case '4':
-					$status='Completed';
-					break;						
-					
-				}
+				$status=get_product_status_text($item->status);
 				if(!empty($item->has_variation)){
 				$variations=$this->product_model->get_product_variation_by_id($item->product_id,$item->provider_id);
 				}

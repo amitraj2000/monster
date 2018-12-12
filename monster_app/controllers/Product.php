@@ -114,60 +114,42 @@ class Product extends CI_Controller {
 				break;			
 		}		
 		
-		/* $insert_new = TRUE;
-		$bag = $this->cart->contents();
-		foreach ($bag as $item) {			
-			// check product id in session, if exist update the quantity
-			if ( $item['id'] == $product->product_id ) { // Set value to your variable
-				$cart_data =  array(
-					'rowid'=>$item['rowid'],
-					'qty'     => 1,
-					'price'   => $price,
-					'name'    => $product->product_name,
-					'options' =>array('condition'=>$params['condition'],'provider_id'=>$params['provider_id'])
-				);
-				$this->cart->update($cart_data);
-				$insert_new = FALSE;
-				break;
-			}
-
-		} */
-		// if $insert_new value is true, insert the item as new item in the cart
-		//if ($insert_new) {
-			/* $cart_data =  array(
-					'id'=>$product->product_id,
-					'qty'     => 1,
-					'price'   => $price,
-					'name'    => $product->product_name,
-					'options' =>array('condition'=>$params['condition'],'provider_id'=>$params['provider_id'])//add category,model if necessary
-				);
-			$this->cart->insert($cart_data); */
+		
 			
-			//insert to order table if logged in
-			if(is_logged_in()){
-				$box_id=$this->order_model->get_current_user_pending_order_box_id();	
-				if(empty($box_id))//Not empty cart,add to cart by this box id
-					$box_id='MS'.random_string('nozero',10);
-					
-				$order_id=random_string('alnum',16);
-				
+		//insert to order table if logged in
+		if(is_logged_in()){
+			$pending_order=$this->order_model->get_current_user_pending_order();	
+			if(empty($pending_order->box_id)){
+				$box_id='MS'.random_string('nozero',10);
+				$order_id=random_string('alnum',16);			
 				$args=array(
 					'order_id'=>$order_id,
-					'product_id'=>$product->product_id,
-					'product_condition'=>$params['condition'],
-					'provider_id'=>$params['provider_id'],
 					'user_id'=>get_current_user_id(),
 					'box_id'=>$box_id,
-					'date'=>date('Y-m-d H:i:s'),
+					'date'=>date('Y-m-d H:i:s'),				
 					'status'=>'1'
 				);
 				$this->order_model->insert_order($args);
+			}else{
+				$order_id=$pending_order->order_id;
 			}
+			
+			
+			$args=array(
+				'order_details_id'=>random_string('alnum',16),
+				'order_id'=>$order_id,
+				'product_id'=>$product->product_id,
+				'product_condition'=>$params['condition'],
+				'provider_id'=>$params['provider_id'],
+				'date'=>date('Y-m-d H:i:s'),
+			);
+			$this->order_model->insert_order_details($args);
+		}
 
-		//}
 		$items=$this->order_model->get_orders(array('status'=>'1'));//show only pending orders as cart items
+		
 		$args['items']=$items;
-		echo $this->load->view('product/cart',$args,TRUE);
+		echo $this->load->view('order/cart',$args,TRUE);
 		die;
 	}
 	

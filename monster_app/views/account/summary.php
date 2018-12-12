@@ -83,7 +83,7 @@
 							<td><?php echo $item->box_id;?></td>
 							<td><?php echo $status;?></td>
 							<td><a href="<?php echo base_url();?>payment-carrier/">Click Here</a></td>
-							<td><a href="<?php echo base_url();?>order-details/<?php echo $item->order_id;?>">View Details</a></td>
+							<td><a href="<?php echo base_url();?>order-details/<?php echo $item->order_details_id;?>">View Details</a></td>
 						</tr>
 					<?php } ?>
 					
@@ -99,22 +99,10 @@
 				<?php if(!empty($completed_orders)){?>
 				<table id="completed_order_con">
 				<?php foreach($completed_orders as $item){
-				$status='Pending';
-						switch($item->status){
-							case '1':
-							$status='Pending';
-							break;
-							case '2':
-							$status='Processing';
-							break;
-							case '3':
-							$status='On the way';
-							break;
-							case '4':
-							$status='Completed';
-							break;						
-							
-						}
+					
+					$status=get_product_status_text($item->status);
+					
+					
 						if(!empty($item->has_variation)){
 						$variations=$this->product_model->get_product_variation_by_id($item->product_id,$item->provider_id);
 						}
