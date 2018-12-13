@@ -87,3 +87,9 @@ $route['products/page'] = 'product/index';
 $route['product/add'] = 'product/add_product';
 $route['product/delete/(:any)'] = 'product/delete_product/$1';
 $route['product/edit/(:any)'] = 'product/edit_product/$1';
+
+$route['orders'] = 'order/index';
+$route['orders/page/(:num)'] = 'order/index/$1';
+$route['orders/page'] = 'order/index';
+$route['order/edit/(:any)'] = 'order/edit_order/$1';
+$route['order/delete/(:any)'] = 'order/delete_order/$1';

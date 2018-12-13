@@ -140,6 +140,7 @@ class Product extends CI_Controller {
 				'order_id'=>$order_id,
 				'product_id'=>$product->product_id,
 				'product_condition'=>$params['condition'],
+				'price'=>$price,
 				'provider_id'=>$params['provider_id'],
 				'date'=>date('Y-m-d H:i:s'),
 			);

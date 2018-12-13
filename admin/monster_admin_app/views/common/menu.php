@@ -262,7 +262,9 @@
                             
                             <!-- /.nav-second-level -->
                         </li>
-						
+						<li>
+                            <a href="<?php echo site_url('/orders'); ?>" class="<?php echo $active_menu=='orders'?'active':'';?>"><i class="fa fa-first-order"></i> Orders</a>
+                        </li>
                                                 
                     </ul>
                 </div>
