@@ -97,8 +97,8 @@ if(!empty($items)){
 
 <!--Right SECTION-->
 <div class="col-md-3">
-	<div id="cart">
-	<ul id="cart-list">
+	<div class="cart">
+	<ul class="cart-list">
 	<?php
 	foreach($items as $item){
 		$img_src='';
@@ -108,7 +108,7 @@ if(!empty($items)){
 			$img_src=str_replace(FCPATH.'/',base_url(),UPLOADS_PRODUCT_THUMB).$item->product_image;
 		}
 		
-		if(!empty($item->has_variation)){
+		/* if(!empty($item->has_variation)){
 		$variations=$this->product_model->get_product_variation_by_id($item->product_id,$item->provider_id);
 		}
 		$price=0;
@@ -131,19 +131,19 @@ if(!empty($items)){
 				else
 				$price=$item->broken_price;				
 				break;			
-		} 
+		} */ 
 		?>
 		<li class="cart-item" data-rowid="<?php echo $item->order_details_id; ?>">
 		<div class="cart-inn">
         <div class="cart-pic"><img src="<?php echo $img_src;?>"></div>
 		<h4><?php echo $item->model_name.'&nbsp;'.$item->product_name;?></h4>
 		<p><strong>Condition</strong>: <?php echo ucwords($item->product_condition);?></p>
-		<p><strong>Price</strong>: $<?php echo $price;?></p>
+		<p><strong>Price</strong>: $<?php echo $item->price;?></p>
 		<a href="javascript:void(0);" class="delete_cart_item" data-rowid="<?php echo $item->order_details_id; ?>">Delete</a>
 		</div>
 		</li>
 		<?php
-		$total_price+=$price;
+		$total_price+=$item->price;
 		}
 		?>
 	</ul>

@@ -124,13 +124,13 @@ $(document).on('click','.add_to_cart_signup',function(){
 	return false;
 });
 
-$(document).on('click','.add_to_cart_back',function(){
+/* $(document).on('click','.add_to_cart_back',function(){
 	var section=$(this).attr('data-section');
 	var current_section=$(this).closest('.container');
 	current_section.hide('slide', {direction: 'right'}, 1000);
 	setTimeout(function(){$('#'+section).show('slide', {direction: 'left'}, 500);setTimeout(function(){$('html, body').animate({scrollTop:$('#'+section).offset().top-900},500);},500);},500);
 	
-});
+}); */
 
 
 $(document).on('submit','.ajax-login',function(){

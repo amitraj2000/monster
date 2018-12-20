@@ -56,12 +56,12 @@
 												<td>
 													<?php 
 													$shipping_type='Express';
-													switch($order->payment_type){
+													switch($order->shipping_type){
 														case 'express':
 														$shipping_type='Express checkout';
 														break;
 														case 'shipping_kit':
-														$shipping_type='Kit';
+														$shipping_type='Shipping Kit';
 														break;
 													}
 													echo $shipping_type;
