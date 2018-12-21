@@ -80,11 +80,64 @@ class Product extends CI_Controller {
 		
 		die;
 	}
+	public function ajax_load_email(){
+		echo $this->load->view('ajax_email','',TRUE);
+		die;
+	}
+	public function ajax_load_cart(){
+		$data=$this->input->post('data');
+		parse_str($data, $params);
+		$this->load->library('cart');
+		
+		$product=$this->product_model->get_product_by_id($params['product_id']);
+		if(!empty($product->has_variation)){
+		$variations=$this->product_model->get_product_variation_by_id($params['product_id'],$params['provider_id']);
+		}
+		
+		$price=0;
+		switch($params['condition']){
+			case 'flawless':
+				if(!empty($product->has_variation) && !empty($variations->flawless_price))
+				$price=$variations->flawless_price;
+				else
+				$price=$product->flawless_price;
+				break;
+			case 'good':
+				if(!empty($product->has_variation) && !empty($variations->good_price))
+				$price=$variations->good_price;
+				else
+				$price=$product->good_price;
+				break;
+			case 'broken':
+				if(!empty($product->has_variation) && !empty($variations->broken_price))
+				$price=$variations->broken_price;
+				else
+				$price=$product->broken_price;				
+				break;			
+		}	
+		
+		$items=$this->cart->contents();
+		$product_ids=array_column($items, 'id');
+		if(!in_array($params['product_id'],$product_ids)){
+			//insert to cart
+			$data = array(
+					'id'      => $params['product_id'],
+					'qty'     => 1,
+					'price'   => $price,
+					'name'    => $product->product_name,
+					'options' => array('condition' =>$params['condition'], 'provider_id' => $params['provider_id'])
+			);
+			$this->cart->insert($data);
+		}
+		$args['items']=$this->cart->contents();
+		echo $this->load->view('order/cart',$args,TRUE);
+		die;
+	}
 	public function ajax_load_after_login(){
 		$data=$this->input->post('data');
 		parse_str($data, $params);	
 		
-		$this->load->model('product_model');
+		/* $this->load->model('product_model');
 		$product=$this->product_model->get_product_by_id($params['product_id']);
 		if(!empty($product->has_variation)){
 		$variations=$this->product_model->get_product_variation_by_id($params['product_id'],$params['provider_id']);
@@ -150,13 +203,22 @@ class Product extends CI_Controller {
 		$items=$this->order_model->get_orders(array('status'=>'1'));//show only pending orders as cart items
 		
 		$args['items']=$items;
-		echo $this->load->view('order/cart',$args,TRUE);
+		echo $this->load->view('order/cart',$args,TRUE); */
 		die;
 	}
 	
 	public function delete_cart_item(){
 		$rowid=$this->input->post('rowid');
-		$this->order_model->delete_order_item($rowid);//delete only pending order item i.e. status=1
+		$this->load->library('cart');
+		
+		 $data = array(
+            'rowid'   => $rowid,
+            'qty'     => 0
+        );
+
+        $this->cart->update($data);
+		$items=$this->cart->contents();
+		
 		$items=$this->order_model->get_total_orders(array('status'=>'1'));
 		if(empty($items))
 			echo 'No items in cart';

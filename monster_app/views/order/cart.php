@@ -4,7 +4,7 @@ if(!empty($items)){
 	?>
 <div class="row">
 <!--LEFT SECTION Start------>
-<div id="checkout_step_1">
+<div>
 <form class="checkout_step_1">
 <div class="col-md-9">
 <div class="row">
@@ -102,10 +102,11 @@ if(!empty($items)){
 	<?php
 	foreach($items as $item){
 		$img_src='';
+		$product=$this->product_model->get_product_by_id($item['id']);
 		//$details=$this->catalog_model->get_product_related_details($product->product_id);
 		//$href=base_url($details->category_slug.'/'.$details->product_slug.'/'.$details->model_slug);
-		if(file_exists(UPLOADS_PRODUCT_THUMB.$item->product_image)){								
-			$img_src=str_replace(FCPATH.'/',base_url(),UPLOADS_PRODUCT_THUMB).$item->product_image;
+		if(file_exists(UPLOADS_PRODUCT_THUMB.$product->product_image)){								
+			$img_src=str_replace(FCPATH.'/',base_url(),UPLOADS_PRODUCT_THUMB).$product->product_image;
 		}
 		
 		/* if(!empty($item->has_variation)){
@@ -133,17 +134,17 @@ if(!empty($items)){
 				break;			
 		} */ 
 		?>
-		<li class="cart-item" data-rowid="<?php echo $item->order_details_id; ?>">
+		<li class="cart-item" data-rowid="<?php echo $item['rowid']; ?>">
 		<div class="cart-inn">
         <div class="cart-pic"><img src="<?php echo $img_src;?>"></div>
-		<h4><?php echo $item->model_name.'&nbsp;'.$item->product_name;?></h4>
-		<p><strong>Condition</strong>: <?php echo ucwords($item->product_condition);?></p>
-		<p><strong>Price</strong>: $<?php echo $item->price;?></p>
-		<a href="javascript:void(0);" class="delete_cart_item" data-rowid="<?php echo $item->order_details_id; ?>">Delete</a>
+		<h4><?php echo $product->model_name.'&nbsp;'.$product->product_name;?></h4>
+		<p><strong>Condition</strong>: <?php echo ucwords($item['options']['condition']);?></p>
+		<p><strong>Price</strong>: $<?php echo $item['price'];?></p>
+		<a href="javascript:void(0);" class="delete_cart_item" data-rowid="<?php echo $item['rowid']; ?>">Delete</a>
 		</div>
 		</li>
 		<?php
-		$total_price+=$item->price;
+		$total_price+=$item['price'];
 		}
 		?>
 	</ul>

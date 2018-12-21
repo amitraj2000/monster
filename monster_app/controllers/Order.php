@@ -36,10 +36,12 @@ class Order extends CI_Controller {
 		
 		if($this->input->post('submit_step_3'))
 		{
-			$pending_order=$this->order_model->get_current_user_pending_order();	
+			$this->load->library('cart');
+			$this->cart->destroy();
+			/* $pending_order=$this->order_model->get_current_user_pending_order();	
 			$args['status']='2';
 			$args['shipping_type']=$this->input->post('shipping_type');
-			$this->order_model->update_order($pending_order->order_id,$args);
+			$this->order_model->update_order($pending_order->order_id,$args); */
 			redirect('/thankyou');
 			die;
 		}
@@ -59,6 +61,7 @@ class Order extends CI_Controller {
 	public function checkout_step_1()
 	{
 		$payment_type=$this->input->post('payment_type');
+		$this->load->library('cart');
 		$output=array('error'=>true,'msg'=>'','content'=>'');
 		$args=array(
 					'payment_type'=>$payment_type,
@@ -80,10 +83,10 @@ class Order extends CI_Controller {
 				$output['msg']='Email does not matches';
 			}
 			else{
-				$pending_order=$this->order_model->get_current_user_pending_order();	
+				/* $pending_order=$this->order_model->get_current_user_pending_order();	
 				$gateway_details_arr=array('paypal_email'=>$paypal_email);
 				$args['gateway_details']=serialize($gateway_details_arr);
-				$this->order_model->update_order($pending_order->order_id,$args);
+				$this->order_model->update_order($pending_order->order_id,$args); */
 				$output['error']=false;				
 			}
 		}
@@ -116,22 +119,25 @@ class Order extends CI_Controller {
 				$output['msg']='Please enter zip code';
 			}
 			else{
-				$pending_order=$this->order_model->get_current_user_pending_order();	
+				/* $pending_order=$this->order_model->get_current_user_pending_order();	
 				$gateway_details_arr=array('payable_to'=>$payable_to,'address_1'=>$address_1,'address_2'=>$address_2,'city'=>$city,'zip_code'=>$zip_code);
 				$args['gateway_details']=serialize($gateway_details_arr);
-				$this->order_model->update_order($pending_order->order_id,$args);
+				$this->order_model->update_order($pending_order->order_id,$args); */
 				$output['error']=false;				
 			}
 		}
-		$items=$this->order_model->get_orders(array('status'=>'1'));//show only pending orders as cart items
 		
-		$args['items']=$items;
+		
+		
+		
+		$args['items']=$this->cart->contents();
 		$output['content']= $this->load->view('order/checkout_step_2',$args,TRUE);
 		echo json_encode($output);
 		die;
 	}
 	
 	public function checkout_step_2(){
+		$this->load->library('cart');
 		$output=array('error'=>true,'msg'=>'','content'=>'');
 		$first_name=$this->input->post('first_name');
 		$last_name=$this->input->post('last_name');
@@ -141,6 +147,7 @@ class Order extends CI_Controller {
 		$province=$this->input->post('province');
 		$zip_code=$this->input->post('zip_code');
 		$phone_number=$this->input->post('phone_number');
+		$cart_items=$this->cart->contents();
 		if(empty($first_name)){
 			$output['msg']='Please enter first name';
 		}
@@ -161,12 +168,10 @@ class Order extends CI_Controller {
 		}
 		/* else{//validate zip code and address with usps here
 			
-		} */
+		}*/else if(empty($cart_items)){
+			$output['msg']='Your cart is empty';
+		} 
 		else{
-			$pending_order=$this->order_model->get_current_user_pending_order();	
-			$shipping_arr=array('first_name'=>$first_name,'last_name'=>$last_name,'address_1'=>$address_1,'address_2'=>$address_2,'city'=>$city,'province'=>$province,'zip_code'=>$zip_code,'phone_number'=>$phone_number);
-			$args['shipping_address']=serialize($shipping_arr);
-			$this->order_model->update_order($pending_order->order_id,$args);
 			$output['error']=false;	
 		}
 		$args=array();

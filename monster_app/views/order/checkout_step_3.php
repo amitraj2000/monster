@@ -2,7 +2,7 @@
 <div class="row">
 <div class="col-md-12">
 
-<form action="<?php echo base_url('/payment-carrier');?>" method="post">
+<form action="<?php echo base_url('/payment-carrier');?>" method="post" class="payment-carrier">
 <div class="row">
 <div class="col-md-6" >
 <div class="p-m-section">

@@ -158,7 +158,28 @@ class Login extends CI_Controller {
 		$this->load->view('register',$args);
 		$this->load->view('common/footer');
 	}
-	
+	public function ajax_email()
+	{
+		parse_str($this->input->post('data'),$param);
+		
+		$output=array('error'=>true,'msg'=>'');
+		
+		if(empty($param['email'])){
+			$output['msg']= 'Please enter your email';
+		}
+		else if(!valid_email($param['email'])){
+			$output['msg']= 'Please enter valid email';
+		}		
+		else if(is_email_exists($param['email'])){
+			$output['msg']='Email already exists';
+		}		
+		else{			
+			$output['msg']='';
+			$output['error']=false;			
+		}
+		echo json_encode($output);
+		die;
+	}
 	public function ajax_register()
 	{
 		parse_str($this->input->post('data'),$param);

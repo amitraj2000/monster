@@ -82,7 +82,7 @@
 											<input type="hidden" name="product_id"  value="<?php echo $product->product_id;?>">
 											<input type="hidden" name="condition" value="flawless" >
 											<input type="hidden" name="need_provider"  value="<?php echo $need_provider;?>">											
-											<button class="next <?php echo !empty($product->enable_icloud)?'disabled':''; ?>" <?php echo !empty($product->enable_icloud)?'disabled="true"':''; ?> type="submit">Next</button>
+											<button class="next <?php echo !empty($product->enable_icloud)?'disabled':''; ?>" <?php echo !empty($product->enable_icloud)?'disabled="true"':''; ?> type="submit">Get Paid</button>
 										</form>
 										<?php } else{?>
 										We're Sorry! We stopped purchasing this device in the specified condition.
@@ -133,7 +133,7 @@
 											<input type="hidden" name="product_id"  value="<?php echo $product->product_id;?>">
 											<input type="hidden" name="condition" value="good" >
 											<input type="hidden" name="need_provider"  value="<?php echo $need_provider;?>">											
-											<button class="next <?php echo !empty($product->enable_icloud)?'disabled':''; ?>" <?php echo !empty($product->enable_icloud)?'disabled="true"':''; ?> type="submit">Next</button>
+											<button class="next <?php echo !empty($product->enable_icloud)?'disabled':''; ?>" <?php echo !empty($product->enable_icloud)?'disabled="true"':''; ?> type="submit">Get Paid</button>
 										</form>
 										<?php } else{?>
 										We're Sorry! We stopped purchasing this device in the specified condition.
@@ -181,7 +181,7 @@
 											<input type="hidden" name="product_id"  value="<?php echo $product->product_id;?>">
 											<input type="hidden" name="condition" value="broken" >
 											<input type="hidden" name="need_provider"  value="<?php echo $need_provider;?>">											
-											<button class="next <?php echo !empty($product->enable_icloud)?'disabled':''; ?>" <?php echo !empty($product->enable_icloud)?'disabled="true"':''; ?> type="submit">Next</button>
+											<button class="next <?php echo !empty($product->enable_icloud)?'disabled':''; ?>" <?php echo !empty($product->enable_icloud)?'disabled="true"':''; ?> type="submit">Get Paid</button>
 										</form>
 										<?php } else{?>
 										We're Sorry! We stopped purchasing this device in the specified condition.
@@ -208,9 +208,11 @@
 					</div>
 				</div>
 				<?php } ?>
-				<?php 
-				$is_logged_in=is_logged_in();
-				if(empty($is_logged_in)){?>
+				<div class="container" id="email_section" style="display:none;">
+					<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
+						
+					</div>
+				</div>
 				<div class="container" id="login_section" style="display:none;">
 					<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
 						
@@ -221,10 +223,9 @@
 					registration section
 					</div>
 				</div>
-				<?php } ?>
-				<div class="container" id="after_login_section" style="display:none;">
+				<div class="container" id="cart_section" style="display:none;">
 					<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
-					after login section
+					cart section
 					</div>
 				</div>
 				<div id="checkout_step_2" style="display:none;">
