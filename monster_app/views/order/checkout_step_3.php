@@ -2,7 +2,7 @@
 <div class="row">
 <div class="col-md-12">
 
-<form action="<?php echo base_url('/payment-carrier');?>" method="post" class="payment-carrier">
+<form action="<?php echo base_url('/payment-carrier');?>" method="post" id="payment-carrier-form">
 <div class="row">
 <div class="col-md-6" >
 <div class="p-m-section">
@@ -34,7 +34,29 @@
 
 
 </div>
-
+<?php 
+$cart_data=$this->session->userdata('cart_data');
+$shipping_data=$this->session->userdata('shipping_data');
+if(!empty($cart_data))
+{
+	foreach($cart_data as $key=>$cart)
+	{
+		?>
+		<input type="hidden" name="<?php echo $key;?>" value="<?php echo $cart;?>">
+		<?php 
+	}
+}
+if(!empty($shipping_data))
+{
+	foreach($shipping_data as $key=>$shipping)
+	{
+		?>
+		<input type="hidden" name="shipping_<?php echo $key;?>" value="<?php echo $shipping;?>">
+		<?php 
+	}
+}
+?>
+<input type="hidden" name="final_submit" value="true">
 </form>
 <!--LEFT SECTION END-->
 

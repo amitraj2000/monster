@@ -35,6 +35,7 @@ class Login extends CI_Controller {
 					$this->session->set_flashdata('error_msg', 'You are not allowed to login');				
 				}
 				else{
+					$this->session->unset_userdata('quick_email');
 					$this->set_auth_redirect($user->user_id);					
 				}
 			}
@@ -58,11 +59,11 @@ class Login extends CI_Controller {
 		if(empty($param['email'])){
 			$output['msg']='Please enter email';
 		}
-		elseif(!empty($param['email']) && !filter_var($param['email'], FILTER_VALIDATE_EMAIL)){
+		elseif(!empty($param['email']) && !valid_email($param['email'])){
 			$output['msg']='Please enter valid email';
 		}
 		elseif(empty($param['password'])){
-			$output['msg']='Please enter valid email';
+			$output['msg']='Please enter your password';
 		}
 		else{
 						
@@ -72,6 +73,7 @@ class Login extends CI_Controller {
 				$output['msg']='You are not allowed to login';
 			}
 			else{
+				$this->session->unset_userdata('quick_email');
 				$this->set_auth($user->user_id);					
 				$output['msg']='';
 				$output['error']=false;
@@ -141,6 +143,7 @@ class Login extends CI_Controller {
 						'status'=>'1'
 				);
 				$this->insert_user($data);
+				$this->session->unset_userdata('quick_email');
 				$this->set_auth_redirect($user_id);
 				
 			}
@@ -170,10 +173,11 @@ class Login extends CI_Controller {
 		else if(!valid_email($param['email'])){
 			$output['msg']= 'Please enter valid email';
 		}		
-		else if(is_email_exists($param['email'])){
+		/* else if(is_email_exists($param['email'])){
 			$output['msg']='Email already exists';
-		}		
-		else{			
+		} */		
+		else{		
+			$this->session->set_userdata('quick_email', $param['email']);
 			$output['msg']='';
 			$output['error']=false;			
 		}
@@ -224,6 +228,7 @@ class Login extends CI_Controller {
 			);
 			
 			$this->insert_user($data);
+			$this->session->unset_userdata('quick_email');
 			$this->set_auth($user_id);
 			
 			$output['msg']='';

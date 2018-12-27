@@ -7,7 +7,7 @@
 				<label for="first_name">First Name:</label>
 				<input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter Your First Name" value="<?php echo !empty($form_data['first_name'])?$form_data['first_name']:'';?>">
 			  </div>
-			</div>
+			</div>			
 			<div>
 				<div class="form-group">
 					<label for="last_name">Last Name:</label>
@@ -15,10 +15,11 @@
 				</div>						  
 			  
 		   </div>
-		  <div>
+		   <?php $quick_email=$this->session->userdata('quick_email');?>
+		  <div style="<?php echo !empty($quick_email)?'display:none;':'';?>">
 			  <div class="form-group">
 				<label for="email">Email Address:</label>
-				<input type="email" class="form-control" id="email" name="email" placeholder="Enter Your Email Address" value="<?php echo !empty($form_data['email'])?$form_data['email']:'';?>">
+				<input type="email" class="form-control" id="email" name="email" placeholder="Enter Your Email Address" value="<?php echo !empty($quick_email)?$quick_email:'';?>">
 			  </div>
 		  </div>
 		  <div>

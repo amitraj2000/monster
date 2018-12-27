@@ -2,9 +2,10 @@
             <h2>SIGN IN WITH MONSTER</h2>
             <div class="ajax-login-msg"></div>
             <form action="<?php echo site_url('/login');?>" method="post" class="ajax-login">
-              <div class="form-group">
+			<?php $quick_email=$this->session->userdata('quick_email');?>
+			 <div class="form-group" style="<?php echo !empty($quick_email)?'display:none;':'';?>">
                 <label for="email">Email address:</label>
-                <input type="email" name="email" class="form-control" id="email" placeholder="Enter Your Email Address" value="<?php echo !empty($form_data['email'])?$form_data['email']:'';?>">
+                <input type="email" name="email" class="form-control" id="email" placeholder="Enter Your Email Address" value="<?php echo !empty($quick_email)?$quick_email:'';?>">
               </div>
               <div class="form-group">
                 <label for="pwd">Password:</label>

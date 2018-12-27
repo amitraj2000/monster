@@ -41,7 +41,7 @@
 									<?php
 									$shipping_address=unserialize($order->shipping_address);
 									echo $shipping_address['first_name'].'&nbsp;'.$shipping_address['last_name'];
-									echo '<br/>'.$shipping_address['address_1'];
+									echo !empty($shipping_address['address_1'])?'<br/>'.$shipping_address['address_1']:'';
 									echo !empty($shipping_address['address_2'])?'<br/>'.$shipping_address['address_2']:'';
 									echo '<br/>'.$shipping_address['city'].$shipping_address['province'].','.$shipping_address['zip_code'];
 									echo !empty($shipping_address['phone_number'])?'<br/>'.$shipping_address['phone_number']:'';

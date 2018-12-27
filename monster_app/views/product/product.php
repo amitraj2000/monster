@@ -198,6 +198,32 @@
 									<!--end broken-->
 								</div>
 							</div>
+							
+							<!--Hidden email form-->
+							<div id="email_section" style="display:none;">
+								<div class="ajax-login-bg2">
+                                	<h2>Enter Your Email Address</h2>
+                                	<div class="row">
+                                    	<div class="col-md-6" style="border-right:1px solid #ccc;">                                        	
+											<P>We will use this email to send you shipping details and progress updates</P>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                        	<div class="ajax-email-msg"></div>													
+                                            <form action="" method="post" class="get-email">
+                                              <div class="form-group">
+                                                <label for="email">Email address:</label>
+                                                <input type="email" name="email" class="form-control" id="email" placeholder="Enter Your Email Address" value="<?php echo !empty($form_data['email'])?$form_data['email']:'';?>">
+                                              </div>                 
+                                              <button type="submit" name="submit" value="login" class="btn btn-default">Continue</button>
+                                            </form>
+                                        </div>
+                                        
+                                    </div>
+								</div>
+							</div>
+							
+							<!--Hidden email form-->
 						</div>
 					</div>
 				</div><!--end container-->
@@ -208,11 +234,11 @@
 					</div>
 				</div>
 				<?php } ?>
-				<div class="container" id="email_section" style="display:none;">
+				<!--<div class="container" id="email_section" style="display:none;">
 					<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
 						
 					</div>
-				</div>
+				</div>-->
 				<div class="container" id="login_section" style="display:none;">
 					<div class="col-md-12 col-sm-12 col-xs-12 ajax_content">
 						

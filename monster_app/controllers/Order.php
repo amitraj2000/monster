@@ -33,15 +33,77 @@ class Order extends CI_Controller {
 	public function paymant_carrier(){
 		if(!is_logged_in())
 			redirect('/register');
+		$this->load->library('cart');
 		
-		if($this->input->post('submit_step_3'))
+		
+		if($this->input->post('final_submit'))
 		{
-			$this->load->library('cart');
+			
+			$shipping_type=$this->input->post('shipping_type');
+			$payment_type=$this->input->post('payment_type');
+			if($payment_type=='cheque')
+			{
+				$payable_to=$this->input->post('payable_to');
+				$address_1=$this->input->post('address_1');
+				$address_2=$this->input->post('address_2');
+				$city=$this->input->post('city');
+				$province=$this->input->post('province');
+				$zip_code=$this->input->post('zip_code');
+				$gateway_details_arr=array('payable_to'=>$payable_to,'address_1'=>$address_1,'address_2'=>$address_2,'city'=>$city,'province'=>$province,'zip_code'=>$zip_code);
+			}else if($payment_type=='paypal'){
+				$paypal_email=$this->input->post('paypal_email');
+				$gateway_details_arr=array('paypal_email'=>$paypal_email);
+			}			
+			$shipping_first_name=$this->input->post('shipping_first_name');
+			$shipping_last_name=$this->input->post('shipping_last_name');
+			$shipping_address_1=$this->input->post('shipping_address_1');
+			$shipping_address_2=$this->input->post('shipping_address_2');
+			$shipping_city=$this->input->post('shipping_city');
+			$shipping_province=$this->input->post('shipping_province');
+			$shipping_zip_code=$this->input->post('shipping_zip_code');
+			$shipping_phone_number=$this->input->post('shipping_phone_number');
+			$shipping_arr=array('first_name'=>$shipping_first_name,'last_name'=>$shipping_last_name,'shipping_address_1'=>$shipping_address_1,'shipping_address_2'=>$shipping_address_2,'city'=>$shipping_city,'province'=>$shipping_province,'zip_code'=>$shipping_zip_code,'phone_number'=>$shipping_phone_number);
+			/*Validation here if necessary*/
+			
+			/*Validation here if necessary*/
+			//Unset cart and shipping data
+			$this->session->unset_userdata('cart_data');
+			$this->session->unset_userdata('shipping_data');
+			
+			$items=$this->cart->contents();
+			if(!empty($items))//if cart is not empty
+			{
+				
+				//insert orders
+				$box_id='MS'.random_string('nozero',10);
+				$order_id=random_string('alnum',16);			
+				$args=array(
+					'order_id'=>$order_id,
+					'user_id'=>get_current_user_id(),
+					'box_id'=>$box_id,
+					'date'=>date('Y-m-d H:i:s'),
+					'payment_type'=>$payment_type,
+					'gateway_details'=>serialize($gateway_details_arr),
+					'shipping_address'=>serialize($shipping_arr),
+					'shipping_type'=>$shipping_type,
+					'status'=>'2'
+				);
+				$this->order_model->insert_order($args);
+				
+				foreach($items as $item){
+					$args=array(
+						'order_details_id'=>random_string('alnum',16),
+						'order_id'=>$order_id,
+						'product_id'=>$item['id'],
+						'product_condition'=>$item['options']['condition'],
+						'price'=>$item['price'],
+						'provider_id'=>$item['options']['provider_id'],
+						'date'=>date('Y-m-d H:i:s'),
+					);
+					$this->order_model->insert_order_details($args);
+				}
+			}
 			$this->cart->destroy();
-			/* $pending_order=$this->order_model->get_current_user_pending_order();	
-			$args['status']='2';
-			$args['shipping_type']=$this->input->post('shipping_type');
-			$this->order_model->update_order($pending_order->order_id,$args); */
 			redirect('/thankyou');
 			die;
 		}
@@ -50,8 +112,8 @@ class Order extends CI_Controller {
 		$args['header_title']='Payment Carrier';
 		$this->load->model('product_model');
 		add_footer_js(array(22=>'jquery-ui.min.js',25=>'cart.js'));
-		$items=$this->order_model->get_orders(array('status'=>'1'));
-		$args['items']=$items;
+		
+		$args['items']=$this->cart->contents();;
 		
 		$this->load->view('common/header',$args);
 		$this->load->view('order/payment_carrier',$args);		
@@ -87,7 +149,11 @@ class Order extends CI_Controller {
 				$gateway_details_arr=array('paypal_email'=>$paypal_email);
 				$args['gateway_details']=serialize($gateway_details_arr);
 				$this->order_model->update_order($pending_order->order_id,$args); */
-				$output['error']=false;				
+				$output['error']=false;
+				$form_data=array(
+					'payment_type'=>'paypal',
+					'paypal_email'=>$paypal_email
+				);
 			}
 		}
 		else if($payment_type=='cheque')
@@ -123,15 +189,23 @@ class Order extends CI_Controller {
 				$gateway_details_arr=array('payable_to'=>$payable_to,'address_1'=>$address_1,'address_2'=>$address_2,'city'=>$city,'zip_code'=>$zip_code);
 				$args['gateway_details']=serialize($gateway_details_arr);
 				$this->order_model->update_order($pending_order->order_id,$args); */
-				$output['error']=false;				
+				$output['error']=false;	
+				$form_data=array(
+					'payment_type'=>'cheque',
+					'payable_to'=>$payable_to,
+					'address_1'=>$address_1,
+					'address_2'=>$address_2,
+					'city'=>$city,
+					'province'=>$province,
+					'zip_code'=>$zip_code
+				);
 			}
 		}
 		
-		
-		
-		
+		$this->session->set_userdata('cart_data',$form_data);
 		$args['items']=$this->cart->contents();
 		$output['content']= $this->load->view('order/checkout_step_2',$args,TRUE);
+		
 		echo json_encode($output);
 		die;
 	}
@@ -173,7 +247,20 @@ class Order extends CI_Controller {
 		} 
 		else{
 			$output['error']=false;	
+			$shipping_data=array(
+					'first_name'=>$first_name,
+					'last_name'=>$last_name,
+					'address_1'=>$address_1,
+					'address_2'=>$address_2,
+					'city'=>$city,
+					'province'=>$province,
+					'zip_code'=>$zip_code,
+					'phone_number'=>$phone_number
+				);
+			$this->session->set_userdata('shipping_data',$shipping_data);
+			
 		}
+		
 		$args=array();
 		$output['content']= $this->load->view('order/checkout_step_3',$args,TRUE);
 		echo json_encode($output);
