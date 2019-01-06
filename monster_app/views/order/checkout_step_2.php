@@ -51,7 +51,7 @@ if(!empty($items)){
 	?>
 	<ul class="cart-list">
 	<?php
-	foreach($items as $item){
+	foreach($items as $key=>$item){
 		
 		$img_src='';
 		$product=$this->product_model->get_product_by_id($item['id']);
@@ -86,13 +86,13 @@ if(!empty($items)){
 				break;			
 		} */ 
 		?>
-		<li class="cart-item" data-rowid="<?php echo $item['rowid']; ?>">
+		<li class="cart-item" data-rowid="<?php echo $key; ?>">
 		<div class="cart-inn">
         <div class="cart-pic"><img src="<?php echo $img_src;?>"></div>
 		<h4><?php echo $product->model_name.'&nbsp;'.$product->product_name;?></h4>
 		<p><strong>Condition</strong>: <?php echo ucwords($item['options']['condition']);?></p>
 		<p><strong>Price</strong>: $<?php echo $item['price'];?></p>
-		<a href="javascript:void(0);" class="delete_cart_item" data-rowid="<?php echo $item['rowid']; ?>">Delete</a>
+		<a href="javascript:void(0);" class="delete_cart_item" data-rowid="<?php echo $key; ?>" data-cartid="<?php echo $cart_id;?>">Delete</a>
 		</div>
 		</li>
 		<?php

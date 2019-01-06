@@ -110,7 +110,7 @@ class Category extends CI_Controller {
 						$this->load->library('image_lib', $img);
 						$this->image_lib->resize();
 						
-						$category_id=random_string('alnum',16);
+						$category_id=random_string('alnum',5).time();
 						
 						$slug_config = array(
 							'field' => 'category_slug',

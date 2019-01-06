@@ -165,7 +165,7 @@ class Product extends CI_Controller {
 						$this->load->library('image_lib', $img);
 						$this->image_lib->resize();
 						
-						$product_id=random_string('alnum',16);
+						$product_id=random_string('alnum',5).time();
 						
 						$slug_config = array(
 							'field' => 'product_slug',
@@ -202,7 +202,7 @@ class Product extends CI_Controller {
 						{					
 							if(!empty($var['provider_id']) && !empty($var['flawless']) && !empty($var['good']) && !empty($var['broken'])){
 														
-								$map_id=random_string('alnum',16);
+								$map_id=random_string('alnum',5).time();
 								$this->db->insert(PRODUCT_PROVIDER_MAP,array('map_id'=>$map_id,'product_id'=>$product_id,'provider_id'=>$var['provider_id'],'flawless_price'=>$var['flawless'],'good_price'=>$var['good'],'broken_price'=>$var['broken']));
 							}
 						}
@@ -440,7 +440,7 @@ class Product extends CI_Controller {
 				{					
 					if(!empty($var['provider_id']) && !empty($var['flawless']) && !empty($var['good']) && !empty($var['broken'])){
 												
-						$map_id=random_string('alnum',16);
+						$map_id=random_string('alnum',5).time();
 						$this->db->insert(PRODUCT_PROVIDER_MAP,array('map_id'=>$map_id,'product_id'=>$product_id,'provider_id'=>$var['provider_id'],'flawless_price'=>$var['flawless'],'good_price'=>$var['good'],'broken_price'=>$var['broken']));
 					}
 				}

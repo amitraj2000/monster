@@ -33,7 +33,7 @@ class Order extends CI_Controller {
 	public function paymant_carrier(){
 		if(!is_logged_in())
 			redirect('/register');
-		$this->load->library('cart');
+		//$this->load->library('cart');
 		
 		
 		if($this->input->post('final_submit'))
@@ -70,13 +70,17 @@ class Order extends CI_Controller {
 			$this->session->unset_userdata('cart_data');
 			$this->session->unset_userdata('shipping_data');
 			
-			$items=$this->cart->contents();
+			$cart_email=is_logged_in()?get_current_user_email():$this->session->userdata('quick_email');
+			$cart=$this->order_model->get_cart($cart_email);
+			
+			$items=!empty($cart->content)?unserialize($cart->content):array();//$this->cart->contents();
+			rsort($items);
 			if(!empty($items))//if cart is not empty
 			{
 				
 				//insert orders
 				$box_id='MS'.random_string('nozero',10);
-				$order_id=random_string('alnum',16);			
+				$order_id=random_string('alnum',5).time();			
 				$args=array(
 					'order_id'=>$order_id,
 					'user_id'=>get_current_user_id(),
@@ -92,7 +96,7 @@ class Order extends CI_Controller {
 				
 				foreach($items as $item){
 					$args=array(
-						'order_details_id'=>random_string('alnum',16),
+						'order_details_id'=>random_string('alnum',5).time(),
 						'order_id'=>$order_id,
 						'product_id'=>$item['id'],
 						'product_condition'=>$item['options']['condition'],
@@ -102,8 +106,10 @@ class Order extends CI_Controller {
 					);
 					$this->order_model->insert_order_details($args);
 				}
+				$this->order_model->destroy_cart($cart->cart_id);
 			}
-			$this->cart->destroy();
+			
+			//$this->cart->destroy();
 			redirect('/thankyou');
 			die;
 		}
@@ -113,7 +119,7 @@ class Order extends CI_Controller {
 		$this->load->model('product_model');
 		add_footer_js(array(22=>'jquery-ui.min.js',25=>'cart.js'));
 		
-		$args['items']=$this->cart->contents();;
+		//$args['items']=$this->cart->contents();;
 		
 		$this->load->view('common/header',$args);
 		$this->load->view('order/payment_carrier',$args);		
@@ -123,7 +129,7 @@ class Order extends CI_Controller {
 	public function checkout_step_1()
 	{
 		$payment_type=$this->input->post('payment_type');
-		$this->load->library('cart');
+		//$this->load->library('cart');
 		$output=array('error'=>true,'msg'=>'','content'=>'');
 		$args=array(
 					'payment_type'=>$payment_type,
@@ -203,7 +209,11 @@ class Order extends CI_Controller {
 		}
 		
 		$this->session->set_userdata('cart_data',$form_data);
-		$args['items']=$this->cart->contents();
+		$cart_email=is_logged_in()?get_current_user_email():$this->session->userdata('quick_email');
+		$cart=$this->order_model->get_cart($cart_email);
+		$args['items']=!empty($cart->content)?unserialize($cart->content):array();//$this->cart->contents();
+		rsort($args['items']);
+		$args['cart_id']=!empty($cart->cart_id)?$cart->cart_id:'';
 		$output['content']= $this->load->view('order/checkout_step_2',$args,TRUE);
 		
 		echo json_encode($output);
@@ -221,7 +231,9 @@ class Order extends CI_Controller {
 		$province=$this->input->post('province');
 		$zip_code=$this->input->post('zip_code');
 		$phone_number=$this->input->post('phone_number');
-		$cart_items=$this->cart->contents();
+		$cart_email=is_logged_in()?get_current_user_email():$this->session->userdata('quick_email');
+		$cart=$this->order_model->get_cart($cart_email);
+		$cart_items=!empty($cart->content)?unserialize($cart->content):array();
 		if(empty($first_name)){
 			$output['msg']='Please enter first name';
 		}

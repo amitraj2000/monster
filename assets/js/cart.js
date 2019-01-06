@@ -2,15 +2,20 @@ $(document).ready(function(){
 	
 	$(document).on('click','.delete_cart_item',function(){
 	var rowid=$(this).attr('data-rowid');
+	var cartid=$(this).attr('data-cartid');
 	$.ajax({
 	  method: "POST",
+	  dataType:'json',
 	  url: monsterObj.base_url+"product/delete_cart_item",
-	  data: { 'rowid':rowid},
+	  data: { 'rowid':rowid,'cartid':cartid},
 	  success:function(response){
 		  $('.cart').each(function(){
 			 $(this).find('.cart-list').find('li.cart-item[data-rowid="'+rowid+'"]').remove();		
-			  if(response!='')
-			  $(this).html(response);
+			  if(response.no_item!=''){
+				$(this).html(response.no_item);
+			  }else{
+				  $(this).find('.total').html(response.total_price);
+			  }
 		  });
 		  
 		

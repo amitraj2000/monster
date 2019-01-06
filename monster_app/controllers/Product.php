@@ -87,7 +87,7 @@ class Product extends CI_Controller {
 	public function ajax_load_cart(){
 		$data=$this->input->post('data');
 		parse_str($data, $params);
-		$this->load->library('cart');
+		//$this->load->library('cart');
 		
 		$product=$this->product_model->get_product_by_id($params['product_id']);
 		if(!empty($product->has_variation)){
@@ -114,22 +114,52 @@ class Product extends CI_Controller {
 				else
 				$price=$product->broken_price;				
 				break;			
-		}	
+		}
 		
-		$items=$this->cart->contents();
-		$product_ids=array_column($items, 'id');
-		if(!in_array($params['product_id'],$product_ids)){
-			//insert to cart
-			$data = array(
+		$cart_email=is_logged_in()?get_current_user_email():$this->session->userdata('quick_email');
+		$cart=$this->order_model->get_cart($cart_email);
+		
+		
+		if(!empty($cart)){//add item to an existing cart
+			$items=!empty($cart->content)?unserialize($cart->content):array();			
+			rsort($items);
+			$product_ids=array_column($items, 'id');			
+			if(!in_array($params['product_id'],$product_ids)){						
+				$cart_item_key=time();
+				$items[$cart_item_key]= array(
+						'id'      => $params['product_id'],
+						'qty'     => 1,
+						'price'   => $price,
+						'name'    => $product->product_name,
+						'options' => array('condition' =>$params['condition'], 'provider_id' => $params['provider_id'])
+				);
+				$this->order_model->update_cart_item($cart->cart_id,array('content'=>serialize($items)));
+			}
+		}else{//insert to cart
+			$dt = date("Y-m-d");
+			$expires_on=date( "Y-m-d H:i:s", strtotime( "$dt +2 day" ) );
+			$cart_item_key=time();
+			$items[$cart_item_key]= array(
 					'id'      => $params['product_id'],
 					'qty'     => 1,
 					'price'   => $price,
 					'name'    => $product->product_name,
 					'options' => array('condition' =>$params['condition'], 'provider_id' => $params['provider_id'])
 			);
-			$this->cart->insert($data);
+			$data=array(
+				'cart_id'=>random_string('alnum',5).time(),
+				'email'=>$cart_email,
+				'content'=>serialize($items),
+				'expires_on'=>$expires_on,
+				'date'=>date( "Y-m-d H:i:s")
+			);
+			$this->order_model->insert_into_cart($data);
 		}
-		$args['items']=$this->cart->contents();
+		
+		$cart=$this->order_model->get_cart($cart_email);
+		$args['items']=!empty($cart->content)?unserialize($cart->content):array();
+		rsort($args['items']);
+		$args['cart_id']=!empty($cart->cart_id)?$cart->cart_id:'';
 		echo $this->load->view('order/cart',$args,TRUE);
 		die;
 	}
@@ -209,19 +239,30 @@ class Product extends CI_Controller {
 	
 	public function delete_cart_item(){
 		$rowid=$this->input->post('rowid');
-		$this->load->library('cart');
-		
-		 $data = array(
-            'rowid'   => $rowid,
-            'qty'     => 0
-        );
+		$cartid=$this->input->post('cartid');
+		//$this->load->library('cart');
+		$cart=$this->order_model->get_cart_by_id($cartid);
+		$items=!empty($cart->content)?unserialize($cart->content):array();
+		if(!empty($cart) && array_key_exists($rowid,$items))
+		{
+			unset($items[$rowid]);
+			$this->order_model->update_cart_item($cart->cart_id,array('content'=>serialize($items)));
+		}
 
-        $this->cart->update($data);
-		$items=$this->cart->contents();
-		
-		$items=$this->order_model->get_total_orders(array('status'=>'1'));
-		if(empty($items))
-			echo 'No items in cart';
+       //$this->cart->update($data);
+		$cart=$this->order_model->get_cart_by_id($cartid);
+		$output=array('no_item'=>'','total_price'=>'');
+		$items=!empty($cart->content)?unserialize($cart->content):array();;
+		if(empty($items)){
+			$output['no_item']= 'No items in cart';
+		}else if(!empty($items)){
+			$total_price=0;
+			foreach($items as $item){
+				$total_price+=$item['price'];
+			}
+			$output['total_price']='<strong>Total</strong>: $'.$total_price;
+		}
+		echo json_encode($output);
 		die;
 	}
 	

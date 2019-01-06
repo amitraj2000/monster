@@ -202,7 +202,7 @@ class User extends CI_Controller {
 			}
 			else{
 					
-				$user_id=random_string('alnum',16);
+				$user_id=random_string('alnum',5).time();
 				$data = array(
 					'user_id' => $user_id,
 					'first_name' => $first_name,

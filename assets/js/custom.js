@@ -14,6 +14,19 @@ $(document).ready(function(){
         }, 300);
         return false;
     });
+	
+	$(document).on('click','#abandondoned_email_login_yes',function(){
+		monsterObj.quick_email=false;
+		$.ajax({
+		  method: "POST",
+		 // dataType:'json',
+		  url: monsterObj.base_url+"login/abandondoned_email_login_request",
+		  //data: { 'rowid':rowid,'cartid':cartid},
+		  success:function(response){
+			$('#abandondoned_email_login').modal('hide');			
+		  }
+		});
+	});
 
 
 /*-------------------------------------STICKY_NAV-------------------------------------*/
@@ -129,9 +142,16 @@ $(document).ready(function(){
 			$.ajax({
 				url: monsterObj.base_url+"login/google_user_authentication", 
 				method:'POST',
+				dataType:'json',
 				data:{'first_name':profile.getGivenName(),'last_name':profile.getFamilyName(),'email':profile.getEmail()},
 				success: function(result){
-					window.location.href=result;
+					if(result.error==true){
+						//alert(result.msg);
+						$('#abandondoned_email_login').modal('show');
+					}else{
+						monsterObj.is_logged_in=true;
+						window.location.href=result.redirect;
+					}
 				}
 			});
         }, function(error) {
@@ -144,9 +164,17 @@ function onSignIn(googleUser) {
   $.ajax({
 		url: monsterObj.base_url+"login/google_user_authentication", 
 		method:'POST',
+		dataType:'json',
 		data:{'first_name':profile.getGivenName(),'last_name':profile.getFamilyName(),'email':profile.getEmail()},
 		success: function(result){
-			window.location.href=result;
+			if(result.error==true){
+				//alert(result.msg);
+				$('#abandondoned_email_login').modal('show');
+			}else{
+				monsterObj.is_logged_in=true;
+				window.location.href=result.redirect;
+			}
+			
 		}
 	}); 
 }

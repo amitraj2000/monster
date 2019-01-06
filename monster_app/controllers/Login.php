@@ -35,7 +35,6 @@ class Login extends CI_Controller {
 					$this->session->set_flashdata('error_msg', 'You are not allowed to login');				
 				}
 				else{
-					$this->session->unset_userdata('quick_email');
 					$this->set_auth_redirect($user->user_id);					
 				}
 			}
@@ -54,7 +53,7 @@ class Login extends CI_Controller {
 	
 	public function ajax_login(){
 		parse_str($this->input->post('data'),$param);
-		
+		$quick_email=$this->session->userdata('quick_email');
 		$output=array('error'=>true,'msg'=>'');
 		if(empty($param['email'])){
 			$output['msg']='Please enter email';
@@ -73,7 +72,6 @@ class Login extends CI_Controller {
 				$output['msg']='You are not allowed to login';
 			}
 			else{
-				$this->session->unset_userdata('quick_email');
 				$this->set_auth($user->user_id);					
 				$output['msg']='';
 				$output['error']=false;
@@ -132,7 +130,7 @@ class Login extends CI_Controller {
 			}
 			else{
 				
-				$user_id=random_string('alnum',16);
+				$user_id=random_string('alnum',5).time();
 				$data = array(
 						'user_id' => $user_id,
 						'first_name' => $first_name,
@@ -143,7 +141,6 @@ class Login extends CI_Controller {
 						'status'=>'1'
 				);
 				$this->insert_user($data);
-				$this->session->unset_userdata('quick_email');
 				$this->set_auth_redirect($user_id);
 				
 			}
@@ -216,7 +213,7 @@ class Login extends CI_Controller {
 		}
 		else{
 			
-			$user_id=random_string('alnum',16);
+			$user_id=random_string('alnum',5).time();
 			$data = array(
 					'user_id' => $user_id,
 					'first_name' => $param['first_name'],
@@ -228,7 +225,6 @@ class Login extends CI_Controller {
 			);
 			
 			$this->insert_user($data);
-			$this->session->unset_userdata('quick_email');
 			$this->set_auth($user_id);
 			
 			$output['msg']='';
@@ -240,14 +236,20 @@ class Login extends CI_Controller {
 	}
 	
 	public function google_user_authentication(){
-		
+		$quick_email=$this->session->userdata('quick_email');
 		$first_name=$this->input->post('first_name');
 		$last_name=$this->input->post('last_name');
 		$email=$this->input->post('email');
-		$user_id=random_string('alnum',16);
+		$user_id=random_string('alnum',5).time();
 		$password=random_string('alnum',8);
 		$email_exists=is_email_exists($email);//returns user_id
-		if(!empty($email_exists)){
+		$output=array('error'=>false,'msg'=>'','redirect'=>site_url());
+		if(!empty($quick_email) && $quick_email!==$email)
+		{
+			$output['error']=true;
+			$output['msg']='The email you gave earlier does not match';
+		}
+		else if(!empty($email_exists)){
 			$this->set_auth($email_exists);
 		}
 		else{
@@ -263,7 +265,7 @@ class Login extends CI_Controller {
 			$this->insert_user($data);
 			$this->set_auth($user_id);
 		}
-		echo site_url();
+		echo json_encode($output);
 		die;
 	}
 	
@@ -273,10 +275,12 @@ class Login extends CI_Controller {
 	
 	public function set_auth_redirect($user_id){
 		$this->session->set_userdata(array('logged_in'=>true,'user_id'=>$user_id));
+		$this->session->unset_userdata('quick_email');
 		redirect('/');
 	}
 	public function set_auth($user_id){
 		$this->session->set_userdata(array('logged_in'=>true,'user_id'=>$user_id));
+		$this->session->unset_userdata('quick_email');
 	}
 	
 	public function process_logout(){
@@ -284,8 +288,14 @@ class Login extends CI_Controller {
 		$user_id=$this->session->userdata('user_id');
 		if(!empty($logged_in) && !empty($user_id)){
 			$this->session->unset_userdata(array('logged_in','user_id'));
+			$this->session->unset_userdata('quick_email');
 		}
 		redirect('/');
+	}
+	
+	public function abandondoned_email_login_request()
+	{
+		$this->session->unset_userdata('quick_email');
 	}
 	
 }

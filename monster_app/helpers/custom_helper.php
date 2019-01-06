@@ -26,6 +26,20 @@ if ( ! function_exists('get_current_user_id'))
 			return false;
     }   
 }
+if ( ! function_exists('get_current_user_email'))
+{
+    function get_current_user_email()
+    {
+		$CI =&get_instance();
+		$logged_in=$CI->session->userdata('logged_in');
+		$user_id=$CI->session->userdata('user_id');
+		$user=$CI->user_model->get_user_by_id($user_id);
+        if(!empty($user->email))
+			return $user->email;
+		else
+			return false;
+    }   
+}
 if ( ! function_exists('is_email_exists'))
 {
     function is_email_exists($email)

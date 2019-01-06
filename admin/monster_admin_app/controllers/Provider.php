@@ -102,7 +102,7 @@ class Provider extends CI_Controller {
 						$this->load->library('image_lib', $img);
 						$this->image_lib->resize();
 						
-						$provider_id=random_string('alnum',16);
+						$provider_id=random_string('alnum',5).time();
 						$data = array(
 							'provider_id' => $provider_id,
 							'provider_name' => $name,

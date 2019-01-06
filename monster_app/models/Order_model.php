@@ -1,5 +1,42 @@
 <?php
 class Order_model extends CI_Model {
+		public function insert_into_cart($args){
+			$this->db->insert(CART_MASTER, $args);
+		}
+		public function update_cart_item($cart_id='',$args){
+			
+			$this->db->where('cart_id', $cart_id);
+			if(!empty($args)){
+				foreach($args as $key=>$value)
+				{
+					$this->db->set($key, $value);
+				}
+			}
+			$this->db->update(CART_MASTER);
+		}
+		public function destroy_cart($cart_id){
+			$this->db->where('cart_id', $cart_id);
+			$this->db->delete(CART_MASTER);
+		}
+		public function get_cart($email=''){
+			if(empty($email))
+				$email=get_current_user_email();
+			//$this->db->insert(CART_MASTER, $args);
+			$this->db->select('*');
+			$this->db->from(CART_MASTER);
+			$this->db->where('email',$email);
+			$query = $this->db->get();
+			return $query->row();
+		}
+		public function get_cart_by_id($cart_id){
+			
+			$this->db->select('*');
+			$this->db->from(CART_MASTER);
+			$this->db->where('cart_id',$cart_id);
+			$query = $this->db->get();
+			return $query->row();
+		}
+		
 		
 		public function insert_order($args)
 		{

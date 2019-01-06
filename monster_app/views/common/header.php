@@ -16,7 +16,7 @@
 	<!--Google login-->
 	
 	<script type="text/javascript">
-		var monsterObj={'base_url':'<?php echo base_url();?>','is_logged_in':<?php $is_logged_in=is_logged_in();echo !empty($is_logged_in)?'true':'false';?>}
+		var monsterObj={'base_url':'<?php echo base_url();?>','is_logged_in':<?php $is_logged_in=is_logged_in();echo !empty($is_logged_in)?'true':'false';?>,'quick_email':<?php $has_quick_email=$this->session->userdata('quick_email');echo !empty($has_quick_email)?'true':'false';?>}
 	</script>
 </head>
 

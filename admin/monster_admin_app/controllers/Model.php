@@ -109,7 +109,7 @@ class Model extends CI_Controller {
 						$this->load->library('image_lib', $img);
 						$this->image_lib->resize();
 						
-						$model_id=random_string('alnum',16);
+						$model_id=random_string('alnum',5).time();
 						
 						$slug_config = array(
 							'field' => 'model_slug',
