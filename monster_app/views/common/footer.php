@@ -69,29 +69,7 @@
 				<p>&copy; 2018 copyright <a href="index.html" class="companyname">www.monster.ca.</a> Trademarks shown on this site are the properties of their respective owners.</p>
 			</div>
 		</div>
-	</footer>
-	<!--modal for abandoned cart email login-->
-	<div class="modal fade" tabindex="-1" role="dialog" id="abandondoned_email_login">
-	  <div class="modal-dialog" role="document">
-		<div class="modal-content">
-		  <div class="modal-header" style="height:60px;background-color:#85c226;">
-			<h2 class="modal-title" style="color:#fff;">Attetion</h2>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body">
-			<p>The email you have given earlier does not match.Please try again.</p>
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-primary" id="abandondoned_email_login_yes">Yes</button>
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-		  </div>
-		</div>
-	  </div>
-	</div>
-	
-	<!--modal for abandoned cart email login-->
+	</footer>	
 	<?php echo put_footers();?>
 </body>
 

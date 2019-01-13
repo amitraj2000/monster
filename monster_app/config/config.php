@@ -525,8 +525,11 @@ $config['proxy_ips'] = '';
 
 
 /*Add js and css files*/
-$config['header_css']= array(5=>'plugins.css',10=>'easy-responsive-tabs.css',15=>'style.css',20=>'responsive.css');
-$config['header_js']  = array();
+$config['header_css']= array(5=>'plugins.css',9=>'sweetalert2.min.css',10=>'easy-responsive-tabs.css',15=>'style.css',20=>'responsive.css');
+$config['header_js']  = array(5=>'lib/jquery-3.3.1.min.js',10=>'lib/bootstrap.min.js',14=>'sweetalert2.all.min.js');
 
 $config['footer_css']= array();
-$config['footer_js']  = array(5=>'lib/jquery-3.3.1.min.js',10=>'lib/bootstrap.min.js',15=>'lib/plugins.js',20=>'custom.js');
+$config['footer_js']  = array(15=>'lib/plugins.js',20=>'custom.js');
+
+/*usps user ID*/
+$config['usps_user_id']='587MONST6470';

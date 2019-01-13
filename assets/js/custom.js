@@ -15,7 +15,7 @@ $(document).ready(function(){
         return false;
     });
 	
-	$(document).on('click','#abandondoned_email_login_yes',function(){
+	/* $(document).on('click','#abandondoned_email_login_yes',function(){
 		monsterObj.quick_email=false;
 		$.ajax({
 		  method: "POST",
@@ -26,7 +26,8 @@ $(document).ready(function(){
 			$('#abandondoned_email_login').modal('hide');			
 		  }
 		});
-	});
+	}); */
+	
 
 
 /*-------------------------------------STICKY_NAV-------------------------------------*/
@@ -113,6 +114,26 @@ $(document).ready(function(){
 
 	
 });
+
+function abandondoned_email_login_yes()
+{
+	monsterObj.quick_email=false;
+	$.ajax({
+	  method: "POST",
+	 // dataType:'json',
+	  url: monsterObj.base_url+"login/abandondoned_email_login_request",
+	  //data: { 'rowid':rowid,'cartid':cartid},
+	  success:function(response){
+		//$('#abandondoned_email_login').modal('hide');		
+		Swal({
+		  type: 'error',
+		  title: 'Oops...',
+		  text: 'Something went wrong!',
+		  footer: '<a href="'+monsterObj.base_url+'Login and continue shopping">Login</a>'
+		});
+	  }
+	});
+}
 /*Google login*/
   var googleUser = {};
   var startGoogleLogin = function() {
@@ -147,7 +168,22 @@ $(document).ready(function(){
 				success: function(result){
 					if(result.error==true){
 						//alert(result.msg);
-						$('#abandondoned_email_login').modal('show');
+						//$('#abandondoned_email_login').modal('show');
+						Swal({
+						  title: 'Oops',
+						  text: "The email you have given earlier does not match.Please try again.",
+						  type: 'warning',
+						  showCancelButton: true,
+						  //confirmButtonColor: '#3085d6',
+						  cancelButtonColor: '#d33',
+						  confirmButtonText: 'Proceed',
+						  cancelButtonText: 'No',
+						  reverseButtons: true
+						}).then((result) => {
+						  if (result.value) {
+							abandondoned_email_login_yes();
+						  }
+						});
 					}else{
 						monsterObj.is_logged_in=true;
 						window.location.href=result.redirect;
@@ -169,7 +205,22 @@ function onSignIn(googleUser) {
 		success: function(result){
 			if(result.error==true){
 				//alert(result.msg);
-				$('#abandondoned_email_login').modal('show');
+				//$('#abandondoned_email_login').modal('show');
+				Swal({
+				  title: 'Oops',
+				  text: "The email you have given earlier does not match.Please try again.",
+				  type: 'warning',
+				  showCancelButton: true,
+				  //confirmButtonColor: '#3085d6',
+				  cancelButtonColor: '#d33',
+				  confirmButtonText: 'Proceed',
+				  cancelButtonText: 'No',
+				  reverseButtons: true
+				}).then((result) => {
+				  if (result.value) {
+					abandondoned_email_login_yes();
+				  }
+				});
 			}else{
 				monsterObj.is_logged_in=true;
 				window.location.href=result.redirect;

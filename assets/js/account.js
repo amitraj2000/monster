@@ -10,20 +10,23 @@ $(document).ready(function(){
 		var email=$.trim($(this).find('input[name="email"]').val());
 		var first_name=$.trim($(this).find('input[name="first_name"]').val());
 		var last_name=$.trim($(this).find('input[name="last_name"]').val());
-		$('#edit_profile_msg').html('').hide();
+		//$('#edit_profile_msg').html('').hide();
 		if(email=='')
 		{
-			$('#edit_profile_msg').html('Please enter your email').show();
+			//$('#edit_profile_msg').html('Please enter your email').show();
+			Swal ( "Oops" ,  'Please enter your email' ,  "error" );
 			return false;
 		}
 		if(first_name=='')
 		{
-			$('#edit_profile_msg').html('Please enter your first name').show();
+			//$('#edit_profile_msg').html('Please enter your first name').show();
+			Swal ( "Oops" ,  'Please enter your first name' ,  "error" );
 			return false;
 		}
 		if(last_name=='')
 		{
-			$('#edit_profile_msg').html('Please enter your last name').show();
+			//$('#edit_profile_msg').html('Please enter your last name').show();
+			swal ( "Oops" ,  'Please enter your last name' ,  "error" );
 			return false;
 		}else{
 			return true;
@@ -33,20 +36,23 @@ $(document).ready(function(){
 		var password=$.trim($(this).find('input[name="password"]').val());
 		var confirm_password=$.trim($(this).find('input[name="confirm_password"]').val());
 		
-		$('#change_password_msg').html('').hide();
+		//$('#change_password_msg').html('').hide();
 		if(password=='')
 		{
-			$('#change_password_msg').html('Please enter your new password').show();
+			//$('#change_password_msg').html('Please enter your new password').show();
+			Swal ( "Oops" ,  'Please enter your new password' ,  "error" );
 			return false;
 		}
 		if(confirm_password=='')
 		{
-			$('#change_password_msg').html('Please confirm new password').show();
+			//$('#change_password_msg').html('Please confirm new password').show();
+			Swal ( "Oops" ,  'Please confirm new password' ,  "error" );
 			return false;
 		}
 		if(confirm_password!=password)
 		{
-			$('#change_password_msg').html('Password does not matches').show();
+			//$('#change_password_msg').html('Password does not matches').show();
+			Swal ( "Oops" ,  'Password does not matches' ,  "error" );
 			return false;
 		}
 		else{

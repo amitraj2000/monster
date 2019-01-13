@@ -60,7 +60,7 @@ $(document).ready(function(){
 		var payment_method=$(this).find('input[name="payment_method"]:checked').val();
 		if(payment_method=='paypal')
 		{
-			$('#paypal_email_error').html('').hide();
+			//$('#paypal_email_error').html('').hide();
 			$.ajax({
 			 method: "POST",
 			 dataType:'json',
@@ -68,7 +68,8 @@ $(document).ready(function(){
 			 data: { 'payment_type':'paypal','paypal_email':$('#paypal_email').val(),'confirm_paypal_email':$('#confirm_paypal_email').val()},
 			 success:function(response){
 				  if(response.error==true){
-					  $('#paypal_email_error').html(response.msg).show();
+					  //$('#paypal_email_error').html(response.msg).show();
+					  Swal ( "Oops" ,  response.msg ,  "error" );
 				  }
 				  else{
 					 $('#checkout_step_2').find('.ajax_content').html(response.content);
@@ -84,7 +85,7 @@ $(document).ready(function(){
 		}
 		if(payment_method=='cheque')
 		{
-			$('#cheque_error').html('').hide();
+			//$('#cheque_error').html('').hide();
 			$.ajax({
 			 method: "POST",
 			 dataType:'json',
@@ -92,7 +93,8 @@ $(document).ready(function(){
 			 data: { 'payment_type':'cheque','payable_to':$('#payable_to').val(),'address_1':$('#address_1').val(),'address_2':$('#address_2').val(),'city':$('#city').val(),'province':$('#province').val(),'zip_code':$('#zip_code').val()},
 			 success:function(response){
 				  if(response.error==true){
-					  $('#cheque_error').html(response.msg).show();
+					  //$('#cheque_error').html(response.msg).show();
+					  Swal ( "Oops" ,  response.msg ,  "error" );
 				  }
 				  else{
 					 $('#checkout_step_2').find('.ajax_content').html(response.content);
@@ -111,7 +113,7 @@ $(document).ready(function(){
 	});
 	
 	$(document).on('submit','.checkout_step_2',function(){
-		$('#step_2_error').html('').hide();
+		//$('#step_2_error').html('').hide();
 		var first_name=$(this).find('input[name="first_name"]').val();
 		var last_name=$(this).find('input[name="last_name"]').val();
 		var address_1=$(this).find('input[name="address_1"]').val();
@@ -127,7 +129,8 @@ $(document).ready(function(){
 			 data: { 'first_name':first_name,'last_name':last_name,'address_1':address_1,'address_2':address_2,'city':city,'province':province,'zip_code':zip_code,'phone_number':phone_number},
 			 success:function(response){
 				  if(response.error==true){
-					  $('#step_2_error').html(response.msg).show();
+					  //$('#step_2_error').html(response.msg).show();
+					  Swal ( "Oops" ,  response.msg ,  "error" );
 				  }
 				  else{
 					 $('#checkout_step_3').find('.ajax_content').html(response.content);

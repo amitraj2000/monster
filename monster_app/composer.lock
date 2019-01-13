@@ -1,0 +1,68 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "693404db8af6125fceb9a1e2d4bf319e",
+    "packages": [
+        {
+            "name": "vinceg/usps-php-api",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/VinceG/USPS-php-api.git",
+                "reference": "48655be90a283e535a42de8feb63e8df7c6fd415"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/VinceG/USPS-php-api/zipball/48655be90a283e535a42de8feb63e8df7c6fd415",
+                "reference": "48655be90a283e535a42de8feb63e8df7c6fd415",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "USPS\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vincent Gabriel",
+                    "homepage": "http://vadimg.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Alexander Reiff",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Ryan Hayle",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP wrapper for USPS Web Tools API",
+            "keywords": [
+                "api",
+                "usps"
+            ],
+            "time": "2016-09-08T03:11:44+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

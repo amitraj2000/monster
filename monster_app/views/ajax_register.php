@@ -74,7 +74,22 @@
 							success: function(result){
 								if(result.error==true){
 									//alert(result.msg);
-									$('#abandondoned_email_login').modal('show');
+									//$('#abandondoned_email_login').modal('show');
+									Swal({
+									  title: 'Oops',
+									  text: "The email you have given earlier does not match.Please try again.",
+									  type: 'warning',
+									  showCancelButton: true,
+									  //confirmButtonColor: '#3085d6',
+									  cancelButtonColor: '#d33',
+									  confirmButtonText: 'Proceed',
+									  cancelButtonText: 'No',
+									  reverseButtons: true
+									}).then((result) => {
+									  if (result.value) {
+										abandondoned_email_login_yes();
+									  }
+									});
 								}else{
 									monsterObj.is_logged_in=true;
 									$('form#payment-carrier-form').submit();
@@ -95,7 +110,22 @@
 					success: function(result){
 						if(result.error==true){
 							//alert(result.msg);
-							$('#abandondoned_email_login').modal('show');
+							//$('#abandondoned_email_login').modal('show');
+							Swal({
+						  title: 'Oops',
+						  text: "The email you have given earlier does not match.Please try again.",
+						  type: 'warning',
+						  showCancelButton: true,
+						  //confirmButtonColor: '#3085d6',
+						  cancelButtonColor: '#d33',
+						  confirmButtonText: 'Proceed',
+						  cancelButtonText: 'No',
+						  reverseButtons: true
+						}).then((result) => {
+						  if (result.value) {
+							abandondoned_email_login_yes();
+						  }
+						});
 						}else{
 							monsterObj.is_logged_in=true;
 							$('form#payment-carrier-form').submit();

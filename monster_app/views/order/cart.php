@@ -65,7 +65,16 @@ if(!empty($items)){
 		<label><span>Address Line 1</span><input type="text" name="address_1" id="address_1"></label>		
 		<label><span>Address Line 2 (optional)</span><input type="text" name="address_2" id="address_2"></label>		
 		<label><span>City</span><input type="text" name="city" id="city"></label>		
-		<label><span>Province</span><select name="province" id="province"><option>Select</option></select></label>		
+		<label>
+			<?php $states=get_provinces();?>
+			<span>Province</span>
+			<select name="province" id="province">
+			<option value="">Select</option>
+			<?php foreach($states as $key=>$state){?>
+				<option value="<?php echo $key;?>"><?php echo $state;?></option>
+			<?php } ?>
+			</select>
+		</label>		
 		<label><span>Zip Code</span><input type="text" name="zip_code" id="zip_code"></label>
 		<div id="cheque_error" style="display:none;"></div>
 		<input type="submit" value="Continue">

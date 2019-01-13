@@ -138,6 +138,7 @@ class Order extends CI_Controller {
 		{
 			$paypal_email=$this->input->post('paypal_email');
 			$confirm_paypal_email=$this->input->post('confirm_paypal_email');
+			$form_data=array();
 			if(empty($paypal_email) || !valid_email($paypal_email))
 			{
 				$output['msg']='Please enter valid email';
@@ -170,6 +171,9 @@ class Order extends CI_Controller {
 			$city=$this->input->post('city');
 			$province=$this->input->post('province');
 			$zip_code=$this->input->post('zip_code');
+			
+			$address_arr=validate_address(array('address_1'=>$address_1,'address_2'=>$address_2,'city'=>$city,'province'=>$province,'zip_code'=>$zip_code));
+			print_r();die;
 			if(empty($payable_to))
 			{
 				$output['msg']='Please enter name';
@@ -182,13 +186,17 @@ class Order extends CI_Controller {
 			{
 				$output['msg']='Please enter city';
 			}
-			/* elseif(empty($province))
+			elseif(empty($province))
 			{
 				$output['msg']='Please select province';
-			} */
+			} 
 			elseif(empty($zip_code))
 			{
 				$output['msg']='Please enter zip code';
+			}
+			else if(!validate_address($address_arr))
+			{
+				
 			}
 			else{
 				/* $pending_order=$this->order_model->get_current_user_pending_order();	
@@ -246,9 +254,9 @@ class Order extends CI_Controller {
 		else if(empty($city)){
 			$output['msg']='Please enter city';
 		}
-		/* else if(empty($province)){
+		else if(empty($province)){
 			$output['msg']='Please select province';
-		} */
+		}
 		else if(empty($zip_code)){
 			$output['msg']='Please enter zip code';
 		}

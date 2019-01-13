@@ -1,0 +1,54 @@
+[
+    {
+        "name": "vinceg/usps-php-api",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/VinceG/USPS-php-api.git",
+            "reference": "48655be90a283e535a42de8feb63e8df7c6fd415"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/VinceG/USPS-php-api/zipball/48655be90a283e535a42de8feb63e8df7c6fd415",
+            "reference": "48655be90a283e535a42de8feb63e8df7c6fd415",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "php": ">=5.4"
+        },
+        "time": "2016-09-08T03:11:44+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "USPS\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Vincent Gabriel",
+                "homepage": "http://vadimg.com",
+                "role": "Developer"
+            },
+            {
+                "name": "Alexander Reiff",
+                "role": "Developer"
+            },
+            {
+                "name": "Ryan Hayle",
+                "role": "Developer"
+            }
+        ],
+        "description": "PHP wrapper for USPS Web Tools API",
+        "keywords": [
+            "api",
+            "usps"
+        ]
+    }
+]
