@@ -87,7 +87,7 @@ class User extends CI_Controller {
 			$first_name=$this->input->post('first_name');
 			$last_name=$this->input->post('last_name');
 			$email=$this->input->post('email');
-			$role=$this->input->post(role);
+			$role=$this->input->post('role');
 			$password=$this->input->post('password');
 			$confirm_password=$this->input->post('confirm_password');
 			$email_exists=$this->user_model->is_email_exists($email);

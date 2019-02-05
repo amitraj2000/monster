@@ -75,6 +75,38 @@ class Order extends CI_Controller {
 			
 			$items=!empty($cart->content)?unserialize($cart->content):array();//$this->cart->contents();
 			rsort($items);
+			
+			/*USPS label creation*/
+			require_once(APPPATH.'vendor/autoload.php');
+			$label = new \USPS\OpenDistributeLabel($this->config->item('usps_user_id'));
+
+			// During test mode this seems not to always work as expected
+			//$label->setTestMode(true);
+
+			$label->setFromAddress('John', 'Doe', '', '5161 Lankershim Blvd', 'North Hollywood', 'CA', '91601', '# 204', '', '8882721214');
+			$label->setToAddress('Vincent', 'Gabriel', '', '230 Murray St', 'New York', 'NY', '10282');
+			$label->setWeightOunces(1);
+			$label->setField(36, 'LabelDate', '03/12/2019');
+			$label->createLabel();
+			if ($label->isSuccess()) {
+    //echo 'Done';
+    //echo "\n Confirmation:" . $label->getConfirmationNumber();
+
+			$label = $label->getLabelContents();
+
+			if ($label) {
+				$contents = base64_decode($label);
+				header('Content-type: application/pdf');
+				header('Content-Disposition: inline; filename="label.pdf"');
+				header('Content-Transfer-Encoding: binary');
+				header('Content-Length: '.strlen($contents));
+				echo $contents;
+				exit;
+			}
+		} else {
+			echo 'Error: '.$label->getErrorMessage();
+		}die;
+			/*USPS label creation*/
 			if(!empty($items))//if cart is not empty
 			{
 				
@@ -134,11 +166,12 @@ class Order extends CI_Controller {
 		$args=array(
 					'payment_type'=>$payment_type,
 				);
+		$form_data=array();
 		if($payment_type=='paypal')
 		{
 			$paypal_email=$this->input->post('paypal_email');
 			$confirm_paypal_email=$this->input->post('confirm_paypal_email');
-			$form_data=array();
+			
 			if(empty($paypal_email) || !valid_email($paypal_email))
 			{
 				$output['msg']='Please enter valid email';
@@ -172,8 +205,8 @@ class Order extends CI_Controller {
 			$province=$this->input->post('province');
 			$zip_code=$this->input->post('zip_code');
 			
-			$address_arr=validate_address(array('address_1'=>$address_1,'address_2'=>$address_2,'city'=>$city,'province'=>$province,'zip_code'=>$zip_code));
-			print_r();die;
+			$address_arr=array('address_1'=>$address_1,'address_2'=>$address_2,'city'=>$city,'province'=>$province,'zip_code'=>$zip_code);
+			$valid_address=validate_address($address_arr);
 			if(empty($payable_to))
 			{
 				$output['msg']='Please enter name';
@@ -194,9 +227,9 @@ class Order extends CI_Controller {
 			{
 				$output['msg']='Please enter zip code';
 			}
-			else if(!validate_address($address_arr))
+			else if(!$valid_address)
 			{
-				
+				$output['msg']='It is not a valid address';
 			}
 			else{
 				/* $pending_order=$this->order_model->get_current_user_pending_order();	
@@ -207,23 +240,23 @@ class Order extends CI_Controller {
 				$form_data=array(
 					'payment_type'=>'cheque',
 					'payable_to'=>$payable_to,
-					'address_1'=>$address_1,
+					'address_1'=>$valid_address['Address2'],//$address_1,
 					'address_2'=>$address_2,
-					'city'=>$city,
-					'province'=>$province,
-					'zip_code'=>$zip_code
+					'city'=>$valid_address['City'],//city,
+					'province'=>$valid_address['State'],//$province,
+					'zip_code'=>$valid_address['Zip5'],//$zip_code,
 				);
 			}
 		}
-		
-		$this->session->set_userdata('cart_data',$form_data);
-		$cart_email=is_logged_in()?get_current_user_email():$this->session->userdata('quick_email');
-		$cart=$this->order_model->get_cart($cart_email);
-		$args['items']=!empty($cart->content)?unserialize($cart->content):array();//$this->cart->contents();
-		rsort($args['items']);
-		$args['cart_id']=!empty($cart->cart_id)?$cart->cart_id:'';
-		$output['content']= $this->load->view('order/checkout_step_2',$args,TRUE);
-		
+		if(empty($output['error'])){
+			$this->session->set_userdata('cart_data',$form_data);
+			$cart_email=is_logged_in()?get_current_user_email():$this->session->userdata('quick_email');
+			$cart=$this->order_model->get_cart($cart_email);
+			$args['items']=!empty($cart->content)?unserialize($cart->content):array();//$this->cart->contents();
+			rsort($args['items']);
+			$args['cart_id']=!empty($cart->cart_id)?$cart->cart_id:'';
+			$output['content']= $this->load->view('order/checkout_step_2',$args,TRUE);
+		}
 		echo json_encode($output);
 		die;
 	}
@@ -242,6 +275,8 @@ class Order extends CI_Controller {
 		$cart_email=is_logged_in()?get_current_user_email():$this->session->userdata('quick_email');
 		$cart=$this->order_model->get_cart($cart_email);
 		$cart_items=!empty($cart->content)?unserialize($cart->content):array();
+		$address_arr=array('address_1'=>$address_1,'address_2'=>$address_2,'city'=>$city,'province'=>$province,'zip_code'=>$zip_code);
+		$valid_address=validate_address($address_arr);
 		if(empty($first_name)){
 			$output['msg']='Please enter first name';
 		}
@@ -260,9 +295,11 @@ class Order extends CI_Controller {
 		else if(empty($zip_code)){
 			$output['msg']='Please enter zip code';
 		}
-		/* else{//validate zip code and address with usps here
-			
-		}*/else if(empty($cart_items)){
+		else if(!$valid_address)
+		{
+			$output['msg']='It is not a valid address';
+		}
+		else if(empty($cart_items)){
 			$output['msg']='Your cart is empty';
 		} 
 		else{
@@ -270,19 +307,19 @@ class Order extends CI_Controller {
 			$shipping_data=array(
 					'first_name'=>$first_name,
 					'last_name'=>$last_name,
-					'address_1'=>$address_1,
+					'address_1'=>$valid_address['Address2'],//$address_1,
 					'address_2'=>$address_2,
-					'city'=>$city,
-					'province'=>$province,
-					'zip_code'=>$zip_code,
+					'city'=>$valid_address['City'],//city,
+					'province'=>$valid_address['State'],//$province,
+					'zip_code'=>$valid_address['Zip5'],//$zip_code,
 					'phone_number'=>$phone_number
 				);
 			$this->session->set_userdata('shipping_data',$shipping_data);
-			
+			$args=array();
+			$output['content']= $this->load->view('order/checkout_step_3',$args,TRUE);
 		}
 		
-		$args=array();
-		$output['content']= $this->load->view('order/checkout_step_3',$args,TRUE);
+		
 		echo json_encode($output);
 		die;
 	}

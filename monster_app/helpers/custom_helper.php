@@ -381,7 +381,6 @@ function validate_address($args)
 {
 	$ci=& get_instance();
 	require_once(APPPATH.'vendor/autoload.php');
-
 	// Initiate and set the username provided from usps
 	$verify = new \USPS\AddressVerify($ci->config->item('usps_user_id'));
 	$verify->setTestMode(true);
@@ -398,10 +397,11 @@ function validate_address($args)
 	$verify->addAddress($address);
 
 	// Perform the request and return result
-	$verify->verify();
-	//print_r($verify->getArrayResponse());
+	$verify->verify();	
+	$response=$verify->getArrayResponse();
+	//print_r($verify->getArrayResponse());die;
 	if ($verify->isSuccess()) {
-		return true;
+		return $response['AddressValidateResponse']['Address'];
 	} else {
 		return false;
 	}
