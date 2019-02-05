@@ -119,6 +119,9 @@ class User extends CI_Controller {
 			else if(!empty($password) && !empty($confirm_password) && $confirm_password!=$password){
 				$this->session->set_flashdata('error_msg', 'Please enter your password');
 			}
+			else if(!empty($password) && !empty($confirm_password) && strlen($password)<6){
+				$this->session->set_flashdata('error_msg', 'Password must be minimum 6 character long');
+			}
 			else{
 						
 				$data['first_name']=$first_name;

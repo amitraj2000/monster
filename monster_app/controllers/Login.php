@@ -128,6 +128,9 @@ class Login extends CI_Controller {
 			else if($password!==$confirm_password){
 				$this->session->set_flashdata('error_msg', 'Password does not match');
 			}
+			else if(!empty($password) && !empty($confirm_password) && strlen($password) < 6){
+				$this->session->set_flashdata('error_msg', 'Password must be minimum 6 character long');
+			}
 			else{
 				
 				$user_id=random_string('alnum',5).time();
@@ -210,6 +213,9 @@ class Login extends CI_Controller {
 		}
 		else if($param['password']!==$param['confirm_password']){
 			$output['msg']='Password does not match';
+		}
+		else if(!empty($param['password']) && !empty($param['confirm_password']) && strlen($param['password'])<6){
+			$output['msg']='Password must be minimum 6 character long';
 		}
 		else{
 			

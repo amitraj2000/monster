@@ -70,6 +70,8 @@ class Account extends CI_Controller {
 			}
 			elseif($password!=$confirm_password){
 				$this->session->set_flashdata('error_msg', 'Passwords does not matches');
+			}elseif(!empty($confirm_password)&& !empty($password) && strlen($password)<6){
+				$this->session->set_flashdata('error_msg', 'Password must be minimum 6 character long');
 			}else{
 				$this->user_model->update_user($user_id,array('password'=>$password));
 				$this->session->set_flashdata('success_msg', 'Password updated successfully');
