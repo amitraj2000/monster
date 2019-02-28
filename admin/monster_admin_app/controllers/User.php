@@ -203,6 +203,9 @@ class User extends CI_Controller {
 			else if( $confirm_password!=$password){
 				$this->session->set_flashdata('error_msg', 'Password does not match');
 			}
+			else if( strlen($password)<6){
+				$this->session->set_flashdata('error_msg', 'Password must be minimum 6 character long');
+			}
 			else{
 					
 				$user_id=random_string('alnum',5).time();

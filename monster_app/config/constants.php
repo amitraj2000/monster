@@ -105,3 +105,4 @@ defined('UPLOADS_MODEL')      OR define('UPLOADS_MODEL', UPLOADS.'model/');
 defined('UPLOADS_MODEL_THUMB')      OR define('UPLOADS_MODEL_THUMB', UPLOADS_MODEL.'thumbnail/'); 
 defined('UPLOADS_PRODUCT')      OR define('UPLOADS_PRODUCT', UPLOADS.'product/'); 
 defined('UPLOADS_PRODUCT_THUMB')      OR define('UPLOADS_PRODUCT_THUMB', UPLOADS_PRODUCT.'thumbnail/'); 
+defined('LABELS')      OR define('LABELS', FCPATH.'labels/'); 

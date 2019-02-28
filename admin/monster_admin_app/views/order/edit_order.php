@@ -6,7 +6,8 @@
 						<div class="row">
 							<div class="col-lg-6">
 								<b>Order : #<?php echo $order->order_id;?></b><br/>
-								<b>Box ID : #<?php echo $order->box_id;?></b>
+								<!--<b>Box ID : #<?php //echo $order->box_id;?></b>-->
+								<b>USPS Tracking ID : #<?php echo $order->usps_tracking_id;?></b>
 							</div>
 							<div class="col-lg-6 text-right">
 								<a href="<?php echo site_url('orders');?>" class="btn btn-primary btn-lg"><i class="fa fa-bars" aria-hidden="true"></i> All orders</a>

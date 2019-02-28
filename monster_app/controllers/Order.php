@@ -12,7 +12,7 @@ class Order extends CI_Controller {
 		$args['header_title']='Order Details';
 		
 		
-		$order=$this->order_model->get_order_details_by_id($order_id);
+		$order=$this->order_model->get_cart_by_id($order_id);
 		
 		if(empty($order))
 		{
@@ -30,9 +30,14 @@ class Order extends CI_Controller {
 		$this->load->view('common/footer');
 	}
 	
-	public function paymant_carrier(){
+	public function payment_carrier(){
 		if(!is_logged_in())
 			redirect('/register');
+		
+		$this->load->library('email');
+		$config['wordwrap'] = TRUE;
+		$config['mailtype'] = 'html';
+		$this->email->initialize($config);
 		//$this->load->library('cart');
 		
 		
@@ -74,46 +79,15 @@ class Order extends CI_Controller {
 			$cart=$this->order_model->get_cart($cart_email);
 			
 			$items=!empty($cart->content)?unserialize($cart->content):array();//$this->cart->contents();
-			rsort($items);
+			//rsort($items);
 			
-			/*USPS label creation*/
-			require_once(APPPATH.'vendor/autoload.php');
-			$label = new \USPS\OpenDistributeLabel($this->config->item('usps_user_id'));
-
-			// During test mode this seems not to always work as expected
-			//$label->setTestMode(true);
-
-			$label->setFromAddress('John', 'Doe', '', '5161 Lankershim Blvd', 'North Hollywood', 'CA', '91601', '# 204', '', '8882721214');
-			$label->setToAddress('Vincent', 'Gabriel', '', '230 Murray St', 'New York', 'NY', '10282');
-			$label->setWeightOunces(1);
-			$label->setField(36, 'LabelDate', '03/12/2019');
-			$label->createLabel();
-			if ($label->isSuccess()) {
-    //echo 'Done';
-    //echo "\n Confirmation:" . $label->getConfirmationNumber();
-
-			$label = $label->getLabelContents();
-
-			if ($label) {
-				$contents = base64_decode($label);
-				header('Content-type: application/pdf');
-				header('Content-Disposition: inline; filename="label.pdf"');
-				header('Content-Transfer-Encoding: binary');
-				header('Content-Length: '.strlen($contents));
-				echo $contents;
-				exit;
-			}
-		} else {
-			echo 'Error: '.$label->getErrorMessage();
-		}die;
-			/*USPS label creation*/
 			if(!empty($items))//if cart is not empty
 			{
 				
 				//insert orders
-				$box_id='MS'.random_string('nozero',10);
-				$order_id=random_string('alnum',5).time();			
-				$args=array(
+				 $box_id='MS'.random_string('nozero',10);
+				 $order_id=random_string('alnum',5).time();			
+				 $args=array(
 					'order_id'=>$order_id,
 					'user_id'=>get_current_user_id(),
 					'box_id'=>$box_id,
@@ -122,6 +96,7 @@ class Order extends CI_Controller {
 					'gateway_details'=>serialize($gateway_details_arr),
 					'shipping_address'=>serialize($shipping_arr),
 					'shipping_type'=>$shipping_type,
+					'usps_tracking_id'=>'',
 					'status'=>'2'
 				);
 				$this->order_model->insert_order($args);
@@ -137,11 +112,100 @@ class Order extends CI_Controller {
 						'date'=>date('Y-m-d H:i:s'),
 					);
 					$this->order_model->insert_order_details($args);
+				} 
+				
+				
+				/*USPS Label creation*/
+				/* $url='https://returns.usps.com/Services/ExternalCreateReturnLabel.svc/ExternalCreateReturnLabel?externalReturnLabelRequest=<ExternalReturnLabelRequest>';
+				$url.='<CustomerName>'.urlencode($shipping_first_name.' '.$shipping_last_name).'</CustomerName>'.
+				$url.='<CustomerAddress1>'.urlencode($shipping_address_1).'</CustomerAddress1>';
+				$url.='<CustomerAddress2>'.urlencode($shipping_address_2).'</CustomerAddress2>';
+				$url.='<CustomerCity>'.urlencode($shipping_city).'</CustomerCity>';
+				$url.='<CustomerState>'.urlencode($shipping_province).'</CustomerState>';
+				$url.='<CustomerZipCode>'.urlencode($shipping_zip_code).'</CustomerZipCode>';
+				$url.='<MerchantAccountID>'.$this->config->item('usps_merchant_account_id').'</MerchantAccountID>';
+				$url.='<MID>'.$this->config->item('usps_mid').'</MID>';
+				$url.='<CompanyName>'.urlencode('Monsterbuyback').'</CompanyName>';
+				//$url.='<BlankCustomerAddress>true</BlankCustomerAddress>';
+				$url.='<LabelFormat></LabelFormat>';
+				$url.='<LabelDefinition>4X6</LabelDefinition>';
+				$url.='<ServiceTypeCode>020</ServiceTypeCode>';
+				$url.='<MerchandiseDescription></MerchandiseDescription>';
+				$url.='<InsuranceAmount></InsuranceAmount>';
+				$url.='<AddressOverrideNotification>false</AddressOverrideNotification>';
+				$url.='<PackageInformation></PackageInformation>';
+				$url.='<PackageInformation2></PackageInformation2>';
+				$url.='<CallCenterOrSelfService>Customer</CallCenterOrSelfService>';
+				$url.='<CompanyName></CompanyName>';
+				$url.='<Attention></Attention>';
+				$url.='<SenderName></SenderName>';
+				$url.='<SenderEmail></SenderEmail>';
+				$url.='<RecipientName></RecipientName>';
+				$url.='<RecipientEmail></RecipientEmail>';
+				$url.='<RecipientBcc></RecipientBcc>';
+				$url.='</ExternalReturnLabelRequest>'; */
+				
+				//<BlankCustomerAddress> should be false or removed
+				$url='https://returns.usps.com/Services/ExternalCreateReturnLabel.svc/ExternalCreateReturnLabel?externalReturnLabelRequest=<ExternalReturnLabelRequest><CustomerName>'.urlencode($shipping_first_name.' '.$shipping_last_name).'</CustomerName><CustomerAddress1>'.urlencode($shipping_address_1).'</CustomerAddress1><CustomerAddress2>'.urlencode($shipping_address_2).'</CustomerAddress2><CustomerCity>'.urlencode($shipping_city).'</CustomerCity><CustomerState>MA</CustomerState><CustomerZipCode>'.urlencode($shipping_zip_code).'</CustomerZipCode><MerchantAccountID>'.$this->config->item('usps_merchant_account_id').'</MerchantAccountID><MID>'.$this->config->item('usps_mid').'</MID><CompanyName>'.urlencode('Monsterbuyback').'</CompanyName><BlankCustomerAddress>false</BlankCustomerAddress><LabelFormat></LabelFormat><LabelDefinition>4X6</LabelDefinition><ServiceTypeCode>020</ServiceTypeCode><MerchandiseDescription></MerchandiseDescription><InsuranceAmount></InsuranceAmount><AddressOverrideNotification>false</AddressOverrideNotification><PackageInformation>'.urlencode($order_id).'</PackageInformation><PackageInformation2></PackageInformation2><CallCenterOrSelfService>Customer</CallCenterOrSelfService><CompanyName></CompanyName><Attention></Attention><SenderName></SenderName><SenderEmail></SenderEmail><RecipientName></RecipientName><RecipientEmail></RecipientEmail><RecipientBcc></RecipientBcc></ExternalReturnLabelRequest>';
+				$ch2 = curl_init();
+				curl_setopt($ch2, CURLOPT_URL, $url);
+				curl_setopt($ch2, CURLOPT_CONNECTTIMEOUT, 30);
+				curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch2, CURLOPT_TIMEOUT, 60);
+				curl_setopt($ch2, CURLOPT_FRESH_CONNECT,1);
+				curl_setopt($ch2, CURLOPT_PORT, 443);
+				curl_setopt($ch2, CURLOPT_USERAGENT,'usps-php');
+				curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, true);
+				curl_setopt($ch2, CURLOPT_RETURNTRANSFER,true);
+				curl_setopt($ch2, CURLOPT_RETURNTRANSFER,true);
+				curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER,false);
+				curl_setopt($ch2, CURLOPT_SSL_VERIFYHOST,2);
+				
+				$contents = curl_exec($ch2);
+				if (curl_error($ch2)) {
+					$error_msg = curl_error($ch2);					
+				}				
+				$curl_info=curl_getinfo($ch2);
+								
+				curl_close($ch2);
+				if(!isset($error_msg) && !empty($contents) && $curl_info['http_code']==200){
+					$contents = simplexml_load_string($contents);
+					$label=base64_decode($contents->ReturnLabel);
+					$tracking_number=$contents->TrackingNumber;
+					$postal_routing=$contents->PostalRouting;
+					
+					//Update tracking id in database with order id
+					$this->order_model->update_order($order_id,array('usps_tracking_id'=>$tracking_number));
+					
+					if(!is_dir(LABELS.$order_id))
+						mkdir(LABELS.$order_id);
+					
+					$filename=LABELS.$order_id.'/label.pdf';					
+					$fp = fopen($filename, 'wb');
+					fwrite($fp, $label);
+					fclose($fp);
+					
+					/*USPS Label creation*/
+				
 				}
-				$this->order_model->destroy_cart($cart->cart_id);
+				
+				//send confirmation mail to user
+				
+				$this->email->from('your@example.com', 'Your Name');
+				$this->email->to(get_current_user_email());
+				$this->email->subject('Order Confirmation');
+				$message='Thanks for your order.Your order ID is - '.$order_id;
+				if(!empty($tracking_number))
+				$message.='Your USPS Tracking ID is - '.$tracking_number;
+				$this->email->message($message);
+				if(file_exists(LABELS.$order_id.'/label.pdf'))//attach file if exists
+				$this->email->attach(LABELS.$order_id.'/label.pdf');
+			
+				$this->email->send();
+				
 			}
 			
-			//$this->cart->destroy();
+			$this->order_model->destroy_cart($cart->cart_id);
 			redirect('/thankyou');
 			die;
 		}
@@ -151,7 +215,10 @@ class Order extends CI_Controller {
 		$this->load->model('product_model');
 		add_footer_js(array(22=>'jquery-ui.min.js',25=>'cart.js'));
 		
-		//$args['items']=$this->cart->contents();;
+		$cart=$this->order_model->get_cart();
+		$args['items']=!empty($cart->content)?unserialize($cart->content):array();
+		//rsort($args['items']);
+		$args['cart_id']=!empty($cart->cart_id)?$cart->cart_id:'';
 		
 		$this->load->view('common/header',$args);
 		$this->load->view('order/payment_carrier',$args);		
@@ -253,7 +320,7 @@ class Order extends CI_Controller {
 			$cart_email=is_logged_in()?get_current_user_email():$this->session->userdata('quick_email');
 			$cart=$this->order_model->get_cart($cart_email);
 			$args['items']=!empty($cart->content)?unserialize($cart->content):array();//$this->cart->contents();
-			rsort($args['items']);
+			//rsort($args['items']);
 			$args['cart_id']=!empty($cart->cart_id)?$cart->cart_id:'';
 			$output['content']= $this->load->view('order/checkout_step_2',$args,TRUE);
 		}
@@ -338,6 +405,56 @@ class Order extends CI_Controller {
 		
 	}
 	
+	public function track_order()
+	{
+		if(!is_logged_in())
+			redirect('/register');
+		
+		$args=array();
+		$args['header_title']='Thank you for order';
+		
+		$this->load->view('common/header',$args);
+		$this->load->view('order/thankyou',$args);		
+		$this->load->view('common/footer');
+		
+	}
+	
+	function usps_test()
+	{
+		$url='https://returns.usps.com/Services/ExternalCreateReturnLabel.svc/ExternalCreateReturnLabel?externalReturnLabelRequest=<ExternalReturnLabelRequest><CustomerName>Abhishek</CustomerName><CustomerAddress1>'.urlencode('777 Brockton Avenue').'</CustomerAddress1><CustomerAddress2></CustomerAddress2><CustomerCity>Abington</CustomerCity><CustomerState>MA</CustomerState><CustomerZipCode>2351</CustomerZipCode><MerchantAccountID>8544</MerchantAccountID><MID>902052109</MID><CompanyName></CompanyName><BlankCustomerAddress>false</BlankCustomerAddress><LabelFormat></LabelFormat><LabelDefinition>4X6</LabelDefinition><ServiceTypeCode>020</ServiceTypeCode><MerchandiseDescription></MerchandiseDescription><InsuranceAmount></InsuranceAmount><AddressOverrideNotification>false</AddressOverrideNotification><PackageInformation></PackageInformation><PackageInformation2></PackageInformation2><CallCenterOrSelfService>Customer</CallCenterOrSelfService><CompanyName></CompanyName><Attention></Attention><SenderName></SenderName><SenderEmail></SenderEmail><RecipientName></RecipientName><RecipientEmail></RecipientEmail><RecipientBcc></RecipientBcc></ExternalReturnLabelRequest>';
+
+				$ch2 = curl_init();
+				curl_setopt($ch2, CURLOPT_URL, $url);
+				curl_setopt($ch2, CURLOPT_CONNECTTIMEOUT, 30);
+				curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch2, CURLOPT_TIMEOUT, 60);
+				curl_setopt($ch2, CURLOPT_FRESH_CONNECT,1);
+				curl_setopt($ch2, CURLOPT_PORT, 443);
+				curl_setopt($ch2, CURLOPT_USERAGENT,'usps-php');
+				curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, true);
+				curl_setopt($ch2, CURLOPT_RETURNTRANSFER,true);
+				curl_setopt($ch2, CURLOPT_RETURNTRANSFER,true);
+				curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER,false);
+				curl_setopt($ch2, CURLOPT_SSL_VERIFYHOST,2);
+				
+				$contents = curl_exec($ch2);
+				if (curl_error($ch2)) {
+					$error_msg = curl_error($ch2);					
+				}				
+				$curl_info=curl_getinfo($ch2);
+					print_r($curl_info);			
+				curl_close($ch2);
+				
+				
+				$contents = simplexml_load_string($contents);
+					$label=base64_decode($contents->ReturnLabel);
+										
+					$filename=UPLOADS.'/label.pdf';					
+					$fp = fopen($filename, 'wb');
+					fwrite($fp, $label);
+					fclose($fp);
+		
+	}
 	
 			
 }

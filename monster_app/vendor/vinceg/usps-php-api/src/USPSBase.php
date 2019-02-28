@@ -12,8 +12,8 @@ namespace USPS;
  */
 abstract class USPSBase
 {
-    const LIVE_API_URL = 'http://production.shippingapis.com/ShippingAPI.dll';
-    const TEST_API_URL = 'http://production.shippingapis.com/ShippingAPITest.dll';
+    const LIVE_API_URL ='https://secure.shippingapis.com/ShippingAPI.dll'; //'http://production.shippingapis.com/ShippingAPI.dll';
+    const TEST_API_URL = 'https://secure.shippingapis.com/ShippingAPITest.dll';//'http://production.shippingapis.com/ShippingAPITest.dll';
 
     /**
      * @var string - the usps username provided by the usps website
@@ -80,6 +80,7 @@ abstract class USPSBase
         'SDCGetLocations'                 => 'SDCGetLocationsRequest',
         'ExpressMailLabel'                => 'ExpressMailLabelRequest',
         'PriorityMail'                    => 'PriorityMailRequest',
+		'eVS'     						  => 'eVS',
         'OpenDistributePriorityV2'        => 'OpenDistributePriorityV2.0Request',
         'OpenDistributePriorityV2Certify' => 'OpenDistributePriorityV2.0CertifyRequest',
         'ExpressMailIntl'                 => 'ExpressMailIntlRequest',
@@ -180,7 +181,7 @@ abstract class USPSBase
         if (!$ch) {
             $ch = curl_init();
         }
-
+//print_r($this->getPostData());die;
         $opts = self::$CURL_OPTS;
         $opts[CURLOPT_POSTFIELDS] = http_build_query($this->getPostData(), null, '&');
         $opts[CURLOPT_URL] = $this->getEndpoint();

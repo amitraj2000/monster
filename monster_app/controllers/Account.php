@@ -119,27 +119,27 @@ class Account extends CI_Controller {
 		
 		$limit=3;
 		
-		//open orders
-		$start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 1;
+		//open orders(in current scenario,an user can have only one cart entry with multiple cart items)
+		/* $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 1;
 		$start_index=($start_index-1)*$limit;
 		$data=array('status'=>'1','limit'=>$limit,'start_index'=>$start_index); 
-		$total_open_orders=$this->order_model->get_total_orders($data);
+		$total_open_orders=$this->order_model->get_total_orders($data); */
 		
-		$open_orders=$this->order_model->get_orders($data);
+		$open_orders=$this->order_model->get_cart();
 		
 		
-		$config['base_url'] = base_url() . 'account-summary/ajax-summary/open/';
+/* 		$config['base_url'] = base_url() . 'account-summary/ajax-summary/open/';
 		$config['total_rows'] = $total_open_orders;
 		$config['per_page'] = $limit;
 		$config["uri_segment"] = 4;
 		$config['use_page_numbers'] = TRUE;
 		$config['first_url'] = base_url() .'account-summary/ajax-summary/open/1/';
 		
-		$this->pagination->initialize($config);
+		$this->pagination->initialize($config); */
 		
 		$args['open_orders']=$open_orders;
 		
-		$args['open_orders_pagination']= $this->pagination->create_links();
+		//$args['open_orders_pagination']= $this->pagination->create_links();
 		
 		
 		//completed orders

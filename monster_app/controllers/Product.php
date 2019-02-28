@@ -117,12 +117,13 @@ class Product extends CI_Controller {
 		}
 		
 		$cart_email=is_logged_in()?get_current_user_email():$this->session->userdata('quick_email');
-		$cart=$this->order_model->get_cart($cart_email);
-		
+		$cart=$this->order_model->get_cart($cart_email);		
 		
 		if(!empty($cart)){//add item to an existing cart
 			$items=!empty($cart->content)?unserialize($cart->content):array();			
-			rsort($items);
+			
+			//rsort($items);
+			
 			$product_ids=array_column($items, 'id');			
 			if(!in_array($params['product_id'],$product_ids)){						
 				$cart_item_key=time();
@@ -158,7 +159,7 @@ class Product extends CI_Controller {
 		
 		$cart=$this->order_model->get_cart($cart_email);
 		$args['items']=!empty($cart->content)?unserialize($cart->content):array();
-		rsort($args['items']);
+		//rsort($args['items']);
 		$args['cart_id']=!empty($cart->cart_id)?$cart->cart_id:'';
 		echo $this->load->view('order/cart',$args,TRUE);
 		die;

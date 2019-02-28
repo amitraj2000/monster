@@ -532,4 +532,6 @@ $config['footer_css']= array();
 $config['footer_js']  = array(15=>'lib/plugins.js',20=>'custom.js');
 
 /*usps user ID*/
+$config['usps_merchant_account_id']='8544';
+$config['usps_mid']='902052109';
 $config['usps_user_id']='587MONST6470';
