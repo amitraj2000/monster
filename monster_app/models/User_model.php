@@ -33,6 +33,15 @@ class User_model extends CI_Model {
 			$query = $this->db->get();
 			return $query->row();
         }
+		public function get_user_by_email($email)
+        {                
+			$this->db->select('*');
+			$this->db->from(USER_MASTER);
+			$this->db->where('email',$email);
+			$this->db->where('status','1');
+			$query = $this->db->get();
+			return $query->row();
+        }
 		public function update_user($user_id,$args)
         {                
 			$this->db->where('user_id', $user_id);

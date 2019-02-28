@@ -407,14 +407,67 @@ class Order extends CI_Controller {
 	
 	public function track_order()
 	{
-		if(!is_logged_in())
-			redirect('/register');
+		$email=$this->input->post('email');
+		
+		$user=$this->user_model->get_user_by_email($email);
+		$user_id=!empty($user->user_id)?$user->user_id:'';
 		
 		$args=array();
-		$args['header_title']='Thank you for order';
 		
+		//get users open orders
+		$this->db->select('*');
+		$this->db->from(ORDER_MASTER);
+		$this->db->join(ORDER_DETAILS, ORDER_DETAILS.'.order_id = '.ORDER_MASTER.'.order_id');
+		$this->db->join(PRODUCT_MASTER, PRODUCT_MASTER.'.product_id = '.ORDER_DETAILS.'.product_id');
+		$this->db->join(MODEL_MASTER, MODEL_MASTER.'.model_id = '.PRODUCT_MASTER.'.model_id');
+		$this->db->where_not_in(ORDER_MASTER.'.status',array('19','20','21'));
+		$this->db->where('user_id',$user_id);
+		$this->db->order_by(ORDER_DETAILS.".date", "desc");
+		$query = $this->db->get();
+		$result= $query->result();
+		$status_row=array();
+		if(!empty($result))
+		{
+			require_once(APPPATH.'vendor/autoload.php');
+			$tracking = new \USPS\TrackConfirm($this->config->item('usps_user_id'));
+			$status_row=array();
+			foreach($result as $order)
+			{
+				if(!empty($order->usps_tracking_id)){
+					$tracking->addPackage($order->usps_tracking_id);
+					$contents = simplexml_load_string($tracking->getTracking());
+					
+					if (!empty($contents->TrackInfo->TrackSummary->EventDate)) {
+						
+						$event_date=(array)$contents->TrackInfo->TrackSummary->EventDate;
+						$event=(array)$contents->TrackInfo->TrackSummary->Event;
+						$status_row[]=array(
+							'order_id'=>$order->order_id,
+							'event_date'=>$event_date[0],
+							'event'=>$event[0]
+						);
+					}else{
+						$status_row[]=array(
+							'order_id'=>$order->order_id,
+							'event_date'=>'',
+							'event'=>'No tracking record found'
+						);
+					}
+				}else{
+					$status_row[]=array(
+							'order_id'=>$order->order_id,
+							'event_date'=>'',
+							'event'=>'No tracking record found'
+						);
+				}
+				
+			}
+		}
+		
+		$args['header_title']='Track Order';
+		$args['status_row']=$status_row;
 		$this->load->view('common/header',$args);
-		$this->load->view('order/thankyou',$args);		
+		$this->load->view('order/track_order',$args);		
 		$this->load->view('common/footer');
 		
 	}

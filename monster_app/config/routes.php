@@ -67,3 +67,4 @@ $route['account-summary/address'] = 'account/address';
 $route['order-details/(:any)'] = 'order/order_details/$1';
 $route['payment-carrier'] = 'order/payment_carrier';
 $route['thankyou'] = 'order/order_thanks';
+$route['track-order'] = 'order/track_order';
