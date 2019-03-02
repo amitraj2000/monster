@@ -13,6 +13,34 @@ if ( ! function_exists('is_logged_in'))
 			return false;
     }   
 }
+function get_product_status(){
+	$status=array(
+		1=>'Pending',
+		2=>'Order submission completed',
+		3=>'Initiated',
+		4=>'Shipping kit sent',
+		5=>'Reship request',
+		6=>'Inbound tracking activated',
+		7=>'Inbound tracking delivered',
+		8=>'Received',
+		9=>'Passed inspection',
+		10=>'Requoted',
+		11=>'Seller action required',
+		12=>'Requote accepted',
+		13=>'Requote declined',
+		14=>'Requote expired',
+		15=>'Seller action completed',
+		16=>'Seller action failed',
+		17=>'Check payment initiated',
+		18=>'Paypal payment initiated',
+		19=>'Paid',
+		20=>'Recycled',
+		21=>'Returned',
+	);
+	
+	
+	return $status;
+}
 function get_product_status_text($status_code){
 	$status='Pending';
 	switch($status_code){
@@ -71,15 +99,12 @@ function get_product_status_text($status_code){
 		$status='Paypal payment initiated';
 		break;
 		case '19':
-		$status='Shipping kit sent';
-		break;
-		case '20':
 		$status='Paid';
 		break;
-		case '21':
+		case '20':
 		$status='Recycled';
 		break;
-		case '22':
+		case '21':
 		$status='Returned';
 		break;
 		

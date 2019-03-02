@@ -71,6 +71,7 @@ class Order extends CI_Controller {
 		
 		$order=$this->order_model->get_order_by_id($order_id);
 		
+		
 		if(empty($order))
 		{
 			redirect('/orders');
@@ -90,70 +91,29 @@ class Order extends CI_Controller {
 		
 				
 		//Process form submit
-		/* if($this->input->post('submit')){
-			$id=$this->input->post('user_id');
-			$first_name=$this->input->post('first_name');
-			$last_name=$this->input->post('last_name');
-			$email=$this->input->post('email');
-			$role=$this->input->post(role);
-			$password=$this->input->post('password');
-			$confirm_password=$this->input->post('confirm_password');
-			$email_exists=$this->user_model->is_email_exists($email);
-			
+		//if($this->input->post('submit')){
+		if(isset($_POST['submit'])){
+			$order_status=$this->input->post('order_status');
 			 $form_data = array(
-					'user_id'  => $id,
-					'first_name'  => $first_name,
-					'last_name'  => $last_name,
-					'email'  => $email,
-					'role'  => $role,
+					'order_status'  => $order_status
 			);		
 			$this->session->set_flashdata('form_data', $form_data);
 			
-			if(empty($id) || $id!=$user_id){
-				$this->session->set_flashdata('error_msg', 'There is some problem');
-			}	
-			else if(empty($first_name)){
-				$this->session->set_flashdata('error_msg', 'Please enter first name');
-			}
-			else if(empty($last_name)){
-				$this->session->set_flashdata('error_msg', 'Please enter last name');
-			}
-			else if(empty($email)){
-				$this->session->set_flashdata('error_msg', 'Please enter your email');
-			}
-			else if(!empty($email) && $email!=$user->email && $email_exists){
-				$this->session->set_flashdata('error_msg', 'This email already exists');
-			}
-			else if(!empty($password) && !empty($confirm_password) && $confirm_password!=$password){
-				$this->session->set_flashdata('error_msg', 'Please enter your password');
-			}
-			else{
-						
-				$data['first_name']=$first_name;
-				$data['last_name']=$last_name;
-				$data['email']=$email;
-				$data['role']=$role;
-				
-				if(!empty($password) && !empty($confirm_password) && $confirm_password==$password){
-					$data['password']=$password;
-				}
-				$this->user_model->update_user($user->user_id,$data);
-				$this->session->set_flashdata('success_msg', 'User updated successfully');
-			}
-			
-			redirect('user/edit/'.$user->user_id);
+			$this->order_model->update_order($order_id,array('status'=>$order_status));
+			$this->session->set_flashdata('success_msg', 'Order updated successfully');
+			redirect('order/edit/'.$order_id);
 			die;
 		}
 		
-		$form_data=$this->session->flashdata('form_data');
+		/* $form_data=$this->session->flashdata('form_data');
 		if(!empty($form_data)){
 			$args['user']=$form_data;
-		} */
+		} */ 
 		
-		/* $error_msg=$this->session->flashdata('error_msg');			
+		$error_msg=$this->session->flashdata('error_msg');			
 		$args['error_msg']=$error_msg;
 		$success_msg=$this->session->flashdata('success_msg');
-		$args['success_msg']=$success_msg; */
+		$args['success_msg']=$success_msg;
 		
 		$args['order']=$order;
 		$args['order_items']=$order_items;

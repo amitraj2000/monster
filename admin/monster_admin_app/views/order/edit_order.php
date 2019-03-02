@@ -105,6 +105,53 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
+			<div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <b>Change order status</b>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">								
+                                <div class="col-lg-12">
+									<form  method="post" action="<?php echo site_url('order/edit/').$order->order_id;?>">
+										  <?php
+											if(!empty($success_msg)){
+												?>
+												<div class="alert alert-success">
+													<?php echo $success_msg; ?>
+												</div>
+											<?php	
+											}?>
+										  <div class="form-group">
+											<label for="order_status">Order status:</label>
+											<?php $statuses=get_product_status();?>
+											<select name="order_status" class="form-control">
+												<?php 
+												foreach($statuses as $key=>$status)
+												{
+													?>
+													<option value="<?php echo $key; ?>" <?php echo $order->order_status==$key?'selected="selected"':'';?>><?php echo $status; ?></option>
+													<?php
+												}
+												
+												?>
+											
+											</select>
+											
+										  </div>
+										  
+										  <button type="submit" class="btn btn-default" name="submit">Submit</button>
+										</form>
+									
+								</div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
             <!-- /.row -->
         </div>
 		<div class="row">

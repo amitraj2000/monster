@@ -52,6 +52,13 @@ class Order_model extends CI_Model {
 			$query = $this->db->get();
 			return $query->result();
         }
+		public function update_order($order_id,$data)
+        {               
+			
+			$this->db->where('order_id', $order_id);
+			$this->db->update(ORDER_MASTER, $data);
+			
+        }
 		
 		public function delete_order($order_id)
         {    
