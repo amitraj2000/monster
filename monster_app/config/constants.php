@@ -94,6 +94,7 @@ defined('PRODUCT_PROVIDER_MAP')      OR define('PRODUCT_PROVIDER_MAP', 'product_
 defined('CART_MASTER')      OR define('CART_MASTER', 'cart_master');
 defined('ORDER_MASTER')      OR define('ORDER_MASTER', 'order_master');
 defined('ORDER_DETAILS')      OR define('ORDER_DETAILS', 'order_details');
+defined('PAGE_MASTER')      OR define('PAGE_MASTER', 'page_master');
 
 //Uploads folder path
 defined('UPLOADS')      OR define('UPLOADS', FCPATH.'/uploads/'); 

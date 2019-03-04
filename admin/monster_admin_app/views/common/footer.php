@@ -10,7 +10,7 @@
     <script src="<?php echo base_url();?>assets/vendor/metisMenu/metisMenu.min.js"></script>
 
 	<script src="<?php echo base_url();?>assets/dist/js/jquery.richtext.min.js"></script>
-	
+	<script src="<?php echo base_url();?>assets/js/tinymce.min.js"></script>
     <!-- Custom Theme JavaScript -->
     <script src="<?php echo base_url();?>assets/dist/js/sb-admin-2.js"></script>
 

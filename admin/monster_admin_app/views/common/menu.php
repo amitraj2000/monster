@@ -265,6 +265,9 @@
 						<li>
                             <a href="<?php echo site_url('/orders'); ?>" class="<?php echo $active_menu=='orders'?'active':'';?>"><i class="fa fa-first-order"></i> Orders</a>
                         </li>
+						<li>
+                            <a href="<?php echo site_url('/pages'); ?>" class="<?php echo $active_menu=='pages'?'active':'';?>"><i class="fa fa-bars"></i> Pages</a>
+                        </li>
                                                 
                     </ul>
                 </div>

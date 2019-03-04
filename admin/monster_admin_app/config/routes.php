@@ -93,3 +93,6 @@ $route['orders/page/(:num)'] = 'order/index/$1';
 $route['orders/page'] = 'order/index';
 $route['order/edit/(:any)'] = 'order/edit_order/$1';
 $route['order/delete/(:any)'] = 'order/delete_order/$1';
+
+$route['pages'] = 'pages/index';
+$route['page/edit/(:any)'] = 'pages/edit_pages/$1';
