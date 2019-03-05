@@ -240,6 +240,21 @@
                             <a href="<?php echo site_url('/dashboard'); ?>" class="<?php echo $active_menu=='dashboard'?'active':'';?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
 						<li>
+                            <a href="#"><i class="fa fa-cog"></i> Settings<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level <?php echo $active_menu=='header-settings' || $active_menu=='footer-settings' || $active_menu=='home-settings'?'collapse in':'';?>">
+                                <li >
+                                    <a href="<?php echo site_url('settings/header-settings'); ?>" class="<?php echo $active_menu=='header-settings'?'active':'';?>">Header</a>
+                                </li>																
+								<li>
+                                    <a href="<?php echo site_url('settings/footer-settings'); ?>" class="<?php echo $active_menu=='footer-settings'?'active':'';?>">Footer</a>
+                                </li>
+								<li>
+                                    <a href="<?php echo site_url('settings/home-settings'); ?>" class="<?php echo $active_menu=='home-settings'?'active':'';?>">Home Page</a>
+                                </li>								
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+						<li>
                             <a href="#"><i class="fa fa-cart-plus"></i> Catalogs<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level <?php echo $active_menu=='categories' || $active_menu=='providers' || $active_menu=='models' || $active_menu=='products'?'collapse in':'';?>">
                                 <li >

@@ -95,6 +95,7 @@ defined('PRODUCT_PROVIDER_MAP')      OR define('PRODUCT_PROVIDER_MAP', 'product_
 defined('ORDER_MASTER')      OR define('ORDER_MASTER', 'order_master');
 defined('ORDER_DETAILS')      OR define('ORDER_DETAILS', 'order_details');
 defined('PAGE_MASTER')      OR define('PAGE_MASTER', 'page_master');
+defined('SETTINGS_MASTER')      OR define('SETTINGS_MASTER', 'settings_master');
 
 
 //Uploads folder path
@@ -107,3 +108,4 @@ defined('UPLOADS_MODEL')      OR define('UPLOADS_MODEL', UPLOADS.'model/');
 defined('UPLOADS_MODEL_THUMB')      OR define('UPLOADS_MODEL_THUMB', UPLOADS_MODEL.'thumbnail/'); 
 defined('UPLOADS_PRODUCT')      OR define('UPLOADS_PRODUCT', UPLOADS.'product/'); 
 defined('UPLOADS_PRODUCT_THUMB')      OR define('UPLOADS_PRODUCT_THUMB', UPLOADS_PRODUCT.'thumbnail/'); 
+defined('UPLOADS_SETTINGS')      OR define('UPLOADS_SETTINGS', UPLOADS.'settings/'); 

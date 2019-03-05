@@ -98,6 +98,52 @@ $(document).ready(function(){
 	
 	$(".numberinput").forceNumeric();
 	
+	/*drag and drop menu*/
+	var updateOutput = function(e)
+    {
+        var list   = e.length ? e : $(e.target),
+            output = list.data('output');			
+        if (window.JSON) {	
+			if(typeof output !== 'undefined')
+            output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));			
+        } else {
+            output.val('JSON browser support required for this demo.');
+        }
+    };
+	
+	 $('#nestable').nestable({
+        group: 1
+    })
+    .on('change', updateOutput);
+	$('#nestable2').nestable({
+        group: 1
+    })
+    .on('change', updateOutput);
+    // output initial serialised data
+    updateOutput($('#nestable').data('output', $('#menu_arr')));
+	updateOutput($('#nestable2').data('output', $('#product_menu_arr')));
+	
+	$(document).on('click','#add_to_menu',function(){
+		var key=$("#menu_select option:selected").val();
+		var text=$("#menu_select option:selected").text();
+		var html='<li class="dd-item" data-id="'+key+'"><div class="dd-handle">'+text+'</div><a href="javascript:void(0);" class="delete_menu">X</a></li>';
+		$('#nestable ol').append(html);
+		updateOutput($('#nestable').data('output', $('#menu_arr')));
+	});
+	$(document).on('click','#product_add_to_menu',function(){
+		var key=$("#product_menu_select option:selected").val();
+		var text=$("#product_menu_select option:selected").text();
+		var html='<li class="dd-item" data-id="'+key+'"><div class="dd-handle">'+text+'</div><a href="javascript:void(0);" class="delete_menu">X</a></li>';
+		$('#nestable2 ol').append(html);
+		updateOutput($('#nestable2').data('output', $('#product_menu_arr')));
+	});
+	$(document).on('click','.delete_menu',function(){
+		$(this).closest('li').remove();
+		updateOutput($('#nestable').data('output', $('#menu_arr')));
+		updateOutput($('#nestable2').data('output', $('#product_menu_arr')));
+	});
+    /*drag and drop menu*/
+	
 });
 
 // forceNumeric() plug-in implementation

@@ -31,7 +31,15 @@ class Pages_model extends CI_Model {
 			$query = $this->db->get();
 			return $query->row();
         }
-		
+		public function get_page_by_slug($slug)
+        {                
+			$this->db->select('*');
+			$this->db->from(PAGE_MASTER);
+			$this->db->where('status','1');
+			$this->db->where('slug',$slug);
+			$query = $this->db->get();
+			return $query->row();
+        }
 		
 		public function update_page($page_id,$data)
         {               

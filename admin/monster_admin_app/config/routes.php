@@ -96,3 +96,7 @@ $route['order/delete/(:any)'] = 'order/delete_order/$1';
 
 $route['pages'] = 'pages/index';
 $route['page/edit/(:any)'] = 'pages/edit_pages/$1';
+
+$route['settings/header-settings'] = 'settings/header_settings';
+$route['settings/footer-settings'] = 'settings/footer_settings';
+$route['settings/home-settings'] = 'settings/home_settings';
