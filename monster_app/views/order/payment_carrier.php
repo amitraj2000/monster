@@ -108,7 +108,7 @@ if(!empty($items)){
 <div class="col-md-3">
 	<div class="cart">
 	<ul class="cart-list">
-	<?php	
+	<?php
 	foreach($items as $key=>$item){
 		$img_src='';
 		$product=$this->product_model->get_product_by_id($item['id']);

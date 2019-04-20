@@ -13,6 +13,33 @@ if ( ! function_exists('is_logged_in'))
 			return false;
     }   
 }
+if ( ! function_exists('get_current_user_id'))
+{
+    function get_current_user_id()
+    {
+		$CI =&get_instance();
+		$logged_in=$CI->session->userdata('logged_in');
+		$user_id=$CI->session->userdata('user_id');
+        if(!empty($logged_in) && !empty($user_id))
+			return $user_id;
+		else
+			return false;
+    }   
+}
+if ( ! function_exists('get_current_user_email'))
+{
+    function get_current_user_email()
+    {
+		$CI =&get_instance();
+		$logged_in=$CI->session->userdata('logged_in');
+		$user_id=$CI->session->userdata('user_id');
+		$user=$CI->user_model->get_user_by_id($user_id);
+        if(!empty($user->email))
+			return $user->email;
+		else
+			return false;
+    }   
+}
 function get_product_status(){
 	$status=array(
 		1=>'Pending',

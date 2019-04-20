@@ -64,7 +64,7 @@
 										</div>
 										<div class="form-group">
                                             <label>Instagram Url</label>
-                                            <input type="text" class="form-control" name="twitter_url" value="<?php echo !empty($settings['twitter_url'])?$settings['twitter_url']:'';?>">
+                                            <input type="text" class="form-control" name="instagram_url" value="<?php echo !empty($settings['instagram_url'])?$settings['instagram_url']:'';?>">
 										</div>
 										<div class="form-group">
                                             <label>Links</label>
@@ -172,6 +172,14 @@
 										   <div class="form-group">
 												<label>Contact Number</label>
 												<input type="text" class="form-control" name="contact_number" value="<?php echo !empty($settings['contact_number'])?$settings['contact_number']:'';?>">
+										   </div>
+										   <div class="form-group">
+												<label>Email</label>
+												<input type="text" class="form-control" name="contact_email" value="<?php echo !empty($settings['contact_email'])?$settings['contact_email']:'';?>">
+										   </div>
+										   <div class="form-group">
+												<label>Copyright Text</label>
+												<input type="text" class="form-control" name="copyright_text" value="<?php echo !empty($settings['copyright_text'])?$settings['copyright_text']:'';?>">
 										   </div>
                                         <button type="submit" name="submit" value="submit" class="btn btn-primary">Save</button>
                                         

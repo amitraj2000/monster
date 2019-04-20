@@ -108,6 +108,29 @@
 			<div class="col-lg-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
+                            <b>Labels</b>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">								
+                                <div class="col-lg-6">
+									<a href="<?php echo dirname(base_url()).'/labels/'.$order->order_id.'/label.pdf';?>" class="btn btn-primary btn-lg" target="_blank">Download Existing Label</a>
+								</div>
+								<div class="col-lg-6">
+									<form action="" method="post">
+										<input type="submit" name="create_label" class="btn btn-primary btn-lg" value="Create New Label">
+									<form>
+								</div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+			<div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
                             <b>Change order status</b>
                         </div>
                         <div class="panel-body">

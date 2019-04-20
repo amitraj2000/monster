@@ -96,6 +96,8 @@ class Settings extends CI_Controller {
 			$instagram_url=$this->input->post('instagram_url');
 			$address=$this->input->post('address');
 			$contact_number=$this->input->post('contact_number');
+			$contact_email=$this->input->post('contact_email');
+			$copyright_text=$this->input->post('copyright_text');
 			
 			$config['upload_path']          = UPLOADS_SETTINGS;
 			$config['allowed_types']        = 'gif|jpg|png';
@@ -122,7 +124,9 @@ class Settings extends CI_Controller {
 				$settings['twitter_url']=$twitter_url;
 				$settings['instagram_url']=$instagram_url;
 				$settings['address']=$address;
-				$settings['contact_number']=$instagram_url;
+				$settings['contact_number']=$contact_number;
+				$settings['contact_email']=$contact_email;
+				$settings['copyright_text']=$copyright_text;
 				$query = $this->db->query("UPDATE ".SETTINGS_MASTER." SET  settings='".serialize($settings)."' WHERE settings_name='footer_settings'");
 				$this->session->set_flashdata('success_msg', 'Settings updated successfully');
 			}

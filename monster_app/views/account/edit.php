@@ -5,9 +5,9 @@
 	<div class="col-md-12"> 
     <div class="acount-link-bg">
     	<ul class="nav nav-pills nav-justified">
-          <li role="presentation"><a href="<?php echo base_url('account-summary/summary/');?>">Dapibus ac facilisis in</a></li>
+          <li role="presentation"><a href="<?php echo base_url('account-summary/summary/');?>">Your Trades</a></li>
           <li role="presentation" class="active"><a href="<?php echo base_url('account-summary/edit/');?>">Password & Email</a></li>
-          <li role="presentation"><a href="<?php echo base_url('account-summary/address/');?>">Stored Address</a></li>  
+          <!--<li role="presentation"><a href="<?php echo base_url('account-summary/address/');?>">Stored Address</a></li>  -->
         </ul>
    	</div>        		
 	</div>

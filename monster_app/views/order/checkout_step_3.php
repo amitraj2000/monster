@@ -7,14 +7,14 @@
 <div class="col-md-6" >
 <div class="p-m-section">
 <div style="padding:30px 0;"><img src="<?php echo base_url();?>assets/images/C-post.png"></div>
-<input type="radio" name="shipping_type" value="express" checked="true"> Prepaid Canada Post Shipping Label <br /> e`ll send a prepaid label to your email address. Affix it to your own box.
+<input type="radio" name="shipping_type" value="express" checked="true"> Prepaid USPS Label <br /> e`ll send a prepaid label to your email address. Affix it to your own box.
 </div>
 </div>
 
 <div class="col-md-6" >
 <div class="p-m-section">
-<div style="padding:30px 0;"><img src="<?php echo base_url();?>assets/images/C-post.png"></div>
-<input type="radio" name="shipping_type" value="shipping_kit"> A shipping kit <br />We`ll send a prepaid Canada post label and a box right to your door.
+<div style="padding:30px 0;"><img src="<?php echo base_url();?>assets/images/C-post2.png"></div>
+<input type="radio" name="shipping_type" value="shipping_kit"> A shipping kit <br />We`ll send a prepaid USPS label and a box right to your door.
 </div>
 </div>
 

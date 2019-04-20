@@ -117,38 +117,38 @@ class Account extends CI_Controller {
 		$user_id=get_current_user_id();
 		$user=$this->user_model->get_user_by_id($user_id);
 		
-		$limit=3;
+		$limit=10;
 		
-		//open orders(in current scenario,an user can have only one cart entry with multiple cart items)
-		/* $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 1;
+		$pending_orders=$this->order_model->get_cart();		
+		$args['pending_orders']=$pending_orders;
+		
+		//open orders
+		$start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 1;
 		$start_index=($start_index-1)*$limit;
-		$data=array('status'=>'1','limit'=>$limit,'start_index'=>$start_index); 
-		$total_open_orders=$this->order_model->get_total_orders($data); */
-		
-		$open_orders=$this->order_model->get_cart();
-		
-		
-/* 		$config['base_url'] = base_url() . 'account-summary/ajax-summary/open/';
+		$data=array('status_not_in'=>array(1,19,20,21),'limit'=>$limit,'start_index'=>$start_index); 
+		$total_open_orders=$this->order_model->get_total_orders($data);
+		$open_orders=$this->order_model->get_orders($data);
+				
+		$config['base_url'] = base_url() . 'account-summary/ajax-summary/open/';
 		$config['total_rows'] = $total_open_orders;
 		$config['per_page'] = $limit;
 		$config["uri_segment"] = 4;
 		$config['use_page_numbers'] = TRUE;
 		$config['first_url'] = base_url() .'account-summary/ajax-summary/open/1/';
 		
-		$this->pagination->initialize($config); */
+		$this->pagination->initialize($config);
 		
 		$args['open_orders']=$open_orders;
-		
-		//$args['open_orders_pagination']= $this->pagination->create_links();
+		$args['open_orders_pagination']= $this->pagination->create_links();
 		
 		
 		//completed orders
 		$start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 1;
 		$start_index=($start_index-1)*$limit;
-		$data=array('status'=>array(2),'limit'=>$limit,'start_index'=>$start_index); 
+		$data=array('status'=>array(19,20,21),'limit'=>$limit,'start_index'=>$start_index); 
 		$total_completed_orders=$this->order_model->get_total_orders($data);
 		$completed_orders=$this->order_model->get_orders($data);
-				
+			
 		$config['base_url'] = base_url() . 'account-summary/ajax-summary/completed/';
 		$config['total_rows'] = $total_completed_orders;
 		$config['per_page'] = $limit;
@@ -160,6 +160,7 @@ class Account extends CI_Controller {
 		
 		$args['completed_orders']=$completed_orders;
 		
+				
 		$args['completed_orders_pagination']= $this->pagination->create_links();
 		
 		$args['user']=$user;
@@ -174,12 +175,13 @@ class Account extends CI_Controller {
 		$this->load->library('pagination');
 		$order_status=$this->uri->segment(3);
 		$output=array('pagination_id'=>'','container_id'=>'','pagination'=>false,'content'=>false);
-		$limit=3;
+		$limit=10;
 		$start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 1;
 		$start_index=($start_index-1)*$limit;
 		$data=array('limit'=>$limit,'start_index'=>$start_index);
+		//open orders(in current scenario,an user can have only one cart entry with multiple cart items)
 		if($order_status=='open'){
-			$data['status']=array(1); 
+			$data['status_not_in']=array(1,19,20,21); 
 			$total_orders=$this->order_model->get_total_orders($data);
 			$orders=$this->order_model->get_orders($data);
 			$base_url=base_url() . 'account-summary/ajax-summary/open/';
@@ -188,7 +190,7 @@ class Account extends CI_Controller {
 			$output['container_id']='open_order_con';
 		}
 		if($order_status=='completed'){
-			$data['status']=array(2); 
+			$data['status']=array(19,20,21); 
 			$total_orders=$this->order_model->get_total_orders($data);
 			$orders=$this->order_model->get_orders($data);
 			$base_url=base_url() . 'account-summary/ajax-summary/completed/';
@@ -210,49 +212,32 @@ class Account extends CI_Controller {
 			ob_start();
 			?>
 			<tr>
-				<th>&nbsp;</th>
+				<th>Order ID</th>
+				<th>Total Amount</th>
 				<th>Created</th>
-				<th>Box ID</th>
+				<th>USPS Tracking ID</th>
 				<th>Status</th>
-				<th>Complete Order</th>
-				<th>View Details</th>
 			</tr>
 			<?php
 			foreach($orders as $item)
 			{
-				$status=get_product_status_text($item->status);
-				if(!empty($item->has_variation)){
-				$variations=$this->product_model->get_product_variation_by_id($item->product_id,$item->provider_id);
-				}
-				$price=0;
-				switch($item->product_condition){
-					case 'flawless':
-						if(!empty($item->has_variation) && !empty($variations->flawless_price))
-						$price=$variations->flawless_price;
-						else
-						$price=$item->flawless_price;
-						break;
-					case 'good':
-						if(!empty($item->has_variation) && !empty($variations->good_price))
-						$price=$variations->good_price;
-						else
-						$price=$item->good_price;
-						break;
-					case 'broken':
-						if(!empty($item->has_variation) && !empty($variations->broken_price))
-						$price=$variations->broken_price;
-						else
-						$price=$item->broken_price;				
-						break;			
-				} 
+				$status=get_product_status_text($item->order_status);
+					$price=0;
+					$order_details=$this->order_model->get_order_details_by_order_id($item->order_id);
+					if(!empty($order_details))
+					{
+						foreach($order_details as $od){
+							$price+=$od->price;
+						}
+					}
+					
 				?>
 				<tr>
-					<td>Your box item worth $<?php echo $price;?></td>
-					<td><?php echo date('d/m/Y',strtotime($item->date));?></td>
-					<td><?php echo $item->box_id;?></td>
+					<td><?php echo $item->order_id;?></td>
+					<td>$<?php echo $price;?></td>
+					<td><?php echo date('d/m/Y',strtotime($item->order_date));?></td>
+					<td><?php echo $item->usps_tracking_id;?></td>
 					<td><?php echo $status;?></td>
-					<td><a href="<?php echo base_url();?>payment-carrier/">Click Here</a></td>
-					<td><a href="<?php echo base_url();?>order-details/<?php echo $item->order_id;?>/">View Details</a></td>
 				</tr>
 				
 				<?php

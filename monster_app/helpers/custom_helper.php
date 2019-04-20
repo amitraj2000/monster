@@ -246,7 +246,7 @@ if(!function_exists('put_footers')){
 }
 
 function get_product_status_text($status_code){
-	$status='Pending';
+	$status='Pending';	
 	switch($status_code){
 		case '1':
 		$status='Pending';
@@ -303,15 +303,12 @@ function get_product_status_text($status_code){
 		$status='Paypal payment initiated';
 		break;
 		case '19':
-		$status='Shipping kit sent';
-		break;
-		case '20':
 		$status='Paid';
 		break;
-		case '21':
+		case '20':
 		$status='Recycled';
 		break;
-		case '22':
+		case '21':
 		$status='Returned';
 		break;
 		

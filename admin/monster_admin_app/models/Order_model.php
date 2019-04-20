@@ -8,13 +8,15 @@ class Order_model extends CI_Model {
 			$this->db->where('status!=','1');
 			if(!empty($args['status']))
 			$this->db->where_in('status',$args['status']);
+			if(!empty($args['status_not_in']))
+			$this->db->where_not_in('status',$args['status_not_in']);
 			$query = $this->db->get();
 			return $query->num_rows();
         }
 		
 		public function get_orders($args=array())
         {                
-			$this->db->select('*,'.ORDER_MASTER.'.status AS order_status');
+			$this->db->select('*,'.ORDER_MASTER.'.status AS order_status,'.ORDER_MASTER.'.date AS order_date');
 			$this->db->from(ORDER_MASTER);
 			$this->db->join(USER_MASTER, USER_MASTER.'.user_id = '.ORDER_MASTER.'.user_id');
 			//$this->db->join(ORDER_DETAILS, ORDER_DETAILS.'.order_id = '.ORDER_MASTER.'.order_id');

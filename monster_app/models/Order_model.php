@@ -49,27 +49,45 @@ class Order_model extends CI_Model {
 		public function get_total_orders($args)
 		{
 			$current_user_id=get_current_user_id();
-			//$this->db->count_all_results();
+			
 			$this->db->from(ORDER_MASTER);
-			$this->db->join(ORDER_DETAILS, ORDER_DETAILS.'.order_id = '.ORDER_MASTER.'.order_id');
-			$this->db->where_in('status',$args['status']);
+			//$this->db->join(ORDER_DETAILS, ORDER_DETAILS.'.order_id = '.ORDER_MASTER.'.order_id');
+			if(!empty($args['status']))
+			$this->db->where_in(ORDER_MASTER.'.status',$args['status']);
+			if(!empty($args['status_not_in']))
+				$this->db->where_not_in(ORDER_MASTER.'.status',$args['status_not_in']);
 			$this->db->where('user_id',$current_user_id);
+			$this->db->group_by(ORDER_MASTER.'.order_id');
 			//$query = $this->db->get();
 			return $this->db->count_all_results();
 		}
 		public function get_orders($args)
 		{
 			$current_user_id=get_current_user_id();
-			$this->db->select('*');
+			$this->db->select('*,'.ORDER_MASTER.'.date AS order_date,'.ORDER_MASTER.'.status AS order_status');
 			$this->db->from(ORDER_MASTER);
 			$this->db->join(ORDER_DETAILS, ORDER_DETAILS.'.order_id = '.ORDER_MASTER.'.order_id');
 			$this->db->join(PRODUCT_MASTER, PRODUCT_MASTER.'.product_id = '.ORDER_DETAILS.'.product_id');
 			$this->db->join(MODEL_MASTER, MODEL_MASTER.'.model_id = '.PRODUCT_MASTER.'.model_id');
+			if(!empty($args['status']))
 			$this->db->where_in(ORDER_MASTER.'.status',$args['status']);
+			if(!empty($args['status_not_in']))
+				$this->db->where_not_in(ORDER_MASTER.'.status',$args['status_not_in']);
 			$this->db->where('user_id',$current_user_id);
 			if(isset($args['limit']) && isset($args['start_index']))
 			$this->db->limit($args['limit'], $args['start_index']);
+		    $this->db->group_by(ORDER_DETAILS.".order_id");
 			$this->db->order_by(ORDER_DETAILS.".date", "desc");
+			$query = $this->db->get();
+			return $query->result();
+		}
+		public function get_order_details_by_order_id($order_id)
+		{
+			
+			$this->db->select('*');
+			$this->db->from(ORDER_DETAILS);
+			$this->db->where(ORDER_DETAILS.'.order_id',$order_id);			
+			//$this->db->where('status!=',5);
 			$query = $this->db->get();
 			return $query->result();
 		}

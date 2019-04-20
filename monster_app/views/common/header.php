@@ -19,7 +19,11 @@
 		var monsterObj={'base_url':'<?php echo base_url();?>','is_logged_in':<?php $is_logged_in=is_logged_in();echo !empty($is_logged_in)?'true':'false';?>,'quick_email':<?php $has_quick_email=$this->session->userdata('quick_email');echo !empty($has_quick_email)?'true':'false';?>}
 	</script>
 </head>
-
+<?php 
+$query = $this->db->query("SELECT * FROM ".SETTINGS_MASTER." WHERE settings_name='header_settings'");
+$header_settings_str=$query->row();
+$header_settings=unserialize($header_settings_str->settings);
+?>
 <body>
 <div class="bodyOverlay"></div>
 	<div class="responsive_nav"></div>
@@ -27,18 +31,49 @@
 	<header class="siteheader">
 		<div class="header_main">
 			<div class="container">
-				<a href="<?php echo site_url('/');?>" class="logo" title="Monster"><img src="<?php echo base_url();?>/assets/images/logo.png" alt=""></a>
+				<a href="<?php echo site_url('/');?>" class="logo" title="Monster">
+				<?php if(!empty($header_settings['logo'])){
+					$logo_url=site_url('/').'/uploads/settings/'.$header_settings['logo'];//str_replace(dirname(FCPATH),dirname(base_url()),UPLOADS_SETTINGS).$header_settings['logo'];
+					?>
+					<img src="<?php echo $logo_url;?>" alt="">
+					<?php
+				}else{?>
+				<img src="<?php echo base_url();?>/assets/images/logo.png" alt="">
+				<?php } ?>
+				</a>
 				<span class="responsive_btn"><span></span></span>
+				<?php if(!empty($header_settings['menu'])){?>
 				<div class="nav_wrapper">
 					<nav class="nav_menu">
 						<ul class="clearfix">
-							<li><a href="index.html">how it work</a></li>
-							<li><a href="index.html">solutions</a></li>
-							<li><a href="index.html">blog</a></li>
-							<li><a href="index.html">contact</a></li>
+							<?php
+							foreach($header_settings['menu'] as $menu)
+							{
+								$menu_url=$menu_title='';
+								if($menu->id=='home'){
+									$menu_url=base_url();
+									$menu_title='Home';
+								}
+								else if($menu->id=='blog'){
+									$menu_url=base_url('/blog');
+									$menu_title='Blog';
+								}
+								else{
+									$menu_url=base_url('/'.$menu->id);
+									$page=$this->pages_model->get_page_by_slug($menu->id);
+									$menu_title=$page->name;
+								}
+								?>
+								<li><a href="<?php echo $menu_url;?>"><?php echo $menu_title; ?></a></li>
+								<?php
+							}
+							
+							?>
+							
 						</ul>
 					</nav>
 				</div>
+				<?php } ?>
 				<div class="login_sec">
 					<ul class="clearfix ">
 						<?php if(!is_logged_in()){?>

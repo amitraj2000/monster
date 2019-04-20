@@ -95,7 +95,7 @@ defined('CART_MASTER')      OR define('CART_MASTER', 'cart_master');
 defined('ORDER_MASTER')      OR define('ORDER_MASTER', 'order_master');
 defined('ORDER_DETAILS')      OR define('ORDER_DETAILS', 'order_details');
 defined('PAGE_MASTER')      OR define('PAGE_MASTER', 'page_master');
-
+defined('SETTINGS_MASTER')      OR define('SETTINGS_MASTER', 'settings_master');
 //Uploads folder path
 defined('UPLOADS')      OR define('UPLOADS', FCPATH.'/uploads/'); 
 defined('UPLOADS_CATEGORY')      OR define('UPLOADS_CATEGORY', UPLOADS.'category/'); 
@@ -107,3 +107,4 @@ defined('UPLOADS_MODEL_THUMB')      OR define('UPLOADS_MODEL_THUMB', UPLOADS_MOD
 defined('UPLOADS_PRODUCT')      OR define('UPLOADS_PRODUCT', UPLOADS.'product/'); 
 defined('UPLOADS_PRODUCT_THUMB')      OR define('UPLOADS_PRODUCT_THUMB', UPLOADS_PRODUCT.'thumbnail/'); 
 defined('LABELS')      OR define('LABELS', FCPATH.'labels/'); 
+defined('UPLOADS_SETTINGS')      OR define('UPLOADS_SETTINGS', UPLOADS.'settings/'); 

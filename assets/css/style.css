@@ -1606,9 +1606,9 @@ a.icloud-deactivation{background-color:#777;}
 .table-bg h1{color:#000; text-align:center; padding:0; margin:50px 0; background:url(../images/line.jpg) repeat-x 0 50%;}
 .table-bg h1 span{background:#f5f5f5; padding:0 15px;}
 
-#open_pagination{ padding:10px 0;}
-#open_pagination a, #open_pagination strong{border:1px solid #ccc; background:#fff; padding:3px 10px; display:inline-block; line-height:24px; font-size:14px!important}
-#open_pagination strong{background:#dbdbdb; color:#000; font-weight:normal!important; border:1px solid #ccc;}
+#open_pagination,#completed_pagination{ padding:10px 0;}
+#open_pagination a, #open_pagination strong,#completed_pagination a, #completed_pagination strong{border:1px solid #ccc; background:#fff; padding:3px 10px; display:inline-block; line-height:24px; font-size:14px!important}
+#open_pagination strong,#completed_pagination strong{background:#dbdbdb; color:#000; font-weight:normal!important; border:1px solid #ccc;}
 
 
 .thanks{ text-align:center;}

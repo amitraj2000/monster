@@ -1,18 +1,7 @@
  <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <!--<h1 class="page-header">Add New User</h1>-->
-					<div class="page-header">
-						<div class="row">
-							<div class="col-lg-6">
-								<h1>Add New User</h1>
-							</div>
-							<div class="col-lg-6 text-right">
-								<a href="<?php echo site_url('users');?>"><h1 class="btn btn-primary btn-lg"><i class="fa fa-bars" aria-hidden="true"></i> All Users</h1></a>							
-							</div>
-							
-						</div>
-					</div>
+                    <h1 class="page-header">Add New User</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

@@ -522,3 +522,9 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+
+/*usps user ID*/
+$config['usps_merchant_account_id']='8544';
+$config['usps_mid']='902052109';
+$config['usps_user_id']='587MONST6470';

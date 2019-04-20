@@ -68,7 +68,7 @@
 													?>
 												</td>
 												<td class="center">
-													<?php echo $order->date;?>
+													<?php echo $order->order_date;?>
 												</td>
 												<td class="center">
 													<?php echo get_product_status_text($order->order_status);?>
